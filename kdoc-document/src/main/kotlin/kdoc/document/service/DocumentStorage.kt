@@ -249,15 +249,26 @@ internal class DocumentStorage(
 
     /**
      * Backup all files into a ZIP archive.
-     * The files are streamed into the ZIP to avoid loading all files into memory.
      *
      * @param outputStream The output stream where the ZIP archive will be written.
      */
     suspend fun backup(outputStream: OutputStream): Unit = withContext(Dispatchers.IO) {
         val documents: Page<DocumentEntity> = documentRepository.findAll()
+        pack(outputStream = outputStream, documents = documents)
+    }
 
+    /**
+     * Packs the given documents into a ZIP archive.
+     *
+     * @param outputStream The output stream where the ZIP archive will be written.
+     * @param documents The documents to be packed.
+     */
+    private suspend fun pack(
+        outputStream: OutputStream,
+        documents: Page<DocumentEntity>
+    ): Unit = withContext(Dispatchers.IO) {
         if (documents.totalElements == 0) {
-            tracer.debug("No documents found for backup.")
+            tracer.debug("No documents found provided.")
             return@withContext
         }
 
@@ -283,7 +294,7 @@ internal class DocumentStorage(
                             }
                         }
                     } catch (e: IOException) {
-                        tracer.error("Error adding to backup document file with ID: ${document.id}: ${e.message}")
+                        tracer.error("Error adding to zip document with ID: ${document.id}: ${e.message}")
                     }
                 } else {
                     tracer.warning("Document file not found: ${document.id}")
