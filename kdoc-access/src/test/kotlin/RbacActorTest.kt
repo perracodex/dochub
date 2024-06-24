@@ -3,18 +3,18 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.access.actor.di.ActorDomainInjection
-import kcrud.access.actor.entity.ActorEntity
-import kcrud.access.actor.entity.ActorRequest
-import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.access.rbac.entity.role.RbacRoleEntity
-import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
-import kcrud.access.rbac.service.RbacService
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.utils.TestUtils
+import kdoc.access.actor.di.ActorDomainInjection
+import kdoc.access.actor.entity.ActorEntity
+import kdoc.access.actor.entity.ActorRequest
+import kdoc.access.actor.service.ActorService
+import kdoc.access.rbac.di.RbacDomainInjection
+import kdoc.access.rbac.entity.role.RbacRoleEntity
+import kdoc.access.rbac.entity.role.RbacRoleRequest
+import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kdoc.access.rbac.service.RbacService
+import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.base.database.schema.admin.rbac.types.RbacScope
+import kdoc.base.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -51,7 +51,7 @@ class RbacActorTest : KoinComponent {
             isSuper = false,
             scopeRules = listOf(
                 RbacScopeRuleRequest(
-                    scope = RbacScope.SYSTEM,
+                    scope = RbacScope.SYSTEM_ADMIN,
                     accessLevel = RbacAccessLevel.FULL
                 )
             )

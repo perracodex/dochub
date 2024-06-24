@@ -47,7 +47,7 @@ class MultipartFilesTest {
     }
 
     @Test
-    fun testJsonRequest(): Unit = testApplication {
+    fun testUpload(): Unit = testApplication {
         val numberOfFiles = 10
         val tempUploadPath: File = createTempDirectory().toFile()
         val filenamePrefix = "testfile"

@@ -1,6 +1,6 @@
 # [KDoc](https://github.com/perracodex/KDoc)
 
-A document storage manager using the [Ktor](https://ktor.io/) framework.
+A secure document storage manager using the [Ktor](https://ktor.io/) framework.
 
 ---
 ### Preface
