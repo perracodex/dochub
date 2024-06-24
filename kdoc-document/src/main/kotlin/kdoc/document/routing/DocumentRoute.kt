@@ -4,7 +4,11 @@
 
 package kdoc.document.routing
 
+import io.ktor.server.auth.*
+import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
+import kdoc.base.plugins.RateLimitScope
+import kdoc.base.settings.AppSettings
 import kdoc.document.routing.delete.deleteAllDocuments
 import kdoc.document.routing.delete.deleteDocumentById
 import kdoc.document.routing.delete.deleteDocumentsByGroup
@@ -30,26 +34,35 @@ annotation class DocumentRouteAPI
 @OptIn(DocumentRouteAPI::class)
 fun Route.documentRoute() {
 
-    route("v1/document") {
+    rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
+        authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
+            route("v1/document") {
+                uploadDocuments()
 
-        uploadDocuments()
+                searchDocuments()
+                findDocumentsByOwner()
 
-        searchDocuments()
-        findDocumentsByOwner()
+                findDocumentsByGroup()
+                deleteDocumentsByGroup()
 
-        findDocumentsByGroup()
-        deleteDocumentsByGroup()
+                getDocumentSignedUrl()
+                downloadDocument()
 
-        findAllDocuments()
-        deleteAllDocuments()
+                route("{document_id}") {
+                    findDocumentById()
+                    deleteDocumentById()
+                }
+            }
+        }
+    }
 
-        getDocumentSignedUrl()
-        downloadDocument()
-        changeDocumentsCipherState()
-
-        route("{document_id}") {
-            findDocumentById()
-            deleteDocumentById()
+    rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
+        authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
+            route("v1/document") {
+                changeDocumentsCipherState()
+                findAllDocuments()
+                deleteAllDocuments()
+            }
         }
     }
 }

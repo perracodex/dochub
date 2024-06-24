@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.html.builder)
     implementation(libs.ktor.server.tests)
+    implementation(libs.ktor.server.thymeleaf)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)

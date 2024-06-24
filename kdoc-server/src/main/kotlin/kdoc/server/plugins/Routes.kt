@@ -5,8 +5,6 @@
 package kdoc.server.plugins
 
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.routing.rbacRoute
@@ -14,9 +12,7 @@ import kdoc.access.token.accessTokenRoute
 import kdoc.base.env.SessionContext
 import kdoc.base.env.health.routing.healthCheckRoute
 import kdoc.base.events.sseRoute
-import kdoc.base.plugins.RateLimitScope
 import kdoc.base.security.snowflake.snowflakeRoute
-import kdoc.base.settings.AppSettings
 import kdoc.document.routing.documentRoute
 
 /**
@@ -37,13 +33,7 @@ fun Application.configureRoutes() {
 
     routing {
 
-        // Define domain routes.
-        rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
-            authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
-                documentRoute()
-            }
-        }
-
+        documentRoute()
         accessTokenRoute()
         healthCheckRoute()
         snowflakeRoute()
