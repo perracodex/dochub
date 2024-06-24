@@ -39,7 +39,7 @@ Allows administrators to select encryption algorithms and manage keys, offering 
 * ### [Download](./.wiki/02.download.md)
 * ### [Persistence](./.wiki/03.persistence.md)
 * ### [Secure URLs](./.wiki/04.secure-url.md)
-* ### [Authentication](./.wiki/05.authentication)
+* ### [Authentication](./.wiki/05.authentication.md)
 
 ---
 For convenience, it is included a *[Postman Collection](./.postman/kdoc.postman_collection.json)* with all the available REST endpoints.
