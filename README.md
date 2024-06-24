@@ -2,13 +2,9 @@
 
 A secure document storage manager using the [Ktor](https://ktor.io/) framework.
 
----
-### Preface
-
 [KDoc](https://github.com/perracodex/KDoc) serves as a comprehensive example of a document storage manager, 
 allowing to securely upload, download, and manage documents.
 
----
 ### Characteristics:
 
 * **Document Encryption at Rest**:
@@ -37,10 +33,6 @@ Maintains comprehensive logs of all file access and operations for monitoring, s
 Allows administrators to select encryption algorithms and manage keys, offering customizable security configurations.
 
 ---
-
-For convenience, it is included a *[Postman Collection](./.postman/kdoc.postman_collection.json)* with all the available REST endpoints.
-
----
 ### Wiki
 
 * ### [Upload](./.wiki/01.upload.md)
@@ -48,3 +40,6 @@ For convenience, it is included a *[Postman Collection](./.postman/kdoc.postman_
 * ### [Persistence](./.wiki/03.persistence.md)
 * ### [Secure URLs](./.wiki/04.secure-url.md)
 * ### [Authentication](./.wiki/05.authentication)
+
+---
+For convenience, it is included a *[Postman Collection](./.postman/kdoc.postman_collection.json)* with all the available REST endpoints.
