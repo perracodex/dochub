@@ -1,0 +1,957 @@
+openapi: "3.1.0"
+info:
+  title: "KDoc API"
+  description: "KDoc API"
+  version: "1.0.0"
+servers:
+  - url: "http://127.0.0.1:8080"
+  - url: "https://127.0.0.1:8443"
+paths:
+  /:
+    get:
+      description: "Server root endpoint."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Hello World."
+                Example#2:
+                  value: ""
+  /auth/token/create:
+    post:
+      description: "Creates a new token and responds with it."
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Failed to generate token."
+  /auth/token/refresh:
+    post:
+      description: "Endpoint for token refresh. <br> No Basic Authentication is required\
+        \ here, but an existing token's validity will be checked. <br> For example,\
+        \ in Postman set the endpoint and in the Headers add an Authorization key\
+        \ <br> with a 'Bearer' holding a previous valid token."
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Failed to generate token."
+        "401":
+          description: "Unauthorized <br> Token is invalid; respond with an Unauthorized\
+            \ status."
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid token."
+  /events:
+    get:
+      description: "Server-Sent Events (SSE) endpoint."
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /health:
+    get:
+      description: "Healthcheck providing the current operational status."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+  /rbac/admin:
+    get:
+      description: ""
+      parameters:
+        - name: "role"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+    post:
+      description: ""
+      parameters:
+        - name: "role"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+                Example#2:
+                  description: ""
+                  value: "/rbac/login"
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+  /rbac/login:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
+    post:
+      description: ""
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
+  /rbac/logout:
+    post:
+      description: ""
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+  /snowflake/{id}:
+    get:
+      description: "Snowflake parser to read back the components of a snowflake ID."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SnowflakeData"
+  /v1/document:
+    delete:
+      description: "Delete all documents."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find all documents."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
+    post:
+      description: "Search (Filter) documents."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
+  /v1/document/{document_id}:
+    get:
+      description: "Find a documents by ID."
+      parameters:
+        - name: "document_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DocumentEntity"
+  /v1/document/{document_id}/{document_id}:
+    delete:
+      description: "Delete a document by ID."
+      parameters:
+        - name: "document_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+  /v1/document/{owner_id}/{group_id}/{type}/{cipher}:
+    post:
+      description: "Upload a new document."
+      parameters:
+        - name: "owner_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "type"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "cipher"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid request."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/DocumentEntity"
+  /v1/document/{document_id}/url:
+    get:
+      description: "Generate the signed URL for a document download."
+      parameters:
+        - name: "document_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /v1/document/cipher/{cipher}:
+    put:
+      description: "Changes the cipher state of all documents."
+      parameters:
+        - name: "cipher"
+          in: "path"
+          required: true
+          schema:
+            type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+  /v1/document/download/{token}/{signature}:
+    get:
+      description: "Serve a document file to download."
+      parameters:
+        - name: "token"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "signature"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "403":
+          description: "Forbidden"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid or expired token."
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "File not found."
+  /v1/document/group/{group_id}:
+    delete:
+      description: "Delete all documents by group."
+      parameters:
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find all documents by group."
+      parameters:
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
+  /v1/document/owner/{owner_id}:
+    get:
+      description: "Find all documents by owner."
+      parameters:
+        - name: "owner_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
+components:
+  schemas:
+    ApplicationCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        apiSchemaEnabled:
+          type: "boolean"
+      required:
+        - "errors"
+    Datasource:
+      type: "object"
+      properties:
+        totalConnections:
+          type: "integer"
+          format: "int32"
+        activeConnections:
+          type: "integer"
+          format: "int32"
+        idleConnections:
+          type: "integer"
+          format: "int32"
+        threadsAwaitingConnection:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        maxLifetime:
+          type: "integer"
+          format: "int64"
+        keepaliveTime:
+          type: "integer"
+          format: "int64"
+        maxPoolSize:
+          type: "integer"
+          format: "int32"
+    ConnectionTest:
+      type: "object"
+      properties:
+        established:
+          type: "boolean"
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
+    Configuration:
+      type: "object"
+      properties:
+        poolSize:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        transactionRetryAttempts:
+          type: "integer"
+          format: "int32"
+        warnLongQueriesDurationMs:
+          type: "integer"
+          format: "int64"
+        jdbcDriver:
+          type: "string"
+        jdbcUrl:
+          type: "string"
+      required:
+        - "jdbcDriver"
+        - "jdbcUrl"
+    DatabaseCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        alive:
+          type: "boolean"
+        datasource:
+          $ref: "#/components/schemas/Datasource"
+        connectionTest:
+          $ref: "#/components/schemas/ConnectionTest"
+        configuration:
+          $ref: "#/components/schemas/Configuration"
+        tables:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "errors"
+        - "configuration"
+        - "tables"
+    Configured:
+      type: "object"
+      properties:
+        protocol:
+          type: "string"
+        port:
+          type: "integer"
+          format: "int32"
+        sslPort:
+          type: "integer"
+          format: "int32"
+        host:
+          type: "string"
+        allowedHosts:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "protocol"
+        - "host"
+        - "allowedHosts"
+    ServerSpec:
+      type: "object"
+      properties:
+        serverHost:
+          type: "string"
+        serverPort:
+          type: "integer"
+          format: "int32"
+        localHost:
+          type: "string"
+        localPort:
+          type: "integer"
+          format: "int32"
+        remoteHostHost:
+          type: "string"
+        remoteAddress:
+          type: "string"
+        remotePort:
+          type: "integer"
+          format: "int32"
+        httpVersion:
+          type: "string"
+        scheme:
+          type: "string"
+    DeploymentCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        configured:
+          $ref: "#/components/schemas/Configured"
+        serverSpec:
+          $ref: "#/components/schemas/ServerSpec"
+        connectors:
+          type: "string"
+      required:
+        - "errors"
+        - "configured"
+        - "serverSpec"
+        - "connectors"
+    LocalDateTime:
+      type: "object"
+      properties: { }
+    RuntimeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        machineId:
+          type: "integer"
+          format: "int32"
+        environment:
+          type: "string"
+          enum:
+            - "DEV"
+            - "PROD"
+            - "STAGING"
+            - "TEST"
+        developmentModeEnabled:
+          type: "boolean"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "errors"
+        - "environment"
+        - "utc"
+        - "local"
+    LimitSpec:
+      type: "object"
+      properties:
+        limit:
+          type: "integer"
+          format: "int32"
+        refillMs:
+          type: "integer"
+          format: "int64"
+    SecurityCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        useSecureConnection:
+          type: "boolean"
+        publicApi:
+          $ref: "#/components/schemas/LimitSpec"
+        privateApi:
+          $ref: "#/components/schemas/LimitSpec"
+        newToken:
+          $ref: "#/components/schemas/LimitSpec"
+      required:
+        - "errors"
+        - "publicApi"
+        - "privateApi"
+        - "newToken"
+    SnowflakeData:
+      type: "object"
+      properties:
+        machineId:
+          type: "integer"
+          format: "int32"
+        sequence:
+          type: "integer"
+          format: "int64"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "utc"
+        - "local"
+    SnowflakeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        testId:
+          type: "string"
+        testResult:
+          $ref: "#/components/schemas/SnowflakeData"
+        timestampEpoch:
+          type: "integer"
+          format: "int64"
+        nanoTimeStart:
+          type: "integer"
+          format: "int64"
+      required:
+        - "errors"
+    HealthCheck:
+      type: "object"
+      properties:
+        health:
+          type: "array"
+          items:
+            type: "string"
+        application:
+          $ref: "#/components/schemas/ApplicationCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        deployment:
+          $ref: "#/components/schemas/DeploymentCheck"
+        endpoints:
+          type: "array"
+          items:
+            type: "string"
+        runtime:
+          $ref: "#/components/schemas/RuntimeCheck"
+        security:
+          $ref: "#/components/schemas/SecurityCheck"
+        snowflake:
+          $ref: "#/components/schemas/SnowflakeCheck"
+      required:
+        - "health"
+        - "application"
+        - "database"
+        - "deployment"
+        - "endpoints"
+        - "runtime"
+        - "security"
+        - "snowflake"
+    Function1:
+      type: "object"
+      properties: { }
+    Function1_? super HTML:
+      type: "object"
+    Sort:
+      type: "object"
+      properties:
+        table:
+          type: "string"
+        field:
+          type: "string"
+        direction:
+          type: "string"
+          enum:
+            - "ASC"
+            - "DESC"
+      required:
+        - "field"
+        - "direction"
+    Page:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+      required:
+        - "content"
+    Page_? extends DocumentEntity:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+          items:
+            type: "object"
+    Meta:
+      type: "object"
+      properties:
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "createdAt"
+        - "updatedAt"
+    DocumentEntity:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        ownerId:
+          type: "string"
+          format: "uuid"
+        groupId:
+          type: "string"
+          format: "uuid"
+        name:
+          type: "string"
+        type:
+          type: "string"
+          enum:
+            - "GENERAL"
+            - "CERTIFICATE"
+            - "CONTRACT"
+            - "INVOICE"
+            - "PASSPORT"
+            - "PERSONAL_ID"
+            - "RECEIPT"
+            - "REPORT"
+        description:
+          type: "string"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - "id"
+        - "ownerId"
+        - "groupId"
+        - "name"
+        - "type"
+        - "meta"
