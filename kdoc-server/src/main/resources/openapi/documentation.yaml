@@ -394,6 +394,9 @@ paths:
             '*/*':
               schema:
                 type: "string"
+  /v1/document/backup:
+    get:
+      description: "Downloads a backup file containing all the documents."
   /v1/document/cipher/{cipher}:
     put:
       description: "Changes the cipher state of all documents."
@@ -426,6 +429,15 @@ paths:
           schema:
             type: "string"
       responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Missing token or signature."
         "403":
           description: "Forbidden"
           content:
@@ -434,16 +446,7 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Invalid or expired token."
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "File not found."
+                  value: "Unable to initiate download."
   /v1/document/group/{group_id}:
     delete:
       description: "Delete all documents by group."

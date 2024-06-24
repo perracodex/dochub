@@ -10,10 +10,14 @@ import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.persistence.pagination.Page
+import kdoc.base.persistence.serializers.SUUID
+import kdoc.base.persistence.utils.toUUIDOrNull
 import kdoc.base.plugins.appMicrometerRegistry
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
+import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings
+import kdoc.base.utils.NetworkUtils
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFileEntity
 import kdoc.document.entity.DocumentRequest
@@ -21,8 +25,10 @@ import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
+import java.io.*
 import java.util.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * Document storage service, where all the document storage business logic should be defined.
@@ -102,12 +108,36 @@ internal class DocumentStorage(
     }
 
     /**
+     * Retrieves a {DocumentFileEntity}, given a token and signature.
+     *
+     * @param token The token to verify.
+     * @param signature The signature to verify.
+     * @return The [DocumentFileEntity] if the verification is successful, null otherwise.
+     */
+    suspend fun getSignedDocumentFile(token: String, signature: String): DocumentFileEntity? {
+        val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
+
+        val documentId: SUUID? = SecureUrl.verify(
+            basePath = basePath,
+            token = token,
+            signature = signature
+        ).toUUIDOrNull()
+
+        if (documentId == null) {
+            tracer.warning("Invalid or expired token: $token")
+            return null
+        }
+
+        return getDocumentFile(documentId = documentId)
+    }
+
+    /**
      * Retrieves a reference to the document storage file.
      *
      * @param documentId The ID of the document to be retrieved.
      * @return The [DocumentFileEntity] reference if found, null if not found or the referenced file does not exist.
      */
-    suspend fun getDocumentFile(documentId: UUID): DocumentFileEntity? = withContext(Dispatchers.IO) {
+    private suspend fun getDocumentFile(documentId: UUID): DocumentFileEntity? = withContext(Dispatchers.IO) {
         val documentFile: DocumentFileEntity? = documentRepository.getStorageFile(documentId = documentId)
 
         documentFile?.let {
@@ -128,15 +158,15 @@ internal class DocumentStorage(
      * @return The number of documents affected by the operation.
      */
     suspend fun changeCipherState(cipher: Boolean): Int = withContext(Dispatchers.IO) {
-        val documentFile: Page<DocumentEntity> = documentRepository.findAll()
-        if (documentFile.totalElements == 0) {
+        val document: Page<DocumentEntity> = documentRepository.findAll()
+        if (document.totalElements == 0) {
             tracer.debug("No documents found to change cipher state.")
             return@withContext 0
         }
 
         var count = 0
 
-        documentFile.content.forEach { documentEntity ->
+        document.content.forEach { documentEntity ->
             if (documentEntity.isCiphered != cipher) {
                 if (changeDocumentCipherState(documentEntity, cipher)) {
                     count++
@@ -155,7 +185,11 @@ internal class DocumentStorage(
      * @param cipher If true, ciphers the document; if false, de-ciphers the document.
      * @return True if the cipher state was changed, false if the document file was not found.
      */
-    private suspend fun changeDocumentCipherState(document: DocumentEntity, cipher: Boolean): Boolean = withContext(Dispatchers.IO) {
+    private suspend fun changeDocumentCipherState(
+        document: DocumentEntity,
+        cipher: Boolean
+    )
+            : Boolean = withContext(Dispatchers.IO) {
         val documentId: UUID = document.id
 
         val documentFile: DocumentFileEntity? = getDocumentFile(documentId = documentId)
@@ -213,6 +247,51 @@ internal class DocumentStorage(
         return@withContext true
     }
 
+    /**
+     * Backup all files into a ZIP archive.
+     * The files are streamed into the ZIP to avoid loading all files into memory.
+     *
+     * @param outputStream The output stream where the ZIP archive will be written.
+     */
+    suspend fun backup(outputStream: OutputStream): Unit = withContext(Dispatchers.IO) {
+        val documents: Page<DocumentEntity> = documentRepository.findAll()
+
+        if (documents.totalElements == 0) {
+            tracer.debug("No documents found for backup.")
+            return@withContext
+        }
+
+        ZipOutputStream(BufferedOutputStream(outputStream)).use { zipStream ->
+            documents.content.forEach { document ->
+                val documentFile: DocumentFileEntity? = documentRepository.getStorageFile(documentId = document.id)
+                val file: File? = documentFile?.file
+
+                if (file != null && file.exists()) {
+                    try {
+                        FileInputStream(file).use { inputStream ->
+                            BufferedInputStream(inputStream).use { bis ->
+                                val zipEntry = ZipEntry(file.name)
+                                zipStream.putNextEntry(zipEntry)
+
+                                val buffer = ByteArray(size = 4098)
+                                var length: Int
+                                while (bis.read(buffer).also { length = it } >= 0) {
+                                    zipStream.write(buffer, 0, length)
+                                }
+
+                                zipStream.closeEntry()
+                            }
+                        }
+                    } catch (e: IOException) {
+                        tracer.error("Error adding to backup document file with ID: ${document.id}: ${e.message}")
+                    }
+                } else {
+                    tracer.warning("Document file not found: ${document.id}")
+                }
+            }
+        }
+    }
+
     companion object {
         /** Prefix for temporary cipher files. Used when changing the cipher state of documents. */
         private const val PREFIX_TEMP_CIPHER = "temp-cipher-"
@@ -223,6 +302,11 @@ internal class DocumentStorage(
         /** Metric for tracking the total number of document downloads. */
         val downloadCountMetric: Counter = Counter.builder("kdoc_document_downloads_total")
             .description("Total number of downloaded files")
+            .register(appMicrometerRegistry)
+
+        /** Metric for tracking the total number of backups. */
+        val backupCountMetric: Counter = Counter.builder("kdoc_document_backups_total")
+            .description("Total number of backups")
             .register(appMicrometerRegistry)
     }
 }

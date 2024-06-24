@@ -6,15 +6,19 @@ package kdoc.base.security.utils
 
 import kdoc.base.settings.AppSettings
 import kdoc.base.settings.config.sections.security.sections.EncryptionSettings
-import org.apache.commons.codec.binary.Base32
 import org.jetbrains.exposed.crypt.Algorithms
 import org.jetbrains.exposed.crypt.Encryptor
+import java.security.SecureRandom
 import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 /**
  * Utility class for database field encryption.
  */
+@OptIn(ExperimentalEncodingApi::class)
 object EncryptionUtils {
     private enum class AlgorithmName {
         AES_256_PBE_CBC,
@@ -106,9 +110,19 @@ object EncryptionUtils {
     fun aesEncrypt(data: String, key: String): String {
         val normalizedKey: ByteArray = key.toByteKey(length = 32)
         val secretKey = SecretKeySpec(normalizedKey, "AES")
-        val cipher: Cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        return Base32(true).encodeToString(cipher.doFinal(data.toByteArray()))
+
+        // Generate a random IV.
+        val iv = ByteArray(size = 16)
+        SecureRandom().nextBytes(iv)
+        val ivSpec = IvParameterSpec(iv)
+
+        val cipher: Cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec)
+        val encryptedData: ByteArray = cipher.doFinal(data.toByteArray())
+
+        // Concatenate IV and encrypted data and encode to Base64.
+        val ivAndEncryptedData: ByteArray = iv + encryptedData
+        return Base64.UrlSafe.encode(source = ivAndEncryptedData)
     }
 
     /**
@@ -121,8 +135,18 @@ object EncryptionUtils {
     fun aesDecrypt(data: String, key: String): String {
         val normalizedKey: ByteArray = key.toByteKey(length = 32)
         val secretKey = SecretKeySpec(normalizedKey, "AES")
-        val cipher: Cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.DECRYPT_MODE, secretKey)
-        return String(cipher.doFinal(Base32(true).decode(data)))
+
+        // Decode the Base64 encoded string.
+        val ivAndEncryptedData: ByteArray = Base64.UrlSafe.decode(source = data)
+
+        // Extract IV and encrypted data.
+        val iv: ByteArray = ivAndEncryptedData.copyOfRange(fromIndex = 0, toIndex = 16)
+        val encryptedData: ByteArray = ivAndEncryptedData.copyOfRange(fromIndex = 16, toIndex = ivAndEncryptedData.size)
+        val ivSpec = IvParameterSpec(iv)
+
+        val cipher: Cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec)
+        val decryptedData: ByteArray = cipher.doFinal(encryptedData)
+        return String(decryptedData)
     }
 }

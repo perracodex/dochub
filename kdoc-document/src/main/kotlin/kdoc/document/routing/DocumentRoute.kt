@@ -13,10 +13,7 @@ import kdoc.document.routing.delete.deleteAllDocuments
 import kdoc.document.routing.delete.deleteDocumentById
 import kdoc.document.routing.delete.deleteDocumentsByGroup
 import kdoc.document.routing.get.*
-import kdoc.document.routing.operate.changeDocumentsCipherState
-import kdoc.document.routing.operate.downloadDocument
-import kdoc.document.routing.operate.getDocumentSignedUrl
-import kdoc.document.routing.operate.uploadDocuments
+import kdoc.document.routing.operate.*
 
 /**
  * Annotation for controlled access to the Document Routes API.
@@ -60,6 +57,7 @@ fun Route.documentRoute() {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
             route("v1/document") {
                 changeDocumentsCipherState()
+                backupAllDocuments()
                 findAllDocuments()
                 deleteAllDocuments()
             }

@@ -56,7 +56,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 @OptIn(ExperimentalEncodingApi::class)
 object SecureUrl {
     private const val TOKEN_PART_INDEX: Int = 0
-    private const val SIGNATURE_PART_INDEX: Int = 1
     private const val EXPIRATION_PART_INDEX: Int = 1
     private const val PARTS_COUNT: Int = 2
     private const val SEPARATOR: String = ":"
@@ -80,18 +79,6 @@ object SecureUrl {
     }
 
     /**
-     * Encrypts the given data and encodes it in Base64.
-     *
-     * @param data The data to encrypt.
-     * @return The encrypted and Base64 encoded data.
-     */
-    private fun encryptToken(data: String): String {
-        val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_TRANSIT)
-        val encrypted: String = encryptor.encrypt(str = data)
-        return Base64.encode(source = encrypted.toByteArray())
-    }
-
-    /**
      * Verifies if a given token is valid based on its signature, decryption and expiration.
      *
      * @param basePath The base path for the URL.
@@ -101,7 +88,8 @@ object SecureUrl {
      */
     fun verify(basePath: String, token: String, signature: String): String? {
         // Verify the URL signature for integrity before decryption.
-        if (!verifySignature(url = "$basePath$PARAM_TOKEN$token$PARAM_SIGNATURE$signature")) return null
+        val url = "$basePath$PARAM_TOKEN$token"
+        if (!verifySignature(url = url, receivedSignature = signature)) return null
 
         // Decrypt the token and split into parts, which include the data and expiration.
         val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_TRANSIT)
@@ -121,6 +109,18 @@ object SecureUrl {
     }
 
     /**
+     * Encrypts the given data and encodes it in Base64.
+     *
+     * @param data The data to encrypt.
+     * @return The encrypted and Base64 encoded data.
+     */
+    private fun encryptToken(data: String): String {
+        val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_TRANSIT)
+        val encrypted: String = encryptor.encrypt(str = data)
+        return Base64.UrlSafe.encode(source = encrypted.encodeToByteArray())
+    }
+
+    /**
      * Decrypts the given token and returns the original data.
      *
      * @param token The encrypted and Base64 encoded token to decrypt.
@@ -128,7 +128,7 @@ object SecureUrl {
      * @return The decrypted original data.
      */
     private fun decryptToken(token: String, encryptor: Encryptor): String {
-        val decodedString: String = Base64.decode(source = token).decodeToString()
+        val decodedString: String = Base64.UrlSafe.decode(source = token).decodeToString()
         return encryptor.decrypt(str = decodedString)
     }
 
@@ -142,27 +142,25 @@ object SecureUrl {
         val hmac: EncryptionSettings.Hmac = AppSettings.security.encryption.hmac
         val mac: Mac = Mac.getInstance(hmac.algorithm)
         mac.init(SecretKeySpec(hmac.key.toByteArray(), hmac.algorithm))
-        val signature: String = Base64.encode(source = mac.doFinal(url.toByteArray()))
+        val signedUrl: ByteArray = mac.doFinal(url.toByteArray())
+        val signature: String = Base64.UrlSafe.encode(source = signedUrl)
         return "$url$PARAM_SIGNATURE$signature"
     }
 
     /**
-     * Verifies the signature of the given URL.
+     * Verifies the signature of the given URL by recomputing the HMAC
+     * and comparing it with the received signature.
      *
-     * @param url The URL to verify.
+     * @param url The URL to verify, without the signature.
+     * @param receivedSignature The signature to verify.
      * @return A boolean indicating whether the signature is valid (true) or not (false).
      */
-    private fun verifySignature(url: String): Boolean {
-        val parts: List<String> = url.split(PARAM_SIGNATURE)
-        if (parts.size != PARTS_COUNT) return false
-        val originalUrl: String = parts[TOKEN_PART_INDEX]
-        val receivedSignature: String = parts[SIGNATURE_PART_INDEX]
-
+    private fun verifySignature(url: String, receivedSignature: String): Boolean {
         val hmac: EncryptionSettings.Hmac = AppSettings.security.encryption.hmac
         val mac: Mac = Mac.getInstance(hmac.algorithm)
         mac.init(SecretKeySpec(hmac.key.toByteArray(), hmac.algorithm))
-        val expectedSignature: String = Base64.encode(source = mac.doFinal(originalUrl.toByteArray()))
-
-        return expectedSignature == receivedSignature
+        val expectedSignature: ByteArray = mac.doFinal(url.toByteArray())
+        val encodedExpectedSignature: String = Base64.UrlSafe.encode(expectedSignature)
+        return encodedExpectedSignature == receivedSignature
     }
 }

@@ -9,12 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
-import kdoc.base.persistence.serializers.SUUID
-import kdoc.base.persistence.utils.toUUIDOrNull
 import kdoc.base.security.utils.SecureIO
-import kdoc.base.security.utils.SecureUrl
-import kdoc.base.settings.AppSettings
-import kdoc.base.utils.NetworkUtils
 import kdoc.document.entity.DocumentFileEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
@@ -27,59 +22,51 @@ import java.io.FileInputStream
 internal fun Route.downloadDocument() {
     // Serve a document file to download.
     get("download/{token?}/{signature?}") {
-        val token: String = call.request.queryParameters["token"]!!
-        val signature: String = call.request.queryParameters["signature"]!!
+        val token: String? = call.request.queryParameters["token"]
+        val signature: String? = call.request.queryParameters["signature"]
 
+        // Audit the download attempt.
         val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
-            .audit(operation = "download", log = "token=$token | signature=$signature")
+        val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        auditService.audit(operation = "download", log = "token=$token | signature=$signature")
 
-        // Verify the token and signature to get the document ID.
-
-        val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
-        val documentId: SUUID? = SecureUrl.verify(
-            basePath = basePath,
-            token = token,
-            signature = signature
-        ).toUUIDOrNull()
-
-        if (documentId == null) {
-            // Log the failed verification attempt.
-            call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
-                .audit(operation = "download verification failed", log = "token=$token | signature=$signature")
-
-            call.respond(status = HttpStatusCode.Forbidden, message = "Invalid or expired token.")
+        // If the token or signature is missing, return a bad request response.
+        if (token.isNullOrBlank() || signature.isNullOrBlank()) {
+            call.respond(status = HttpStatusCode.BadRequest, message = "Missing token or signature.")
             return@get
         }
 
         // Get the document file storage reference.
-
         val service: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
-        val documentFile: DocumentFileEntity? = service.getDocumentFile(documentId = documentId)
+        val documentFile: DocumentFileEntity = service.getSignedDocumentFile(token = token, signature = signature) ?: run {
+            auditService.audit(operation = "download verification failed", log = "token=$token | signature=$signature")
+            call.respond(status = HttpStatusCode.Forbidden, message = "Unable to initiate download.")
+            return@get
+        }
 
         // Stream the document file to the client.
+        streamDocumentFile(call = call, documentFile = documentFile)
+    }
+}
 
-        documentFile?.let {
-            DocumentStorage.downloadCountMetric.increment()
+private suspend fun streamDocumentFile(call: ApplicationCall, documentFile: DocumentFileEntity) {
+    DocumentStorage.downloadCountMetric.increment()
 
-            call.response.header(
-                HttpHeaders.ContentDisposition,
-                ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.FileName,
-                    documentFile.originalName
-                ).toString()
-            )
+    call.response.header(
+        HttpHeaders.ContentDisposition,
+        ContentDisposition.Attachment.withParameter(
+            ContentDisposition.Parameters.FileName,
+            documentFile.originalName
+        ).toString()
+    )
 
-            call.respondOutputStream(contentType = ContentType.Application.OctetStream) {
-                FileInputStream(documentFile.file).use { inputStream ->
-                    if (documentFile.isCiphered) {
-                        SecureIO.decipher(input = inputStream, output = this)
-                    } else {
-                        inputStream.copyTo(out = this)
-                    }
-                }
+    call.respondOutputStream(contentType = ContentType.Application.OctetStream) {
+        FileInputStream(documentFile.file).use { inputStream ->
+            if (documentFile.isCiphered) {
+                SecureIO.decipher(input = inputStream, output = this)
+            } else {
+                inputStream.copyTo(out = this)
             }
-
-        } ?: call.respond(status = HttpStatusCode.NotFound, message = "File not found.")
+        }
     }
 }

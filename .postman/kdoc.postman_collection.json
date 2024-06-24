@@ -492,10 +492,7 @@
 								{
 									"key": "1",
 									"type": "file",
-									"src": [
-										"/D:/Coding/Sources/Kotlin/KDoc/.postman/kdoc.postman_collection.json",
-										"/D:/Data/Stash/Meme/__555_6.jpg"
-									]
+									"src": "/D:/Stash/C/2011-11-17 15.36.29.jpg"
 								}
 							]
 						},
@@ -633,7 +630,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/document/21c5259a-049a-4238-87bd-55ce6e4f09a1/url",
+							"raw": "http://localhost:8080/v1/document/bae82f60-5922-414e-a95e-4457582b0895/url",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -642,7 +639,7 @@
 							"path": [
 								"v1",
 								"document",
-								"21c5259a-049a-4238-87bd-55ce6e4f09a1",
+								"bae82f60-5922-414e-a95e-4457582b0895",
 								"url"
 							]
 						}
@@ -718,6 +715,54 @@
 								"document",
 								"cipher",
 								"true"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Backup",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:8080/auth/token/create\",\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (!err) {\r",
+									"        token = response.stream.toString()\r",
+									"        pm.request.headers.add({\r",
+									"            key: 'Authorization',\r",
+									"            value: 'Bearer ' + token\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/document/backup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"document",
+								"backup"
 							]
 						}
 					},
