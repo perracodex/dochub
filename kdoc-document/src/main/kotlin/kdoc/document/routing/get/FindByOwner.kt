@@ -22,7 +22,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.findDocumentsByOwner() {
+internal fun Route.findDocumentsByOwnerRoute() {
     // Find all documents by owner.
     get("owner/{owner_id}") {
         val ownerId: UUID = call.parameters["owner_id"].toUUID()

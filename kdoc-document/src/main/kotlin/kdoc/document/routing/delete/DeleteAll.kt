@@ -16,7 +16,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
-internal fun Route.deleteAllDocuments() {
+internal fun Route.deleteAllDocumentsRoute() {
     // Delete all documents.
     delete {
         val sessionContext: SessionContext? = SessionContext.from(call = call)

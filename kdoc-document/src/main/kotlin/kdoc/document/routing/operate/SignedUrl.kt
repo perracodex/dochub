@@ -20,7 +20,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.getDocumentSignedUrl() {
+internal fun Route.getDocumentSignedUrlRoute() {
     // Generate the signed URL for a document download.
     get("url/{document_id?}/{group_id?}") {
         val documentId: UUID? = call.request.queryParameters["document_id"].toUUIDOrNull()

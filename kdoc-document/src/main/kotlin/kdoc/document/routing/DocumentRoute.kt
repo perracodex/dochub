@@ -9,9 +9,9 @@ import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 import kdoc.base.plugins.RateLimitScope
 import kdoc.base.settings.AppSettings
-import kdoc.document.routing.delete.deleteAllDocuments
-import kdoc.document.routing.delete.deleteDocumentById
-import kdoc.document.routing.delete.deleteDocumentsByGroup
+import kdoc.document.routing.delete.deleteAllDocumentsRoute
+import kdoc.document.routing.delete.deleteDocumentByIdRoute
+import kdoc.document.routing.delete.deleteDocumentsByGroupRoute
 import kdoc.document.routing.get.*
 import kdoc.document.routing.operate.*
 
@@ -34,20 +34,20 @@ fun Route.documentRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
             route("v1/document") {
-                uploadDocuments()
+                uploadDocumentsRoute()
 
-                searchDocuments()
-                findDocumentsByOwner()
+                searchDocumentsRoute()
+                findDocumentsByOwnerRoute()
 
-                findDocumentsByGroup()
-                deleteDocumentsByGroup()
+                findDocumentsByGroupRoute()
+                deleteDocumentsByGroupRoute()
 
-                getDocumentSignedUrl()
-                downloadDocument()
+                getDocumentSignedUrlRoute()
+                downloadDocumentRoute()
 
                 route("{document_id}") {
-                    findDocumentById()
-                    deleteDocumentById()
+                    findDocumentByIdRoute()
+                    deleteDocumentByIdRoute()
                 }
             }
         }
@@ -56,10 +56,10 @@ fun Route.documentRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
             route("v1/document") {
-                changeDocumentsCipherState()
-                backupAllDocuments()
-                findAllDocuments()
-                deleteAllDocuments()
+                changeDocumentsCipherStateRoute()
+                backupDocumentsRoute()
+                findAllDocumentsRoute()
+                deleteAllDocumentsRoute()
             }
         }
     }

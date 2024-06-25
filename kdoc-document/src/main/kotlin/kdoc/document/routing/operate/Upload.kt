@@ -24,7 +24,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
-internal fun Route.uploadDocuments() {
+internal fun Route.uploadDocumentsRoute() {
     // Upload a new document.
     post("{owner_id?}/{group_id?}/{type?}/{cipher?}") {
         val ownerId: SUUID = call.request.queryParameters["owner_id"].toUUID()

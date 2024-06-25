@@ -18,7 +18,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.deleteDocumentById() {
+internal fun Route.deleteDocumentByIdRoute() {
     // Delete a document by ID.
     delete("{document_id}") {
         val documentId: UUID = call.parameters["document_id"].toUUID()

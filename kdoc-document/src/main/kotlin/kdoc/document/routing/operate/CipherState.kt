@@ -16,7 +16,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
-internal fun Route.changeDocumentsCipherState() {
+internal fun Route.changeDocumentsCipherStateRoute() {
     // Changes the cipher state of all documents.
     put("cipher/{cipher}") {
         val cipher: Boolean = call.parameters["cipher"].toBoolean()

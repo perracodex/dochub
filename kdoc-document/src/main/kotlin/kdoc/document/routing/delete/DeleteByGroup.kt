@@ -18,7 +18,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.deleteDocumentsByGroup() {
+internal fun Route.deleteDocumentsByGroupRoute() {
     // Delete all documents by group.
     delete("group/{group_id}") {
         val groupId: UUID = call.parameters["group_id"].toUUID()

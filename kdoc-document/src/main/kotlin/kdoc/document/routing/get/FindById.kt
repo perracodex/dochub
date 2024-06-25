@@ -20,7 +20,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.findDocumentById() {
+internal fun Route.findDocumentByIdRoute() {
     // Find a documents by ID.
     get {
         val documentId: UUID = call.parameters["document_id"].toUUID()

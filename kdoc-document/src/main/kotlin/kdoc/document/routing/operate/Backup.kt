@@ -19,7 +19,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
-internal fun Route.backupAllDocuments() {
+internal fun Route.backupDocumentsRoute() {
     // Downloads a backup file containing all the documents.
     get("backup") {
         // Audit the backup.

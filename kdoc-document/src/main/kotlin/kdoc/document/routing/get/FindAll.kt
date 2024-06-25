@@ -20,7 +20,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
-internal fun Route.findAllDocuments() {
+internal fun Route.findAllDocumentsRoute() {
     // Find all documents.
     get {
         val pageable: Pageable? = call.getPageable()

@@ -22,7 +22,7 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @DocumentRouteAPI
-internal fun Route.findDocumentsByGroup() {
+internal fun Route.findDocumentsByGroupRoute() {
     // Find all documents by group.
     get("group/{group_id}") {
         val groupId: UUID = call.parameters["group_id"].toUUID()
