@@ -8,7 +8,6 @@ import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFilterSet
-import kdoc.document.entity.DocumentFileEntity
 import kdoc.document.entity.DocumentRequest
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
@@ -72,14 +71,13 @@ internal interface IDocumentRepository {
 
     /**
      * Sets the cipher state of a document.
-     * This implies also to update the location of the document, as its name will change.
      *
      * @param documentId The ID of the document to be updated.
      * @param isCiphered Whether the document is ciphered.
-     * @param location The location of the document, which will be different if the cipher state is changed.
+     * @param storageName The name of the document in the storage.
      * @return The number of updated records.
      */
-    fun setCipherState(documentId: UUID, isCiphered: Boolean, location: String): Int
+    fun setCipherState(documentId: UUID, isCiphered: Boolean, storageName: String): Int
 
     /**
      * Deletes a document using the provided ID.
@@ -110,12 +108,4 @@ internal interface IDocumentRepository {
      * @return The total count of existing records.
      */
     fun count(): Int
-
-    /**
-     * Retrieves a reference to the document storage file.
-     *
-     * @param documentId The ID of the document to be retrieved.
-     * @return The [DocumentFileEntity] reference if found, null otherwise.
-     */
-    fun getStorageFile(documentId: UUID): DocumentFileEntity?
 }

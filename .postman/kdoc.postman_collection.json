@@ -492,7 +492,12 @@
 								{
 									"key": "1",
 									"type": "file",
-									"src": "/D:/Stash/C/2011-11-17 15.36.29.jpg"
+                                  "src": "/D:/Coding/Sources/Kotlin/KDoc/.postman/kdoc.postman_collection.json"
+                                },
+                              {
+                                "key": "2",
+                                "type": "file",
+                                "src": "/D:/Data/Stash/Meme/__ (442pp).jpg"
 								}
 							]
 						},
@@ -565,7 +570,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/document/download?token=NC8za25zMkpyZmQwMWJxSlFxNmsxc25qT2dGNFMxeCt3bXdlNnJiZjNiUW5kei9XT0lDems4UE9ZTFprRWRQQUIyc0FBRStRak96bjluMG1HUlhMSUE9PQ==&signature=U1Xalv3jzyrMUU5RGHWc32iUHQo0Hq0SCHgsWTGnhrc=",
+                          "raw": "http://localhost:8080/v1/document/download?token=ZWdmaEdrR05RT0pDMVhkMm1nQTF5R2xDMHkxU05mNHFtY0RhbmFuTVlQcWtaZG5zNWovT2tDQzBRQXl4Rll1VHh5V2J2VVBaN3dGK0p3ZHlwNDBHeWFqM0QrWmFleUk5ZXIrS1dsRnpIR1oyd0l1VGJtQjJPT0VVRks1by85L1NnVVlpV0RKVnJOMmxNQTRNOWRwby8wanBLNXlkWVp1Z01uWmZjc0Z1RHpRPQ==&signature=_NR7_VOPmw73w5e06aRCUREoTKHj6ix-yFsJQLTNimc=",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -579,11 +584,11 @@
 							"query": [
 								{
 									"key": "token",
-									"value": "NC8za25zMkpyZmQwMWJxSlFxNmsxc25qT2dGNFMxeCt3bXdlNnJiZjNiUW5kei9XT0lDems4UE9ZTFprRWRQQUIyc0FBRStRak96bjluMG1HUlhMSUE9PQ=="
+                                  "value": "ZWdmaEdrR05RT0pDMVhkMm1nQTF5R2xDMHkxU05mNHFtY0RhbmFuTVlQcWtaZG5zNWovT2tDQzBRQXl4Rll1VHh5V2J2VVBaN3dGK0p3ZHlwNDBHeWFqM0QrWmFleUk5ZXIrS1dsRnpIR1oyd0l1VGJtQjJPT0VVRks1by85L1NnVVlpV0RKVnJOMmxNQTRNOWRwby8wanBLNXlkWVp1Z01uWmZjc0Z1RHpRPQ=="
 								},
 								{
 									"key": "signature",
-									"value": "U1Xalv3jzyrMUU5RGHWc32iUHQo0Hq0SCHgsWTGnhrc="
+                                  "value": "_NR7_VOPmw73w5e06aRCUREoTKHj6ix-yFsJQLTNimc="
 								}
 							]
 						}
@@ -630,7 +635,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/document/bae82f60-5922-414e-a95e-4457582b0895/url",
+                          "raw": "http://localhost:8080/v1/document/url?document_id=b68c3f26-45b5-495c-bb52-08c919d4bb47&group_id=7c1ededb-8982-4aba-9e80-27f336da726d",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -639,8 +644,17 @@
 							"path": [
 								"v1",
 								"document",
-								"bae82f60-5922-414e-a95e-4457582b0895",
 								"url"
+                            ],
+                          "query": [
+                            {
+                              "key": "document_id",
+                              "value": "b68c3f26-45b5-495c-bb52-08c919d4bb47"
+                            },
+                            {
+                              "key": "group_id",
+                              "value": "7c1ededb-8982-4aba-9e80-27f336da726d"
+                            }
 							]
 						}
 					},
@@ -704,7 +718,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/v1/document/cipher/true",
+                          "raw": "http://localhost:8080/v1/document/cipher/false",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -714,7 +728,7 @@
 								"v1",
 								"document",
 								"cipher",
-								"true"
+                              "false"
 							]
 						}
 					},

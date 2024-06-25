@@ -372,31 +372,19 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/DocumentEntity"
-  /v1/document/{document_id}/url:
-    get:
-      description: "Generate the signed URL for a document download."
-      parameters:
-        - name: "document_id"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "string"
   /v1/document/backup:
     get:
       description: "Downloads a backup file containing all the documents."
+      responses:
+        "204":
+          description: "No Content"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "No documents found."
   /v1/document/cipher/{cipher}:
     put:
       description: "Changes the cipher state of all documents."
@@ -527,6 +515,36 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Page_? extends DocumentEntity"
+  /v1/document/url/{document_id}/{group_id}:
+    get:
+      description: "Generate the signed URL for a document download."
+      parameters:
+        - name: "document_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Either document_id or group_id must be provided."
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
 components:
   schemas:
     ApplicationCheck:
@@ -912,6 +930,36 @@ components:
           type: "array"
           items:
             type: "object"
+    Detail:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum:
+            - "GENERAL"
+            - "CERTIFICATE"
+            - "CONTRACT"
+            - "INVOICE"
+            - "PASSPORT"
+            - "PERSONAL_ID"
+            - "RECEIPT"
+            - "REPORT"
+        description:
+          type: "string"
+        originalName:
+          type: "string"
+        storageName:
+          type: "string"
+        location:
+          type: "string"
+        path:
+          type: "string"
+      required:
+        - "type"
+        - "originalName"
+        - "storageName"
+        - "location"
+        - "path"
     Meta:
       type: "object"
       properties:
@@ -934,27 +982,13 @@ components:
         groupId:
           type: "string"
           format: "uuid"
-        name:
-          type: "string"
-        type:
-          type: "string"
-          enum:
-            - "GENERAL"
-            - "CERTIFICATE"
-            - "CONTRACT"
-            - "INVOICE"
-            - "PASSPORT"
-            - "PERSONAL_ID"
-            - "RECEIPT"
-            - "REPORT"
-        description:
-          type: "string"
+        detail:
+          $ref: "#/components/schemas/Detail"
         meta:
           $ref: "#/components/schemas/Meta"
       required:
         - "id"
         - "ownerId"
         - "groupId"
-        - "name"
-        - "type"
+        - "detail"
         - "meta"

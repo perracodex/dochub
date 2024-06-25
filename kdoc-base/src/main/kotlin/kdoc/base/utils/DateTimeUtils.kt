@@ -38,12 +38,15 @@ object DateTimeUtils {
      *
      * @property pattern The pattern to format the date.
      */
-    enum class DateFormat(val pattern: String) {
+    enum class Format(val pattern: String) {
         /** Format: yyyy-MM-dd, e.g. 2024-04-01 */
         YYYY_MM_DD("yyyy-MM-dd"),
 
         /** Format: yyyy-MMM-dd, e.g. 2024-APR-01 */
-        YYYY_MMM_DD("yyyy-MMM-dd")
+        YYYY_MMM_DD("yyyy-MMM-dd"),
+
+        /** Format: yyyy-MM-dd, hh-mm-ss, e.g. 2024-04-01, 12-00-00 */
+        YYYY_MM_DD_T_HH_MM_SS("yyyy-MM-dd, HH-mm-ss"),
     }
 
     /**
@@ -116,10 +119,17 @@ object DateTimeUtils {
     }
 
     /**
-     * Formats a date using the given [DateFormat] pattern.
+     * Formats a date using the given [Format] pattern.
      */
-    fun format(date: KLocalDate, pattern: DateFormat): String {
+    fun format(date: KLocalDate, pattern: Format): String {
         return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDate())
+    }
+
+    /**
+     * Formats a date-time using the given [Format] pattern.
+     */
+    fun format(date: KLocalDateTime, pattern: Format): String {
+        return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDateTime())
     }
 
     /**

@@ -11,7 +11,6 @@ import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.applyPagination
 import kdoc.document.entity.DocumentEntity
-import kdoc.document.entity.DocumentFileEntity
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
 import org.jetbrains.exposed.sql.*
@@ -92,6 +91,11 @@ internal class DocumentRepository(
             // Apply filters dynamically based on the presence of criteria in filterSet.
             // Using lowerCase() to make the search case-insensitive.
             // This could be removed if the database is configured to use a case-insensitive collation.
+            filterSet.id?.let { documentId ->
+                query.andWhere {
+                    DocumentTable.id eq documentId
+                }
+            }
             filterSet.ownerId?.let { ownerId ->
                 query.andWhere {
                     DocumentTable.ownerId eq ownerId
@@ -104,7 +108,7 @@ internal class DocumentRepository(
             }
             filterSet.name?.let { name ->
                 query.andWhere {
-                    DocumentTable.name.lowerCase() like "%${name.trim().lowercase()}%"
+                    DocumentTable.originalName.lowerCase() like "%${name.trim().lowercase()}%"
                 }
             }
             filterSet.description?.let { description ->
@@ -161,7 +165,7 @@ internal class DocumentRepository(
         }
     }
 
-    override fun setCipherState(documentId: UUID, isCiphered: Boolean, location: String): Int {
+    override fun setCipherState(documentId: UUID, isCiphered: Boolean, storageName: String): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.update(
                 where = {
@@ -169,7 +173,7 @@ internal class DocumentRepository(
                 }
             ) {
                 it[DocumentTable.isCiphered] = isCiphered
-                it[DocumentTable.location] = location
+                it[DocumentTable.storageName] = storageName
             }
         }
     }
@@ -202,20 +206,6 @@ internal class DocumentRepository(
         }
     }
 
-    override fun getStorageFile(documentId: UUID): DocumentFileEntity? {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            DocumentTable.select(
-                DocumentTable.location,
-                DocumentTable.name,
-                DocumentTable.isCiphered
-            ).where(
-                DocumentTable.id eq documentId
-            ).singleOrNull()?.let { resultRow ->
-                DocumentFileEntity.from(row = resultRow)
-            }
-        }
-    }
-
     /**
      * Populates an SQL [UpdateBuilder] with data from an [DocumentRequest] instance,
      * so that it can be used to update or create a database record.
@@ -223,9 +213,10 @@ internal class DocumentRepository(
     private fun UpdateBuilder<Int>.mapDocumentRequest(documentRequest: DocumentRequest) {
         this[DocumentTable.ownerId] = documentRequest.ownerId
         this[DocumentTable.groupId] = documentRequest.groupId
-        this[DocumentTable.name] = documentRequest.name.trim()
         this[DocumentTable.type] = documentRequest.type
         this[DocumentTable.description] = documentRequest.description?.trim()
+        this[DocumentTable.originalName] = documentRequest.originalName.trim()
+        this[DocumentTable.storageName] = documentRequest.storageName.trim()
         this[DocumentTable.location] = documentRequest.location.trim()
         this[DocumentTable.isCiphered] = documentRequest.isCiphered
     }

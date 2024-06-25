@@ -9,18 +9,14 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
-import kdoc.base.utils.DateTimeUtils
-import kdoc.base.utils.KLocalDateTime
+import kdoc.base.persistence.pagination.Page
+import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
+import kdoc.document.service.DocumentService
 import kdoc.document.service.DocumentStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
-import java.io.PipedInputStream
-import java.io.PipedOutputStream
 
 @DocumentRouteAPI
 internal fun Route.backupAllDocuments() {
@@ -31,39 +27,17 @@ internal fun Route.backupAllDocuments() {
         val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
         auditService.audit(operation = "backup")
 
+        // Get all documents.
+        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
+        val documents: Page<DocumentEntity> = documentService.findAll()
+        if (documents.totalElements == 0) {
+            call.respond(status = HttpStatusCode.NoContent, message = "No documents found.")
+            return@get
+        }
+
         // Stream the backup to the client.
-        streamBackup(call = call, sessionContext = sessionContext)
-    }
-}
-
-private suspend fun streamBackup(call: ApplicationCall, sessionContext: SessionContext?) = withContext(Dispatchers.IO) {
-    DocumentStorage.backupCountMetric.increment()
-
-    val currentTime: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
-    val filename = "backup_$currentTime.zip"
-    call.response.header(
-        HttpHeaders.ContentDisposition,
-        ContentDisposition.Attachment.withParameter(
-            ContentDisposition.Parameters.FileName,
-            filename
-        ).toString()
-    )
-
-    val service: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
-    val pipedOutputStream = PipedOutputStream()
-    val pipedInputStream = PipedInputStream(pipedOutputStream)
-
-    // Launch a coroutine to handle the backup and streaming.
-    launch(Dispatchers.IO) {
-        pipedOutputStream.use { outputStream ->
-            service.backup(outputStream = outputStream)
-        }
-    }
-
-    call.respondOutputStream(contentType = ContentType.Application.OctetStream) {
-        // Stream the content from pipedInputStream to the response outputStream.
-        pipedInputStream.use { inputStream ->
-            inputStream.copyTo(this)
-        }
+        val storageService: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
+        DocumentStorage.backupCountMetric.increment()
+        storageService.streamZip(call = call, filename = "backup", documents = documents.content, decipher = false)
     }
 }

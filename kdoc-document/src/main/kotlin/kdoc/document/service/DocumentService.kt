@@ -9,6 +9,10 @@ import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
+import kdoc.base.persistence.utils.toUUIDOrNull
+import kdoc.base.security.utils.SecureUrl
+import kdoc.base.settings.AppSettings
+import kdoc.base.utils.NetworkUtils
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
@@ -153,5 +157,46 @@ internal class DocumentService(
      */
     suspend fun count(): Int = withContext(Dispatchers.IO) {
         return@withContext documentRepository.count()
+    }
+
+    /**
+     * Retrieves a list of [DocumentEntity] references based on the provided token and signature.
+     * If the signature is invalid or expired, the method will return null.
+     *
+     * @param token The token to verify.
+     * @param signature The signature to verify.
+     * @return The [DocumentEntity] if the verification is successful, null otherwise.
+     */
+    suspend fun findBySignature(token: String, signature: String): List<DocumentEntity>? = withContext(Dispatchers.IO) {
+        val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
+        val decodedToken: String? = SecureUrl.verify(
+            basePath = basePath,
+            token = token,
+            signature = signature
+        )
+
+        if (decodedToken == null) {
+            tracer.warning("Invalid or expired token: $token")
+            return@withContext null
+        }
+
+        val params: Map<String, String> = decodedToken.split("&").associate {
+            val (key, value) = it.split("=")
+            key.lowercase() to value.trim()
+        }
+
+        val documentId: UUID? = params["document_id"]?.toUUIDOrNull()
+        val groupId: UUID? = params["group_id"]?.toUUIDOrNull()
+        if (documentId == null && groupId == null) {
+            tracer.error("No document ID or group ID provided.")
+            throw IllegalArgumentException("No document ID or group ID provided.")
+        }
+
+        return@withContext search(
+            filterSet = DocumentFilterSet(
+                id = documentId,
+                groupId = groupId
+            )
+        ).content
     }
 }

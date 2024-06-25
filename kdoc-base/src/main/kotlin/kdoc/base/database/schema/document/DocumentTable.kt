@@ -30,12 +30,6 @@ object DocumentTable : TimestampedTable(name = "document") {
         name = "group_id"
     )
 
-    /** The name of the document. */
-    val name: Column<String> = varchar(
-        name = "document_name",
-        length = 512
-    )
-
     /** The [DocumentType] of the document */
     val type: Column<DocumentType> = enumerationById(
         name = "document_type",
@@ -48,10 +42,22 @@ object DocumentTable : TimestampedTable(name = "document") {
         length = 2048
     ).nullable()
 
+    /** The original name of the document. */
+    val originalName: Column<String> = varchar(
+        name = "original_name",
+        length = 1024
+    )
+
+    /** The name of the document in storage. */
+    val storageName: Column<String> = varchar(
+        name = "storage_name",
+        length = 4098
+    )
+
     /** The storage location of the document. */
     val location: Column<String> = varchar(
         name = "location",
-        length = 4098
+        length = 8192
     )
 
     /** Whether the document is ciphered. */

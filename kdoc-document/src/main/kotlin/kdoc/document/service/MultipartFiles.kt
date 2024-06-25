@@ -16,6 +16,7 @@ import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
+import kdoc.document.service.DocumentStorage.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -38,16 +39,18 @@ internal class MultipartFiles(
     /**
      * Data class to encapsulate the details of a file uploaded via multipart form data.
      *
-     * @property originalFilename The original name of the file, without the path.
-     * @property storageFilename The name of the file as stored on disk.
-     * @property file The File object representing the uploaded file.
-     * @property description Optional description of the file.
-     * @property isCiphered Whether the file is encrypted.
+     * @property originalFilename The original name of the document file.
+     * @property storageFilename The name of the document file as stored on disk.
+     * @property location The path location of the document file.
+     * @property documentFile The [File] object representing the uploaded file in the storage.
+     * @property description Optional description of the document file.
+     * @property isCiphered Whether the document file is encrypted.
      */
     data class Response(
         val originalFilename: String,
         val storageFilename: String,
-        val file: File,
+        val location: String,
+        val documentFile: File,
         val description: String?,
         val isCiphered: Boolean
     )
@@ -105,7 +108,7 @@ internal class MultipartFiles(
                                     cipherName = cipher,
                                     streamProvider = part.streamProvider
                                 ).also { response ->
-                                    savedFiles.add(response.file)
+                                    savedFiles.add(response.documentFile)
                                     uploadsCountMetric.increment()
                                 }
                             } catch (e: Exception) {
@@ -165,7 +168,6 @@ internal class MultipartFiles(
                 "${currentDate.dayOfMonth}"
 
         val storageFilename: String = buildFilename(
-            path = datePath,
             ownerId = ownerId,
             groupId = groupId,
             type = type,
@@ -173,15 +175,16 @@ internal class MultipartFiles(
             cipherName = cipherName
         )
 
-        val file = File("$uploadsRoot/$storageFilename")
-        file.parentFile.mkdirs()  // Create directories if they don't exist.
+        val location = File("$uploadsRoot$PATH_SEPARATOR$datePath")
+        location.mkdirs()  // Create directories if they don't exist.
 
+        val documentFile = File(location, storageFilename)
         streamProvider().use { inputStream ->
-            file.outputStream().buffered().use { outputStream ->
+            documentFile.outputStream().buffered().use { outputStream ->
                 if (cipher) {
                     SecureIO.cipher(input = inputStream, output = outputStream)
                 } else {
-                    inputStream.copyTo(outputStream)
+                    inputStream.copyTo(out = outputStream)
                 }
             }
         }
@@ -189,7 +192,8 @@ internal class MultipartFiles(
         return Response(
             originalFilename = filename,
             storageFilename = storageFilename,
-            file = file,
+            location = location.path,
+            documentFile = documentFile,
             description = description,
             isCiphered = cipher
         )
@@ -199,7 +203,6 @@ internal class MultipartFiles(
      * Builds the path + filename for a document.
      */
     private fun buildFilename(
-        path: String,
         ownerId: UUID,
         groupId: UUID?,
         type: DocumentType,
@@ -216,7 +219,7 @@ internal class MultipartFiles(
                 originalFileName
 
         if (!cipherName) {
-            return "$path/$newFilename"
+            return newFilename
         }
 
         val key: String = AppSettings.storage.cipherKey
@@ -226,7 +229,7 @@ internal class MultipartFiles(
             throw IllegalArgumentException("Inconsistent document filename encryption/decryption.")
         }
 
-        return "$path/$encryptedFilename"
+        return encryptedFilename
     }
 
     companion object {
@@ -241,8 +244,5 @@ internal class MultipartFiles(
         // Must use a character that is not allowed in filenames by the OS.
         // This is only relevant for non-ciphered filenames.
         private const val NAME_TOKEN_DELIMITER: String = "~"
-
-        // The path separator for the current OS.
-        private var PATH_SEPARATOR: String = File.separator
     }
 }

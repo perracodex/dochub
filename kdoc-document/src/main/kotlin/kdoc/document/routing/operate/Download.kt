@@ -9,14 +9,13 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
-import kdoc.base.security.utils.SecureIO
-import kdoc.document.entity.DocumentFileEntity
+import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
+import kdoc.document.service.DocumentService
 import kdoc.document.service.DocumentStorage
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
-import java.io.FileInputStream
 
 @DocumentRouteAPI
 internal fun Route.downloadDocument() {
@@ -36,37 +35,22 @@ internal fun Route.downloadDocument() {
             return@get
         }
 
-        // Get the document file storage reference.
-        val service: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
-        val documentFile: DocumentFileEntity = service.getSignedDocumentFile(token = token, signature = signature) ?: run {
+        // Get all document files for the given token and signature.
+        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
+        val documents: List<DocumentEntity>? = documentService.findBySignature(token = token, signature = signature)
+        if (documents.isNullOrEmpty()) {
             auditService.audit(operation = "download verification failed", log = "token=$token | signature=$signature")
             call.respond(status = HttpStatusCode.Forbidden, message = "Unable to initiate download.")
             return@get
         }
 
         // Stream the document file to the client.
-        streamDocumentFile(call = call, documentFile = documentFile)
-    }
-}
-
-private suspend fun streamDocumentFile(call: ApplicationCall, documentFile: DocumentFileEntity) {
-    DocumentStorage.downloadCountMetric.increment()
-
-    call.response.header(
-        HttpHeaders.ContentDisposition,
-        ContentDisposition.Attachment.withParameter(
-            ContentDisposition.Parameters.FileName,
-            documentFile.originalName
-        ).toString()
-    )
-
-    call.respondOutputStream(contentType = ContentType.Application.OctetStream) {
-        FileInputStream(documentFile.file).use { inputStream ->
-            if (documentFile.isCiphered) {
-                SecureIO.decipher(input = inputStream, output = this)
-            } else {
-                inputStream.copyTo(out = this)
-            }
+        val storageService: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
+        DocumentStorage.downloadCountMetric.increment()
+        if (documents.size == 1) {
+            storageService.streamDocumentFile(call = call, document = documents.first(), decipher = true)
+        } else {
+            storageService.streamZip(call = call, filename = "download", documents = documents, decipher = true)
         }
     }
 }

@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
  * A set of filters that can be applied to a document query.
  * All fields are optional, so that the filter can be used with any data combination.
  *
+ * @property id The ID of the document.
  * @property ownerId The ID of the actor who owns the document.
  * @property groupId The group to which the document belongs, allowing documents to be associated.
  * @property name The name of the document.
@@ -20,6 +21,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class DocumentFilterSet(
+    val id: SUUID? = null,
     val ownerId: SUUID? = null,
     val groupId: SUUID? = null,
     val name: String? = null,

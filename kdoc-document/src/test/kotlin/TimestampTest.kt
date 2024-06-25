@@ -46,9 +46,10 @@ class TimestampTest : KoinComponent {
         val documentRequest = DocumentRequest(
             ownerId = UUID.randomUUID(),
             groupId = UUID.randomUUID(),
-            name = "AnyName",
             type = DocumentType.entries.random(),
             description = "ANyDescription",
+            originalName = "AnyName",
+            storageName = "AnyName",
             location = "AnyLocation",
             isCiphered = false
         )
