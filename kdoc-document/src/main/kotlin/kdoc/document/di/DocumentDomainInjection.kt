@@ -69,35 +69,35 @@ object DocumentDomainInjection {
 
             // Definitions for non-scoped (global) access.
 
-            single<IDocumentAuditRepository> {
+            factory<IDocumentAuditRepository> {
                 DocumentAuditRepository(
                     sessionContext = get<SessionContext>()
                 )
             }
 
-            single<DocumentAuditService> {
+            factory<DocumentAuditService> { parameters ->
                 DocumentAuditService(
-                    sessionContext = get<SessionContext>(),
+                    sessionContext = parameters.get<SessionContext>(),
                     documentAuditRepository = get<IDocumentAuditRepository>()
                 )
             }
 
-            single<IDocumentRepository> {
+            factory<IDocumentRepository> {
                 DocumentRepository(
                     sessionContext = get<SessionContext>()
                 )
             }
 
-            single<DocumentService> {
+            factory<DocumentService> { parameters ->
                 DocumentService(
-                    sessionContext = get<SessionContext>(),
+                    sessionContext = parameters.get<SessionContext>(),
                     documentRepository = get<IDocumentRepository>()
                 )
             }
 
-            single<DocumentStorage> {
+            factory<DocumentStorage> { parameters ->
                 DocumentStorage(
-                    sessionContext = get<SessionContext>(),
+                    sessionContext = parameters.get<SessionContext>(),
                     documentRepository = get<IDocumentRepository>()
                 )
             }
