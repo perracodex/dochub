@@ -34,11 +34,11 @@ import java.util.zip.ZipOutputStream
 /**
  * Document storage service, where all the document storage business logic should be defined.
  */
-internal class DocumentStorage(
+internal class DocumentStorageService(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val documentRepository: IDocumentRepository
 ) {
-    private val tracer = Tracer<DocumentStorage>()
+    private val tracer = Tracer<DocumentStorageService>()
 
     /**
      * Handles the creation of documents from multipart data.
@@ -66,7 +66,7 @@ internal class DocumentStorage(
 
         // Receive the uploaded files.
 
-        val persistedFiles: List<MultipartFiles.Response> = MultipartFiles(
+        val persistedFiles: List<MultipartFileManager.Response> = MultipartFileManager(
             uploadsRoot = uploadRoot,
             cipher = cipher
         ).receive(ownerId = ownerId, groupId = groupId, type = type, multipart = multipart)

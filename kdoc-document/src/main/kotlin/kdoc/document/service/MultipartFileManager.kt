@@ -16,7 +16,7 @@ import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
-import kdoc.document.service.DocumentStorage.Companion.PATH_SEPARATOR
+import kdoc.document.service.DocumentStorageService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -25,19 +25,21 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
 /**
- * A generic handler for multipart form data processing.
+ * Handles multipart form data for file uploads with an option to cipher files,
+ * ensuring that all received files are correctly stored at the specified location
+ * or handled according to their encryption requirement.
  *
- * @property uploadsRoot The root path where uploaded files are stored.
- * @property cipher Whether the uploaded files should be ciphered.
+ * @property uploadsRoot The root directory path where uploaded files must be saved.
+ * @property cipher Flag to determine if uploaded files should be ciphered.
  */
-internal class MultipartFiles(
+internal class MultipartFileManager(
     private val uploadsRoot: String,
     private val cipher: Boolean
 ) {
-    private val tracer = Tracer<MultipartFiles>()
+    private val tracer = Tracer<MultipartFileManager>()
 
     /**
-     * Data class to encapsulate the details of a file uploaded via multipart form data.
+     * Data class to encapsulate the details of a persisted file.
      *
      * @property originalFilename The original name of the document file.
      * @property storageFilename The name of the document file as stored on disk.
@@ -90,44 +92,39 @@ internal class MultipartFiles(
 
         try {
             multipart.forEachPart { part: PartData ->
-                when (part) {
+                if (part is PartData.FileItem) {
+                    val filename: String = part.originalFileName
+                        ?: throw IllegalArgumentException("No filename provided.")
 
-                    is PartData.FileItem -> {
-                        val filename: String = part.originalFileName
-                            ?: throw IllegalArgumentException("No filename provided.")
-
-                        // Asynchronously persist the file.
-                        val deferred: Deferred<Response> = async {
-                            try {
-                                persistFile(
-                                    ownerId = ownerId,
-                                    groupId = groupId,
-                                    type = type,
-                                    filename = filename,
-                                    description = part.name,
-                                    cipherName = cipher,
-                                    streamProvider = part.streamProvider
-                                ).also { response ->
-                                    savedFiles.add(response.documentFile)
-                                    uploadsCountMetric.increment()
-                                }
-                            } catch (e: Exception) {
-                                // Log the error and rethrow it to be handled in the outer try-catch.
-                                tracer.error("Error persisting file: ${e.message}")
-                                throw e
-                            } finally {
-                                // Dispose of the part to free up resources.
-                                part.dispose()
+                    // Asynchronously persist the file.
+                    val deferred: Deferred<Response> = async {
+                        try {
+                            persistFile(
+                                ownerId = ownerId,
+                                groupId = groupId,
+                                type = type,
+                                filename = filename,
+                                description = part.name,
+                                cipherName = cipher,
+                                streamProvider = part.streamProvider
+                            ).also { response ->
+                                savedFiles.add(response.documentFile)
+                                uploadsCountMetric.increment()
                             }
+                        } catch (e: Exception) {
+                            // Log the error and rethrow it to be handled in the outer try-catch.
+                            tracer.error("Error persisting file: ${e.message}")
+                            throw e
+                        } finally {
+                            // Dispose of the part to free up resources.
+                            part.dispose()
                         }
-
-                        deferredResponses.add(deferred)
                     }
 
-                    else -> {
-                        tracer.error("Unknown part type: $part")
-                        part.dispose()
-                    }
+                    deferredResponses.add(deferred)
+                } else {
+                    tracer.error("Unknown part type: $part")
+                    part.dispose()
                 }
             }
 

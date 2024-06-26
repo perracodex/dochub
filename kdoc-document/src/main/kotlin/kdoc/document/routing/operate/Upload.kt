@@ -19,7 +19,7 @@ import kdoc.base.settings.AppSettings
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
-import kdoc.document.service.DocumentStorage
+import kdoc.document.service.DocumentStorageService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -42,8 +42,8 @@ internal fun Route.uploadDocumentsRoute() {
             .audit(operation = "upload", ownerId = ownerId, groupId = groupId, log = "type=$type | cipher=$cipher")
 
         // Upload the document to the storage.
-        val documentStorage: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
-        val createdDocuments: List<DocumentEntity> = documentStorage.upload(
+        val storageService: DocumentStorageService = call.scope.get<DocumentStorageService> { parametersOf(sessionContext) }
+        val createdDocuments: List<DocumentEntity> = storageService.upload(
             ownerId = ownerId,
             groupId = groupId,
             type = type,

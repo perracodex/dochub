@@ -13,7 +13,7 @@ import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStorage
+import kdoc.document.service.DocumentStorageService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -45,8 +45,8 @@ internal fun Route.downloadDocumentRoute() {
         }
 
         // Stream the document file to the client.
-        val storageService: DocumentStorage = call.scope.get<DocumentStorage> { parametersOf(sessionContext) }
-        DocumentStorage.downloadCountMetric.increment()
+        val storageService: DocumentStorageService = call.scope.get<DocumentStorageService> { parametersOf(sessionContext) }
+        DocumentStorageService.downloadCountMetric.increment()
         if (documents.size == 1) {
             storageService.streamDocumentFile(call = call, document = documents.first(), decipher = true)
         } else {

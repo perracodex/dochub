@@ -11,7 +11,7 @@ import kdoc.document.repository.IDocumentAuditRepository
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStorage
+import kdoc.document.service.DocumentStorageService
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.ktor.plugin.RequestScope
@@ -59,8 +59,8 @@ object DocumentDomainInjection {
                     )
                 }
 
-                scoped<DocumentStorage> { parameters ->
-                    DocumentStorage(
+                scoped<DocumentStorageService> { parameters ->
+                    DocumentStorageService(
                         sessionContext = parameters.get<SessionContext>(),
                         documentRepository = get<IDocumentRepository>()
                     )
@@ -95,8 +95,8 @@ object DocumentDomainInjection {
                 )
             }
 
-            factory<DocumentStorage> { parameters ->
-                DocumentStorage(
+            factory<DocumentStorageService> { parameters ->
+                DocumentStorageService(
                     sessionContext = parameters.get<SessionContext>(),
                     documentRepository = get<IDocumentRepository>()
                 )
