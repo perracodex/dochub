@@ -104,7 +104,7 @@ internal class DocumentStorageService(
             tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.
             persistedFiles.forEach { it.documentFile.delete() }
-            throw DocumentError.FailedToPersistUpload(ownerId = ownerId)
+            throw DocumentError.FailedToPersistUpload(ownerId = ownerId, cause = e)
         }
     }
 
