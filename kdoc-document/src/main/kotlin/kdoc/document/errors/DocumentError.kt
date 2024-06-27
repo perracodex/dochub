@@ -5,7 +5,7 @@
 package kdoc.document.errors
 
 import io.ktor.http.*
-import kdoc.base.errors.BaseError
+import kdoc.base.errors.AppException
 import kdoc.base.errors.ErrorCodeRegistry
 import java.util.*
 
@@ -19,18 +19,22 @@ import java.util.*
 sealed class DocumentError(
     status: HttpStatusCode,
     code: String,
-    description: String
-) : BaseError(status = status, code = code, description = description) {
+    description: String,
+    reason: String? = null,
+    cause: Throwable? = null
+) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
 
     /**
      * Error for when a document is not found.
      *
      * @property documentId The document id that was not found.
      */
-    data class DocumentNotFound(val documentId: UUID) : DocumentError(
+    class DocumentNotFound(val documentId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}DNF",
-        description = "Document not found. Document Id: $documentId"
+        description = "Document not found. Document Id: $documentId",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -38,10 +42,12 @@ sealed class DocumentError(
      *
      * @property ownerId The owner id of the document.
      */
-    data class NoDocumentProvided(val ownerId: UUID) : DocumentError(
+    class NoDocumentProvided(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}NDP",
-        description = "No document provided to upload. Owner Id: $ownerId"
+        description = "No document provided to upload. Owner Id: $ownerId",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -49,10 +55,12 @@ sealed class DocumentError(
      *
      * @property ownerId The owner id of the document.
      */
-    data class FailedToPersistUpload(val ownerId: UUID) : DocumentError(
+    class FailedToPersistUpload(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}FPU",
-        description = "Failed to persist upload. Owner Id: $ownerId"
+        description = "Failed to persist upload. Owner Id: $ownerId",
+        reason = reason,
+        cause = cause
     )
 
     companion object {

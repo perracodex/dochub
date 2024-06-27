@@ -5,7 +5,7 @@
 package kdoc.base.persistence.pagination
 
 import io.ktor.http.*
-import kdoc.base.errors.BaseError
+import kdoc.base.errors.AppException
 import kdoc.base.errors.ErrorCodeRegistry
 
 /**
@@ -18,18 +18,22 @@ import kdoc.base.errors.ErrorCodeRegistry
 sealed class PaginationError(
     status: HttpStatusCode,
     code: String,
-    description: String
-) : BaseError(status = status, code = code, description = description) {
+    description: String,
+    reason: String? = null,
+    cause: Throwable? = null
+) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
 
     /**
      * Error when the page attributes are invalid.
      * This is when only one either the page or size is present.
      * Both must be present or none of them.
      */
-    data object InvalidPageablePair : PaginationError(
+    class InvalidPageablePair(reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IPP",
-        description = "Page attributes mismatch. Expected both 'page' and 'size', or none of them."
+        description = "Page attributes mismatch. Expected both 'page' and 'size', or none of them.",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -37,10 +41,12 @@ sealed class PaginationError(
      *
      * @property direction The sort direction that was provided is not valid.
      */
-    data class InvalidOrderDirection(val direction: String?) : PaginationError(
+    class InvalidOrderDirection(val direction: String?, reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IOD",
-        description = "Ordering sort direction is invalid. Received: '$direction'"
+        description = "Ordering sort direction is invalid. Received: '$direction'",
+        reason = reason,
+        cause = cause
     )
 
     companion object {

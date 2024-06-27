@@ -34,6 +34,6 @@ internal fun Route.findDocumentByIdRoute() {
 
         document?.let {
             call.respond(status = HttpStatusCode.OK, message = document)
-        } ?: DocumentError.DocumentNotFound(documentId = documentId).raise()
+        } ?: throw DocumentError.DocumentNotFound(documentId = documentId)
     }
 }

@@ -136,7 +136,7 @@ internal class MultipartFileManager(
             tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.
             savedFiles.forEach { it.delete() }
-            DocumentError.FailedToPersistUpload(ownerId = ownerId).raise()
+            throw DocumentError.FailedToPersistUpload(ownerId = ownerId)
         }
     }
 

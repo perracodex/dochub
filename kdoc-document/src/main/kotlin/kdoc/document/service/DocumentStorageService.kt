@@ -73,7 +73,7 @@ internal class DocumentStorageService(
 
         if (persistedFiles.isEmpty()) {
             tracer.error("No files provided for upload.")
-            DocumentError.NoDocumentProvided(ownerId = ownerId).raise()
+            throw DocumentError.NoDocumentProvided(ownerId = ownerId)
         }
 
         // Create the document references in the database.
@@ -104,7 +104,7 @@ internal class DocumentStorageService(
             tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.
             persistedFiles.forEach { it.documentFile.delete() }
-            DocumentError.FailedToPersistUpload(ownerId = ownerId).raise()
+            throw DocumentError.FailedToPersistUpload(ownerId = ownerId)
         }
     }
 
