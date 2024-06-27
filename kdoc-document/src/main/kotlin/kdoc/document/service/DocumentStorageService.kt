@@ -72,7 +72,7 @@ internal class DocumentStorageService(
         ).receive(ownerId = ownerId, groupId = groupId, type = type, multipart = multipart)
 
         if (persistedFiles.isEmpty()) {
-            tracer.error("No files uploaded.")
+            tracer.error("No files provided for upload.")
             DocumentError.NoDocumentProvided(ownerId = ownerId).raise()
         }
 
@@ -101,9 +101,10 @@ internal class DocumentStorageService(
 
             return output
         } catch (e: Exception) {
-            tracer.error("Error uploading document: ${e.message}")
+            tracer.error("Error uploading document: $e")
+            // If any file persistence fails, delete all saved files.
             persistedFiles.forEach { it.documentFile.delete() }
-            return emptyList()
+            DocumentError.FailedToPersistUpload(ownerId = ownerId).raise()
         }
     }
 

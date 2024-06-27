@@ -16,6 +16,7 @@ import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
+import kdoc.document.errors.DocumentError
 import kdoc.document.service.DocumentStorageService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.*
 import java.io.File
@@ -132,9 +133,10 @@ internal class MultipartFileManager(
             return@withContext deferredResponses.awaitAll()
 
         } catch (e: Exception) {
+            tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.
             savedFiles.forEach { it.delete() }
-            throw e
+            DocumentError.FailedToPersistUpload(ownerId = ownerId).raise()
         }
     }
 

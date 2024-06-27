@@ -33,10 +33,26 @@ sealed class DocumentError(
         description = "Document not found. Document Id: $documentId"
     )
 
+    /**
+     * Error for when no document has been provided to upload.
+     *
+     * @property ownerId The owner id of the document.
+     */
     data class NoDocumentProvided(val ownerId: UUID) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}NDP",
         description = "No document provided to upload. Owner Id: $ownerId"
+    )
+
+    /**
+     * Error for when there was an issue persisting an upload.
+     *
+     * @property ownerId The owner id of the document.
+     */
+    data class FailedToPersistUpload(val ownerId: UUID) : DocumentError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}FPU",
+        description = "Failed to persist upload. Owner Id: $ownerId"
     )
 
     companion object {
