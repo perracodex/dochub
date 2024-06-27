@@ -14,6 +14,8 @@ import kdoc.base.errors.ErrorCodeRegistry
  * @property status The [HttpStatusCode] associated with this error.
  * @property code A unique code identifying the type of error.
  * @property description A human-readable description of the error.
+ * @property reason An optional human-readable reason for the exception, providing more context.
+ * @property cause The underlying cause of the exception, if any.
  */
 sealed class PaginationError(
     status: HttpStatusCode,
