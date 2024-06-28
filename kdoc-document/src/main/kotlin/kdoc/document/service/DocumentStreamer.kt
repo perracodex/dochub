@@ -155,7 +155,7 @@ object DocumentStreamer {
                                 }
 
                                 // Ensure unique entry name.
-                                entryName = generateUniqueEntryName(entryName, fileNameCounts)
+                                entryName = generateUniqueZipEntryName(entryName, fileNameCounts)
 
                                 val zipEntry = ZipEntry(entryName)
                                 zipStream.putNextEntry(zipEntry)
@@ -189,7 +189,7 @@ object DocumentStreamer {
      * @param fileNameCounts A map of entry names and their counts.
      * @return The unique entry name.
      */
-    private fun generateUniqueEntryName(
+    private fun generateUniqueZipEntryName(
         entryName: String,
         fileNameCounts: MutableMap<String, Int>
     ): String {
