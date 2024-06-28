@@ -53,6 +53,19 @@ sealed class DocumentError(
     )
 
     /**
+     * Error for when there was an issue streaming a download.
+     *
+     * @property ownerId The owner id of the document.
+     */
+    class FailedToStreamDownload(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}FSD",
+        description = "Failed to stream download. Owner Id: $ownerId",
+        reason = reason,
+        cause = cause
+    )
+
+    /**
      * Error for when there was an issue persisting an upload.
      *
      * @property ownerId The owner id of the document.

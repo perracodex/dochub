@@ -12,10 +12,13 @@ import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDateTime
 import kdoc.document.entity.DocumentEntity
+import kdoc.document.errors.DocumentError
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.*
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -57,17 +60,22 @@ object DocumentStreamer {
             value = document.detail.originalName
         )
 
-        // Stream the document file to the output stream.
-        respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
-            val documentFile = File(document.detail.path)
+        runCatching {
+            // Stream the document file to the output stream.
+            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
+                val documentFile = File(document.detail.path)
 
-            FileInputStream(documentFile).use { inputStream ->
-                if (decipher && document.detail.isCiphered) {
-                    SecureIO.decipher(input = inputStream, output = outputStream)
-                } else {
-                    inputStream.copyTo(out = outputStream)
+                FileInputStream(documentFile).use { inputStream ->
+                    if (decipher && document.detail.isCiphered) {
+                        SecureIO.decipher(input = inputStream, output = outputStream)
+                    } else {
+                        inputStream.copyTo(out = outputStream)
+                    }
                 }
             }
+        }.onFailure { e ->
+            tracer.error("Error streaming document with ID: ${document.id}: $e")
+            throw DocumentError.FailedToStreamDownload(ownerId = document.ownerId, cause = e)
         }
     }
 
@@ -104,22 +112,49 @@ object DocumentStreamer {
         val pipedOutputStream = PipedOutputStream()
         val pipedInputStream = PipedInputStream(pipedOutputStream)
 
-        // Launch a coroutine to handle the backup and streaming.
+        // Deferred to capture errors from the launched coroutine
+        val deferredPackaging = CompletableDeferred<Unit>()
+
+        // Launch a coroutine to stream the packaging of the documents into the ZIP archive.
         launch {
-            pipedOutputStream.use { outputStream ->
-                pack(
-                    outputStream = outputStream,
-                    documents = documents,
-                    decipher = decipher
-                )
+            runCatching {
+                pipedOutputStream.use { outputStream ->
+                    pack(
+                        outputStream = outputStream,
+                        documents = documents,
+                        decipher = decipher
+                    )
+                }
+            }.onFailure { e ->
+                deferredPackaging.completeExceptionally(e)
+            }.onSuccess {
+                deferredPackaging.complete(Unit)
             }
         }
 
         // Stream the content from pipedInputStream to the response outputStream.
-        respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
-            pipedInputStream.use { inputStream ->
-                inputStream.copyTo(out = outputStream)
+        val streamingResult: Result<Unit> = runCatching {
+            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
+                pipedInputStream.use { inputStream ->
+                    inputStream.copyTo(out = outputStream)
+                }
             }
+        }
+
+        // Handle any exceptions that occurred during the packing process.
+        try {
+            deferredPackaging.await()
+        } catch (e: Exception) {
+            tracer.error("Error during document streaming packing process: $e")
+            val ownerID: UUID = documents.firstOrNull()?.ownerId!!
+            throw DocumentError.FailedToStreamDownload(ownerId = ownerID, cause = e)
+        }
+
+        // Handle the result of the streaming operation.
+        streamingResult.onFailure { e ->
+            tracer.error("Error streaming document archive: $e")
+            val ownerID: UUID = documents.firstOrNull()?.ownerId!!
+            throw DocumentError.FailedToStreamDownload(ownerId = ownerID, cause = e)
         }
     }
 
