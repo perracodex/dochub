@@ -14,7 +14,7 @@ import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStorageService
+import kdoc.document.service.DocumentStreamer
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -22,10 +22,10 @@ import org.koin.ktor.plugin.scope
 internal fun Route.backupDocumentsRoute() {
     // Downloads a backup file containing all the documents.
     get("backup") {
-        // Audit the backup.
+        // Audit the backup action.
         val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
-        auditService.audit(operation = "backup")
+        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+            .audit(operation = "backup")
 
         // Get all documents.
         val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
@@ -36,8 +36,12 @@ internal fun Route.backupDocumentsRoute() {
         }
 
         // Stream the backup to the client.
-        val storageService: DocumentStorageService = call.scope.get<DocumentStorageService> { parametersOf(sessionContext) }
-        DocumentStorageService.backupCountMetric.increment()
-        storageService.streamZip(call = call, filename = "backup", documents = documents.content, decipher = false)
+        DocumentStreamer.backupCountMetric.increment()
+        DocumentStreamer.streamZip(filename = "backup", documents = documents.content, decipher = false,
+            respondHeaders = { contentDisposition ->
+                call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
+            }, respondOutputStream = { contentType, stream ->
+                call.respondOutputStream(contentType = contentType, producer = stream)
+            })
     }
 }
