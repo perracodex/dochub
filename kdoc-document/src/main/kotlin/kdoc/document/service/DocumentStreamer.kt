@@ -179,6 +179,16 @@ object DocumentStreamer {
         }
     }
 
+    /**
+     * Generates a unique entry name for a ZIP archive, by appending a count
+     * to the original entry name whenever a duplicate is found.
+     * So, for example, if the original entry name is "file.txt" and a duplicate
+     * is found, the new entry name will be changed to "file(1).txt".
+     *
+     * @param entryName The original entry name.
+     * @param fileNameCounts A map of entry names and their counts.
+     * @return The unique entry name.
+     */
     private fun generateUniqueEntryName(
         entryName: String,
         fileNameCounts: MutableMap<String, Int>
