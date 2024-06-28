@@ -134,7 +134,7 @@ object DocumentStreamer {
         decipher: Boolean
     ): Unit = withContext(Dispatchers.IO) {
         if (documents.isEmpty()) {
-            tracer.debug("No documents found provided.")
+            tracer.debug("No documents provided.")
             return@withContext
         }
 
