@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.*
-import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -145,16 +144,14 @@ object DocumentStreamer {
         try {
             deferredPackaging.await()
         } catch (e: Exception) {
-            tracer.error("Error during document streaming packing process: $e")
-            val ownerID: UUID = documents.firstOrNull()?.ownerId!!
-            throw DocumentError.FailedToStreamDownload(ownerId = ownerID, cause = e)
+            tracer.error("Error during document packaging: $e")
+            throw DocumentError.FailedToStreamDownload(ownerId = documents.first().ownerId, cause = e)
         }
 
         // Handle the result of the streaming operation.
         streamingResult.onFailure { e ->
-            tracer.error("Error streaming document archive: $e")
-            val ownerID: UUID = documents.firstOrNull()?.ownerId!!
-            throw DocumentError.FailedToStreamDownload(ownerId = ownerID, cause = e)
+            tracer.error("Error during document streaming: $e")
+            throw DocumentError.FailedToStreamDownload(ownerId = documents.first().ownerId, cause = e)
         }
     }
 
