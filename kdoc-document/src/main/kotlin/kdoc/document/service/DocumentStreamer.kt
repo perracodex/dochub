@@ -40,24 +40,25 @@ object DocumentStreamer {
      *
      * @param document The document to be streamed.
      * @param decipher If true, the document will be deciphered before being streamed.
-     * @param respondHeaders Lambda function to set response headers.
      * @param respondOutputStream Lambda function to stream the output.
      */
     suspend fun streamDocumentFile(
         document: DocumentEntity,
         decipher: Boolean,
-        respondHeaders: (contentDisposition: ContentDisposition) -> Unit,
-        respondOutputStream: suspend (contentType: ContentType, stream: suspend (OutputStream) -> Unit) -> Unit
+        respondOutputStream: suspend (
+            contentDisposition: ContentDisposition,
+            contentType: ContentType,
+            stream: suspend (OutputStream) -> Unit
+        ) -> Unit
     ): Unit = withContext(Dispatchers.IO) {
-        // Set the response headers.
+        // Create the response headers.
         val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
             key = ContentDisposition.Parameters.FileName,
             value = document.detail.originalName
         )
-        respondHeaders(contentDisposition)
 
         // Stream the document file to the output stream.
-        respondOutputStream(ContentType.Application.OctetStream) { outputStream ->
+        respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
             val documentFile = File(document.detail.path)
 
             FileInputStream(documentFile).use { inputStream ->
@@ -76,27 +77,28 @@ object DocumentStreamer {
      * @param filename The name of the ZIP archive.
      * @param documents The documents to be packed into the ZIP archive.
      * @param decipher If true, the documents will be deciphered before being packed.
-     * @param respondHeaders Lambda function to set response headers.
      * @param respondOutputStream Lambda function to stream the output.
      */
     suspend fun streamZip(
         filename: String,
         documents: List<DocumentEntity>,
         decipher: Boolean,
-        respondHeaders: (contentDisposition: ContentDisposition) -> Unit,
-        respondOutputStream: suspend (contentType: ContentType, stream: suspend (OutputStream) -> Unit) -> Unit
+        respondOutputStream: suspend (
+            contentDisposition: ContentDisposition,
+            contentType: ContentType,
+            stream: suspend (OutputStream) -> Unit
+        ) -> Unit
     ): Unit = withContext(Dispatchers.IO) {
         // Create the filename for the ZIP archive.
         val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
         val formattedDate: String = DateTimeUtils.format(date = currentDate, pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
         val outputFilename = "$filename ($formattedDate).zip"
 
-        // Set the response headers.
+        // Create the response headers.
         val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
             key = ContentDisposition.Parameters.FileName,
             value = outputFilename
         )
-        respondHeaders(contentDisposition)
 
         // Create a PipedOutputStream and PipedInputStream to stream the ZIP archive.
         val pipedOutputStream = PipedOutputStream()
@@ -114,7 +116,7 @@ object DocumentStreamer {
         }
 
         // Stream the content from pipedInputStream to the response outputStream.
-        respondOutputStream(ContentType.Application.OctetStream) { outputStream ->
+        respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
             pipedInputStream.use { inputStream ->
                 inputStream.copyTo(out = outputStream)
             }
