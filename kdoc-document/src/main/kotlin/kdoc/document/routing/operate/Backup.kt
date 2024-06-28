@@ -37,7 +37,8 @@ internal fun Route.backupDocumentsRoute() {
 
         // Stream the backup to the client.
         DocumentStreamer.backupCountMetric.increment()
-        DocumentStreamer.streamZip(filename = "backup", documents = documents.content, decipher = false,
+        DocumentStreamer.stream(
+            archiveFilename = "backup", documents = documents.content, decipher = false, archiveAlways = true,
             respondOutputStream = { contentDisposition, contentType, stream ->
                 call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
                 call.respondOutputStream(contentType = contentType, producer = stream)

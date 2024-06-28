@@ -38,13 +38,13 @@ object DocumentStreamer {
         .register(appMicrometerRegistry)
 
     /**
-     * Streams a document file to a client.
+     * Streams a single document file to a client.
      *
      * @param document The document to be streamed.
      * @param decipher If true, the document will be deciphered before being streamed.
      * @param respondOutputStream Lambda function to stream the output.
      */
-    suspend fun streamDocumentFile(
+    private suspend fun streamDocumentFile(
         document: DocumentEntity,
         decipher: Boolean,
         respondOutputStream: suspend (
@@ -80,26 +80,36 @@ object DocumentStreamer {
 
     /**
      * Streams a ZIP archive containing the provided documents.
+     * If there is only one document, it will be streamed directly
+     * instead of being packed into a ZIP archive, unless [archiveAlways] is true.
      *
-     * @param filename The name of the ZIP archive.
+     * @param archiveFilename The name of the ZIP archive. Ignored if there is only one document and [archiveAlways] is false.
      * @param documents The documents to be packed into the ZIP archive.
      * @param decipher If true, the documents will be deciphered before being packed.
+     * @param archiveAlways If true, the document will always be packed into a ZIP archive even if there is only one document.
      * @param respondOutputStream Lambda function to stream the output.
      */
-    suspend fun streamZip(
-        filename: String,
+    suspend fun stream(
+        archiveFilename: String,
         documents: List<DocumentEntity>,
         decipher: Boolean,
+        archiveAlways: Boolean,
         respondOutputStream: suspend (
             contentDisposition: ContentDisposition,
             contentType: ContentType,
             stream: suspend (OutputStream) -> Unit
         ) -> Unit
     ): Unit = withContext(Dispatchers.IO) {
+        // If there is only one document, stream it directly.
+        if (!archiveAlways && documents.size == 1) {
+            streamDocumentFile(document = documents.first(), decipher = decipher, respondOutputStream = respondOutputStream)
+            return@withContext
+        }
+
         // Create the filename for the ZIP archive.
         val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
         val formattedDate: String = DateTimeUtils.format(date = currentDate, pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
-        val outputFilename = "$filename ($formattedDate).zip"
+        val outputFilename = "$archiveFilename ($formattedDate).zip"
 
         // Create the response headers.
         val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(

@@ -46,18 +46,10 @@ internal fun Route.downloadDocumentRoute() {
 
         // Stream the document file to the client.
         DocumentStreamer.downloadCountMetric.increment()
-        if (documents.size == 1) {
-            DocumentStreamer.streamDocumentFile(document = documents.first(), decipher = true,
-                respondOutputStream = { contentDisposition, contentType, stream ->
-                    call.response.header(HttpHeaders.ContentDisposition, contentDisposition.toString())
-                    call.respondOutputStream(contentType = contentType, producer = stream)
-                })
-        } else {
-            DocumentStreamer.streamZip(filename = "download", documents = documents, decipher = true,
-                respondOutputStream = { contentDisposition, contentType, stream ->
-                    call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
-                    call.respondOutputStream(contentType = contentType, producer = stream)
-                })
-        }
+        DocumentStreamer.stream(archiveFilename = "download", documents = documents, decipher = true, archiveAlways = false,
+            respondOutputStream = { contentDisposition, contentType, stream ->
+                call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
+                call.respondOutputStream(contentType = contentType, producer = stream)
+            })
     }
 }
