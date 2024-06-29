@@ -76,7 +76,8 @@ internal class UploadManager(
                     originalName = fileEntry.originalFilename,
                     storageName = fileEntry.storageFilename,
                     location = fileEntry.location,
-                    isCiphered = fileEntry.isCiphered
+                    isCiphered = fileEntry.isCiphered,
+                    size = fileEntry.size
                 )
 
                 val documentId: UUID = documentRepository.create(documentRequest = documentRequest)

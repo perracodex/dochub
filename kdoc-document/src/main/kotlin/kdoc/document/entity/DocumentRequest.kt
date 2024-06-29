@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
  * @property storageName The name of the document in storage.
  * @property location The document's storage path location.
  * @property isCiphered Whether the document is ciphered.
+ * @property size The size of the document in bytes. Without encryption.
  */
 @Serializable
 data class DocumentRequest(
@@ -29,7 +30,8 @@ data class DocumentRequest(
     val originalName: String,
     val storageName: String,
     val location: String,
-    val isCiphered: Boolean
+    val isCiphered: Boolean,
+    val size: Long
 ) {
     init {
         require(originalName.isNotBlank()) { "Document original name must not be blank." }

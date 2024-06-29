@@ -51,7 +51,8 @@ class TimestampTest : KoinComponent {
             originalName = "AnyName",
             storageName = "AnyName",
             location = "AnyLocation",
-            isCiphered = false
+            isCiphered = false,
+            size = 0
         )
 
         val documentId: UUID = documentRepository.create(documentRequest = documentRequest)

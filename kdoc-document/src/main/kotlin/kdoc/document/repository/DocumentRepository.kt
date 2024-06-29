@@ -233,5 +233,6 @@ internal class DocumentRepository(
         this[DocumentTable.storageName] = documentRequest.storageName.trim()
         this[DocumentTable.location] = documentRequest.location.trim()
         this[DocumentTable.isCiphered] = documentRequest.isCiphered
+        this[DocumentTable.size] = documentRequest.size
     }
 }

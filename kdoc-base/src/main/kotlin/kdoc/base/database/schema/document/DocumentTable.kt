@@ -65,6 +65,11 @@ object DocumentTable : TimestampedTable(name = "document") {
         name = "is_ciphered"
     )
 
+    /** The size of the document in bytes. Without encryption. */
+    val size: Column<Long> = long(
+        name = "document_size"
+    )
+
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_document_id"

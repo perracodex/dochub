@@ -14,6 +14,7 @@ import kdoc.base.security.snowflake.SnowflakeFactory
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
+import kdoc.base.utils.CountingInputStream
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
 import kdoc.document.errors.DocumentError
@@ -48,6 +49,7 @@ internal class MultipartFileHandler(
      * @property documentFile The [File] object representing the uploaded file in the storage.
      * @property description Optional description of the document file.
      * @property isCiphered Whether the document file is encrypted.
+     * @property size The size of the document in bytes. Without encryption.
      */
     data class Response(
         val originalFilename: String,
@@ -55,7 +57,8 @@ internal class MultipartFileHandler(
         val location: String,
         val documentFile: File,
         val description: String?,
-        val isCiphered: Boolean
+        val isCiphered: Boolean,
+        val size: Long
     )
 
     /**
@@ -178,14 +181,19 @@ internal class MultipartFileHandler(
         location.mkdirs()  // Create directories if they don't exist.
 
         val documentFile = File(location, storageFilename)
-        streamProvider().use { inputStream ->
+        var fileSize: Long
+
+        streamProvider().use { rawInputStream ->
+            val countingInputStream = CountingInputStream(wrappedInputStream = rawInputStream)
             documentFile.outputStream().buffered().use { outputStream ->
                 if (cipher) {
-                    SecureIO.cipher(input = inputStream, output = outputStream)
+                    SecureIO.cipher(input = countingInputStream, output = outputStream)
                 } else {
-                    inputStream.copyTo(out = outputStream)
+                    countingInputStream.copyTo(out = outputStream)
                 }
             }
+
+            fileSize = countingInputStream.bytesRead
         }
 
         return Response(
@@ -194,7 +202,8 @@ internal class MultipartFileHandler(
             location = location.path,
             documentFile = documentFile,
             description = description,
-            isCiphered = cipher
+            isCiphered = cipher,
+            size = fileSize
         )
     }
 

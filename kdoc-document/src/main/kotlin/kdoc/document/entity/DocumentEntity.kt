@@ -42,6 +42,7 @@ data class DocumentEntity(
      * @property location The document's storage location.
      * @property path The document's storage path, which is a combination of the location and the storage name.
      * @property isCiphered Whether the document is ciphered.
+     * @property size The size of the document in bytes. Without encryption.
      */
     data class Detail(
         val type: DocumentType = DocumentType.GENERAL,
@@ -51,6 +52,7 @@ data class DocumentEntity(
         val location: String = "",
         val path: String = "",
         val isCiphered: Boolean = true,
+        val size: Long = 0L
     )
 
     companion object {
@@ -72,7 +74,8 @@ data class DocumentEntity(
                     storageName = row[DocumentTable.storageName],
                     location = row[DocumentTable.location],
                     path = "${row[DocumentTable.location]}$PATH_SEPARATOR${row[DocumentTable.storageName]}",
-                    isCiphered = row[DocumentTable.isCiphered]
+                    isCiphered = row[DocumentTable.isCiphered],
+                    size = row[DocumentTable.size]
                 ),
                 meta = Meta.from(row = row, table = DocumentTable)
             )
