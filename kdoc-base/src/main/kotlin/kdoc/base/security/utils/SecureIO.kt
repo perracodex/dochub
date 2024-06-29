@@ -73,7 +73,7 @@ object SecureIO {
         val transformation: String = AppSettings.storage.cipherTransformation
 
         // Create a secret key from the provided key.
-        val normalizedKey: ByteArray = EncryptionUtils.hexStringToByteArray(key)
+        val normalizedKey: ByteArray = EncryptionUtils.hexStringToByteArray(value = key)
         val secretKey = SecretKeySpec(normalizedKey, algorithm)
         val cipher: Cipher = Cipher.getInstance(transformation)
 
