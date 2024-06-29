@@ -15,6 +15,10 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * Provides methods to securely encrypt and decrypt IO data streams.
  * This utility class facilitates the use of symmetric key encryption for data protection.
+ *
+ * Note: CipherOutputStream and CipherInputStream have been avoided due to inefficiencies
+ * caused by their internal fixed buffer size of 512 bytes, which cannot be overridden
+ * and leads to suboptimal processing.
  */
 object SecureIO {
     /** Length in `bytes` of the initialization vector (IV) used in GCM mode of operation. */
