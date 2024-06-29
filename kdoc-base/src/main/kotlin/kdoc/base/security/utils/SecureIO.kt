@@ -9,8 +9,6 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.security.SecureRandom
 import javax.crypto.Cipher
-import javax.crypto.CipherInputStream
-import javax.crypto.CipherOutputStream
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
@@ -28,6 +26,33 @@ object SecureIO {
     private enum class Mode(val id: Int) {
         ENCRYPT(id = Cipher.ENCRYPT_MODE),
         DECRYPT(id = Cipher.DECRYPT_MODE)
+    }
+
+    /**
+     * Ciphers the input stream and writes the result to the output stream.
+     *
+     * @param input The input stream containing the plain data.
+     * @param output The output stream where the encrypted data will be written.
+     */
+    fun cipher(input: InputStream, output: OutputStream) {
+        val cipher: Cipher = getCipher(mode = Mode.ENCRYPT)
+        cipher.iv.let {
+            output.write(it.size)
+            output.write(it)
+        }
+        write(input = input, output = output, cipher = cipher)
+    }
+
+    /**
+     * Deciphers the input stream and writes the result to the output stream.
+     *
+     * @param input The encrypted input stream to decipher.
+     * @param output The output stream to write the deciphered data to.
+     */
+    fun decipher(input: InputStream, output: OutputStream) {
+        val iv: ByteArray = ByteArray(input.read()).apply { input.read(this) }
+        val cipher: Cipher = getCipher(mode = Mode.DECRYPT, iv = iv)
+        write(input = input, output = output, cipher = cipher)
     }
 
     /**
@@ -63,35 +88,33 @@ object SecureIO {
     }
 
     /**
-     * Ciphers the input stream and writes the result to the output stream.
+     * Writes the ciphered/deciphered data from the input stream to the output stream.
      *
-     * @param input The input stream containing the plain data.
-     * @param output The output stream where the encrypted data will be written.
+     * @param input The input stream to process.
+     * @param output The output stream to write the processed data to.
+     * @param cipher The initialized [Cipher] instance for processing the data.
      */
-    fun cipher(input: InputStream, output: OutputStream) {
-        val cipher: Cipher = getCipher(mode = Mode.ENCRYPT)
-        cipher.iv.let {
-            output.write(it.size)
-            output.write(it)
-        }
-        CipherOutputStream(output, cipher).use { outputStream ->
-            input.copyTo(out = outputStream)
-        }
-    }
+    private fun write(input: InputStream, output: OutputStream, cipher: Cipher) {
+        // Buffer size set to a multiple of the cipher block size for efficient processing.
+        val bufferSize: Int = cipher.blockSize * 1024
+        val buffer = ByteArray(bufferSize)
+        var bytesRead: Int
+        var totalBytesCopied: Long = 0
 
-    /**
-     * Deciphers the input stream and writes the result to the output stream.
-     *
-     * @param input The encrypted input stream to decipher.
-     * @param output The output stream to write the deciphered data to.
-     */
-    fun decipher(input: InputStream, output: OutputStream) {
-        val ivSize: Int = input.read()
-        val iv = ByteArray(ivSize)
-        input.read(iv)
-        val cipher: Cipher = getCipher(Mode.DECRYPT, iv)
-        CipherInputStream(input, cipher).use { inputStream ->
-            inputStream.copyTo(out = output)
+        // Process the input data in manageable chunks through the cipher and write the transformed output.
+        while (input.read(buffer).also { bytesRead = it } != -1) {
+            val decryptedData: ByteArray? = cipher.update(buffer, 0, bytesRead)
+            decryptedData?.let { data ->
+                output.write(data)
+                totalBytesCopied += data.size
+            }
+        }
+
+        // Finalize the encryption/decryption and write any remaining bytes to the output stream.
+        val finalBytes: ByteArray = cipher.doFinal()
+        finalBytes.let { bytes ->
+            output.write(bytes)
+            totalBytesCopied += bytes.size
         }
     }
 }
