@@ -73,13 +73,13 @@ internal class MultipartFileHandler(
         groupId: UUID?,
         type: DocumentType,
         multipart: MultiPartData
-    ): List<Response> = withContext(Dispatchers.IO) {
+    ): List<Response> {
         var responses: List<Response>
         val duration: Long = measureTimeMillis {
             responses = process(multipart = multipart, ownerId = ownerId, groupId = groupId, type = type)
         }
         uploadDurationMetric.record(duration, TimeUnit.MILLISECONDS)
-        return@withContext responses
+        return responses
     }
 
     private suspend fun process(
