@@ -9,8 +9,6 @@ import kdoc.base.persistence.pagination.Pageable
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import java.util.*
 
 /**
@@ -35,13 +33,22 @@ internal interface IDocumentRepository {
     fun findAll(pageable: Pageable? = null): Page<DocumentEntity>
 
     /**
-     * Retrieves all document entities matching the provided [condition].
+     * Retrieves all document entities for a specific group.
      *
-     * @param condition The condition to be applied.
+     * @param groupId The target group ID.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [DocumentEntity] entries.
      */
-    fun fetch(condition: SqlExpressionBuilder.() -> Op<Boolean>, pageable: Pageable?): Page<DocumentEntity>
+    fun findByGroupId(groupId: UUID, pageable: Pageable?): Page<DocumentEntity>
+
+    /**
+     * Retrieves all document entities for a specific owner.
+     *
+     * @param ownerId The target owner ID.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
+     * @return List of [DocumentEntity] entries.
+     */
+    fun findByOwnerId(ownerId: UUID, pageable: Pageable?): Page<DocumentEntity>
 
     /**
      * Retrieves all document entities matching the provided [filterSet].

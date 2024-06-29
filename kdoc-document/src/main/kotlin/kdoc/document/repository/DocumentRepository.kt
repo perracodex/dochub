@@ -36,10 +36,24 @@ internal class DocumentRepository(
         }
     }
 
+    override fun findByOwnerId(ownerId: UUID, pageable: Pageable?): Page<DocumentEntity> {
+        return fetchByCondition(
+            condition = { DocumentTable.ownerId eq ownerId },
+            pageable = pageable
+        )
+    }
+
+    override fun findByGroupId(groupId: UUID, pageable: Pageable?): Page<DocumentEntity> {
+        return fetchByCondition(
+            condition = { DocumentTable.groupId eq groupId },
+            pageable = pageable
+        )
+    }
+
     /**
-     * Common method to fetch documents with pagination and a specific condition.
+     * Common method to fetch documents with a specific condition.
      */
-    override fun fetch(
+    private fun fetchByCondition(
         condition: SqlExpressionBuilder.() -> Op<Boolean>,
         pageable: Pageable?
     ): Page<DocumentEntity> {

@@ -4,7 +4,6 @@
 
 package kdoc.document.service
 
-import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.persistence.pagination.Page
@@ -49,20 +48,7 @@ internal class DocumentService(
      * @return List of [DocumentEntity] entries.
      */
     suspend fun findByOwnerId(ownerId: UUID, pageable: Pageable?): Page<DocumentEntity> = withContext(Dispatchers.IO) {
-        return@withContext documentRepository.fetch(
-            condition = { DocumentTable.ownerId eq ownerId },
-            pageable = pageable
-        )
-    }
-
-    /**
-     * Retrieves all document entities.
-     *
-     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
-     */
-    suspend fun findAll(pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
-        return@withContext documentRepository.findAll(pageable = pageable)
+        return@withContext documentRepository.findByOwnerId(ownerId = ownerId, pageable = pageable)
     }
 
     /**
@@ -73,10 +59,17 @@ internal class DocumentService(
      * @return List of [DocumentEntity] entries.
      */
     suspend fun findByGroupId(groupId: UUID, pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
-        return@withContext documentRepository.fetch(
-            condition = { DocumentTable.groupId eq groupId },
-            pageable = pageable
-        )
+        return@withContext documentRepository.findByGroupId(groupId = groupId, pageable = pageable)
+    }
+
+    /**
+     * Retrieves all document entities.
+     *
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
+     * @return List of [DocumentEntity] entries.
+     */
+    suspend fun findAll(pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+        return@withContext documentRepository.findAll(pageable = pageable)
     }
 
     /**
@@ -168,7 +161,7 @@ internal class DocumentService(
      * @param signature The signature to verify.
      * @return The [DocumentEntity] if the verification is successful, null otherwise.
      */
-    suspend fun findBySignature(token: String, signature: String): List<DocumentEntity>? = withContext(Dispatchers.IO) {
+    suspend fun findBySignature(token: String, signature: String): List<DocumentEntity>? {
         val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
         val decodedToken: String? = SecureUrl.verify(
             basePath = basePath,
@@ -178,7 +171,7 @@ internal class DocumentService(
 
         if (decodedToken == null) {
             tracer.warning("Invalid or expired token: $token")
-            return@withContext null
+            return null
         }
 
         val params: Map<String, String> = decodedToken.split("&").associate {
@@ -193,12 +186,14 @@ internal class DocumentService(
             throw IllegalArgumentException("No document ID or group ID provided.")
         }
 
-        return@withContext search(
-            filterSet = DocumentFilterSet(
-                id = documentId,
-                groupId = groupId
-            )
-        ).content
+        return withContext(Dispatchers.IO) {
+            return@withContext search(
+                filterSet = DocumentFilterSet(
+                    id = documentId,
+                    groupId = groupId
+                )
+            ).content
+        }
     }
 
     companion object {
