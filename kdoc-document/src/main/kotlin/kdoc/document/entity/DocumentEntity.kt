@@ -8,7 +8,7 @@ import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.persistence.entity.Meta
 import kdoc.base.persistence.serializers.SUUID
-import kdoc.document.service.DocumentStorageService.Companion.PATH_SEPARATOR
+import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.jetbrains.exposed.sql.ResultRow

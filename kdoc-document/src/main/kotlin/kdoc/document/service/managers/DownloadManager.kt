@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.document.service
+package kdoc.document.service.managers
 
 import io.ktor.http.*
 import io.micrometer.core.instrument.Counter
@@ -24,8 +24,8 @@ import java.util.zip.ZipOutputStream
 /**
  * Provides functionality for streaming documents and ZIP archives to clients.
  */
-object DocumentStreamer {
-    private val tracer = Tracer<DocumentStreamer>()
+internal object DownloadManager {
+    private val tracer = Tracer<DownloadManager>()
 
     /** Metric for tracking the total number of document downloads. */
     val downloadCountMetric: Counter = Counter.builder("kdoc_document_downloads_total")
@@ -36,47 +36,6 @@ object DocumentStreamer {
     val backupCountMetric: Counter = Counter.builder("kdoc_document_backups_total")
         .description("Total number of backups")
         .register(appMicrometerRegistry)
-
-    /**
-     * Streams a single document file to a client.
-     *
-     * @param document The document to be streamed.
-     * @param decipher If true, the document will be deciphered before being streamed.
-     * @param respondOutputStream Lambda function to stream the output.
-     */
-    private suspend fun streamDocumentFile(
-        document: DocumentEntity,
-        decipher: Boolean,
-        respondOutputStream: suspend (
-            contentDisposition: ContentDisposition,
-            contentType: ContentType,
-            stream: suspend (OutputStream) -> Unit
-        ) -> Unit
-    ): Unit = withContext(Dispatchers.IO) {
-        // Create the response headers.
-        val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
-            key = ContentDisposition.Parameters.FileName,
-            value = document.detail.originalName
-        )
-
-        runCatching {
-            // Stream the document file to the output stream.
-            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
-                val documentFile = File(document.detail.path)
-
-                FileInputStream(documentFile).use { inputStream ->
-                    if (decipher && document.detail.isCiphered) {
-                        SecureIO.decipher(input = inputStream, output = outputStream)
-                    } else {
-                        inputStream.copyTo(out = outputStream)
-                    }
-                }
-            }
-        }.onFailure { e ->
-            tracer.error("Error streaming document with ID: ${document.id}: $e")
-            throw DocumentError.FailedToStreamDownload(ownerId = document.ownerId, cause = e)
-        }
-    }
 
     /**
      * Streams a ZIP archive containing the provided documents.
@@ -102,16 +61,15 @@ object DocumentStreamer {
     ): Unit = withContext(Dispatchers.IO) {
         // If there is only one document, stream it directly.
         if (!archiveAlways && documents.size == 1) {
-            streamDocumentFile(document = documents.first(), decipher = decipher, respondOutputStream = respondOutputStream)
-            return@withContext
+            return@withContext streamDocumentFile(
+                document = documents.first(),
+                decipher = decipher,
+                respondOutputStream = respondOutputStream
+            )
         }
 
-        // Create the filename for the ZIP archive.
-        val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
-        val formattedDate: String = DateTimeUtils.format(date = currentDate, pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
-        val outputFilename = "$archiveFilename ($formattedDate).zip"
-
         // Create the response headers.
+        val outputFilename: String = newArchiveFilename(suffix = archiveFilename)
         val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
             key = ContentDisposition.Parameters.FileName,
             value = outputFilename
@@ -172,14 +130,14 @@ object DocumentStreamer {
      * @param documents The documents to be packed.
      * @param decipher If true, the documents will be deciphered before being packed.
      */
-    private suspend fun pack(
+    private fun pack(
         outputStream: OutputStream,
         documents: List<DocumentEntity>,
         decipher: Boolean
-    ): Unit = withContext(Dispatchers.IO) {
+    ) {
         if (documents.isEmpty()) {
             tracer.debug("No documents provided.")
-            return@withContext
+            return
         }
 
         ZipOutputStream(BufferedOutputStream(outputStream)).use { zipStream ->
@@ -254,6 +212,58 @@ object DocumentStreamer {
                 val extensionPart: String = entryName.substring(extensionIndex)
                 "$namePart($count)$extensionPart"
             }
+        }
+    }
+
+    /**
+     * Creates a new filename for a zip archive.
+     *
+     * @param suffix The suffix of the archive filename.
+     */
+    private fun newArchiveFilename(suffix: String): String {
+        val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
+        val formattedDate: String = DateTimeUtils.format(date = currentDate, pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
+        return "$suffix ($formattedDate).zip"
+    }
+
+    /**
+     * Streams a single document file to a client.
+     *
+     * @param document The document to be streamed.
+     * @param decipher If true, the document will be deciphered before being streamed.
+     * @param respondOutputStream Lambda function to stream the output.
+     */
+    private suspend fun streamDocumentFile(
+        document: DocumentEntity,
+        decipher: Boolean,
+        respondOutputStream: suspend (
+            contentDisposition: ContentDisposition,
+            contentType: ContentType,
+            stream: suspend (OutputStream) -> Unit
+        ) -> Unit
+    ) {
+        // Create the response headers.
+        val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
+            key = ContentDisposition.Parameters.FileName,
+            value = document.detail.originalName
+        )
+
+        runCatching {
+            // Stream the document file to the output stream.
+            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
+                val documentFile = File(document.detail.path)
+
+                FileInputStream(documentFile).use { inputStream ->
+                    if (decipher && document.detail.isCiphered) {
+                        SecureIO.decipher(input = inputStream, output = outputStream)
+                    } else {
+                        inputStream.copyTo(out = outputStream)
+                    }
+                }
+            }
+        }.onFailure { e ->
+            tracer.error("Error streaming document with ID: ${document.id}: $e")
+            throw DocumentError.FailedToStreamDownload(ownerId = document.ownerId, cause = e)
         }
     }
 }

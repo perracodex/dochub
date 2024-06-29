@@ -20,13 +20,13 @@ import kdoc.access.rbac.di.RbacDomainInjection
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
-import kdoc.document.service.MultipartFileManager
+import kdoc.document.service.managers.upload.MultipartFileHandler
 import java.io.File
 import java.util.*
 import kotlin.io.path.createTempDirectory
 import kotlin.test.*
 
-class MultipartFileManagerTest {
+class MultipartFileHandlerTest {
 
     @BeforeTest
     fun setUp() {
@@ -62,7 +62,7 @@ class MultipartFileManagerTest {
                         val groupId: UUID = UUID.randomUUID()
                         val type: DocumentType = DocumentType.GENERAL
 
-                        val persistedFiles: List<MultipartFileManager.Response> = MultipartFileManager(
+                        val persistedFiles: List<MultipartFileHandler.Response> = MultipartFileHandler(
                             uploadsRoot = tempUploadPath.absolutePath,
                             cipher = true
                         ).receive(

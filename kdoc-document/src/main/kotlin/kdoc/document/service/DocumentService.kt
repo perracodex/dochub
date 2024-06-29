@@ -19,6 +19,7 @@ import kdoc.document.entity.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.*
 
 /**
@@ -198,5 +199,10 @@ internal class DocumentService(
                 groupId = groupId
             )
         ).content
+    }
+
+    companion object {
+        /** The file path's system-dependent name-separator character. */
+        val PATH_SEPARATOR: String = File.separator
     }
 }

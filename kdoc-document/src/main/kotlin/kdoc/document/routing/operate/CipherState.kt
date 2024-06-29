@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
-import kdoc.document.service.DocumentStorageService
+import kdoc.document.service.managers.CipherStateHandler
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -25,8 +25,8 @@ internal fun Route.changeDocumentsCipherStateRoute() {
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())
 
-        val storageService: DocumentStorageService = call.scope.get<DocumentStorageService> { parametersOf(sessionContext) }
-        val count: Int = storageService.changeCipherState(cipher = cipher)
+        val cipherStateHandler: CipherStateHandler = call.scope.get<CipherStateHandler> { parametersOf(sessionContext) }
+        val count: Int = cipherStateHandler.changeState(cipher = cipher)
 
         call.respond(
             status = HttpStatusCode.OK,

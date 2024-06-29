@@ -13,7 +13,7 @@ import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStreamer
+import kdoc.document.service.managers.DownloadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -45,8 +45,9 @@ internal fun Route.downloadDocumentRoute() {
         }
 
         // Stream the document file to the client.
-        DocumentStreamer.downloadCountMetric.increment()
-        DocumentStreamer.stream(archiveFilename = "download", documents = documents, decipher = true, archiveAlways = false,
+        DownloadManager.downloadCountMetric.increment()
+        DownloadManager.stream(
+            archiveFilename = "download", documents = documents, decipher = true, archiveAlways = false,
             respondOutputStream = { contentDisposition, contentType, stream ->
                 call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
                 call.respondOutputStream(contentType = contentType, producer = stream)

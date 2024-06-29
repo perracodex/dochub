@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.document.service
+package kdoc.document.service.managers.upload
 
 import io.ktor.http.content.*
 import io.micrometer.core.instrument.Counter
@@ -17,7 +17,7 @@ import kdoc.base.settings.AppSettings
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
 import kdoc.document.errors.DocumentError
-import kdoc.document.service.DocumentStorageService.Companion.PATH_SEPARATOR
+import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -33,11 +33,11 @@ import kotlin.system.measureTimeMillis
  * @property uploadsRoot The root directory path where uploaded files must be saved.
  * @property cipher Flag to determine if uploaded files should be ciphered.
  */
-internal class MultipartFileManager(
+internal class MultipartFileHandler(
     private val uploadsRoot: String,
     private val cipher: Boolean
 ) {
-    private val tracer = Tracer<MultipartFileManager>()
+    private val tracer = Tracer<MultipartFileHandler>()
 
     /**
      * Data class to encapsulate the details of a persisted file.

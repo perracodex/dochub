@@ -11,7 +11,8 @@ import kdoc.document.repository.IDocumentAuditRepository
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStorageService
+import kdoc.document.service.managers.CipherStateHandler
+import kdoc.document.service.managers.upload.UploadManager
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.ktor.plugin.RequestScope
@@ -59,8 +60,15 @@ object DocumentDomainInjection {
                     )
                 }
 
-                scoped<DocumentStorageService> { parameters ->
-                    DocumentStorageService(
+                scoped<UploadManager> { parameters ->
+                    UploadManager(
+                        sessionContext = parameters.get<SessionContext>(),
+                        documentRepository = get<IDocumentRepository>()
+                    )
+                }
+
+                scoped<CipherStateHandler> { parameters ->
+                    CipherStateHandler(
                         sessionContext = parameters.get<SessionContext>(),
                         documentRepository = get<IDocumentRepository>()
                     )
@@ -95,8 +103,15 @@ object DocumentDomainInjection {
                 )
             }
 
-            factory<DocumentStorageService> { parameters ->
-                DocumentStorageService(
+            factory<UploadManager> { parameters ->
+                UploadManager(
+                    sessionContext = parameters.get<SessionContext>(),
+                    documentRepository = get<IDocumentRepository>()
+                )
+            }
+
+            factory<CipherStateHandler> { parameters ->
+                CipherStateHandler(
                     sessionContext = parameters.get<SessionContext>(),
                     documentRepository = get<IDocumentRepository>()
                 )

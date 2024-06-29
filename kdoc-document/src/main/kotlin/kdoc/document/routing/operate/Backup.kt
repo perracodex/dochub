@@ -14,7 +14,7 @@ import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.DocumentStreamer
+import kdoc.document.service.managers.DownloadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
@@ -36,8 +36,8 @@ internal fun Route.backupDocumentsRoute() {
         }
 
         // Stream the backup to the client.
-        DocumentStreamer.backupCountMetric.increment()
-        DocumentStreamer.stream(
+        DownloadManager.backupCountMetric.increment()
+        DownloadManager.stream(
             archiveFilename = "backup", documents = documents.content, decipher = false, archiveAlways = true,
             respondOutputStream = { contentDisposition, contentType, stream ->
                 call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
