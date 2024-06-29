@@ -10,31 +10,31 @@ import java.io.InputStream
  * A wrapper class for an InputStream that counts the number of bytes read from it.
  */
 class CountingInputStream(private val wrappedInputStream: InputStream) : InputStream() {
-    var bytesRead: Long = 0
+    var totalBytesRead: Long = 0
         private set
 
     override fun read(): Int {
         val byte: Int = wrappedInputStream.read()
         if (byte != -1) {
-            bytesRead++
+            totalBytesRead++
         }
         return byte
     }
 
     override fun read(b: ByteArray): Int {
-        val numRead: Int = wrappedInputStream.read(b)
-        if (numRead != -1) {
-            bytesRead += numRead
+        val bytesRead: Int = wrappedInputStream.read(b)
+        if (bytesRead != -1) {
+            totalBytesRead += bytesRead
         }
-        return numRead
+        return bytesRead
     }
 
     override fun read(b: ByteArray, off: Int, len: Int): Int {
-        val numRead: Int = wrappedInputStream.read(b, off, len)
-        if (numRead != -1) {
-            bytesRead += numRead
+        val bytesRead: Int = wrappedInputStream.read(b, off, len)
+        if (bytesRead != -1) {
+            totalBytesRead += bytesRead
         }
-        return numRead
+        return bytesRead
     }
 
     override fun close() {

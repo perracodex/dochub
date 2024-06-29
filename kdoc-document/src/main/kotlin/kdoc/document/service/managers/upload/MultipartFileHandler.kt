@@ -193,7 +193,7 @@ internal class MultipartFileHandler(
                 }
             }
 
-            fileSize = countingInputStream.bytesRead
+            fileSize = countingInputStream.totalBytesRead
         }
 
         return Response(
