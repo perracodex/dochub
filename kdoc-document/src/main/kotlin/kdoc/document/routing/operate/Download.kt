@@ -45,12 +45,16 @@ internal fun Route.downloadDocumentRoute() {
         }
 
         // Stream the document file to the client.
+        val streamHandler: DownloadManager.StreamHandler = DownloadManager.prepareStream(
+            documents = documents,
+            decipher = true,
+            archiveFilename = "download",
+            archiveAlways = false
+        )
         DownloadManager.downloadCountMetric.increment()
-        DownloadManager.stream(
-            archiveFilename = "download", documents = documents, decipher = true, archiveAlways = false,
-            respondOutputStream = { contentDisposition, contentType, stream ->
-                call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
-                call.respondOutputStream(contentType = contentType, producer = stream)
-            })
+        call.response.header(HttpHeaders.ContentDisposition, streamHandler.contentDisposition.toString())
+        call.respondOutputStream(contentType = streamHandler.contentType) {
+            streamHandler.stream(this)
+        }
     }
 }

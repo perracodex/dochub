@@ -38,43 +38,77 @@ internal object DownloadManager {
         .register(appMicrometerRegistry)
 
     /**
-     * Streams a ZIP archive containing the provided documents.
-     * If there is only one document, it will be streamed directly
-     * instead of being packed into a ZIP archive, unless [archiveAlways] is true.
+     * Handler for streaming content to the client.
      *
-     * @param archiveFilename The name of the ZIP archive. Ignored if there is only one document and [archiveAlways] is false.
-     * @param documents The documents to be packed into the ZIP archive.
-     * @param decipher If true, the documents will be deciphered before being packed.
-     * @param archiveAlways If true, the document will always be packed into a ZIP archive even if there is only one document.
-     * @param respondOutputStream Lambda function to stream the output.
+     * @property contentDisposition Indicates how the content should be handled (e.g., as an attachment with a specific filename).
+     * @property contentType The content type of the data being streamed, typically used to indicate the MIME type of the response.
+     * @property stream A suspend function that handles the actual streaming of content to the provided output stream.
      */
-    suspend fun stream(
-        archiveFilename: String,
+    data class StreamHandler(
+        val contentDisposition: ContentDisposition,
+        val contentType: ContentType,
+        val stream: suspend (OutputStream) -> Unit
+    )
+
+    /**
+     * Prepares the [StreamHandler] for documents based on the need to archive or decipher.
+     * Determines the content type and disposition to facilitate the download as an attachment.
+     *
+     * @param documents A list of documents to be streamed.
+     * @param decipher Whether to decipher each document before streaming.
+     * @param archiveFilename Base filename for the archive if multiple documents need archiving.
+     * @param archiveAlways Whether to always archive the documents, even if there is only one.
+     * @return A [StreamHandler] configured with the appropriate settings for content type and disposition.
+     */
+    suspend fun prepareStream(
         documents: List<DocumentEntity>,
         decipher: Boolean,
-        archiveAlways: Boolean,
-        respondOutputStream: suspend (
-            contentDisposition: ContentDisposition,
-            contentType: ContentType,
-            stream: suspend (OutputStream) -> Unit
-        ) -> Unit
-    ): Unit = withContext(Dispatchers.IO) {
-        // If there is only one document, stream it directly.
-        if (!archiveAlways && documents.size == 1) {
-            return@withContext streamDocumentFile(
-                document = documents.first(),
-                decipher = decipher,
-                respondOutputStream = respondOutputStream
-            )
+        archiveFilename: String,
+        archiveAlways: Boolean
+    ): StreamHandler {
+        // Determine the filename based on the number of documents.
+        val filename: String = if (documents.size == 1 && !archiveAlways) {
+            documents.first().detail.originalName
+        } else {
+            newArchiveFilename(suffix = archiveFilename)
         }
 
-        // Create the response headers.
-        val outputFilename: String = newArchiveFilename(suffix = archiveFilename)
+        // Define the content type and disposition for the download.
+        val contentType: ContentType = ContentType.Application.OctetStream
         val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
             key = ContentDisposition.Parameters.FileName,
-            value = outputFilename
+            value = filename
         )
 
+        // Define the stream handler function, which decides how to stream the content.
+        val streamHandler: suspend (OutputStream) -> Unit = { outputStream ->
+            if (documents.size == 1 && !archiveAlways) {
+                val document: DocumentEntity = documents.first()
+                streamSingleDocument(document = document, decipher = decipher, outputStream = outputStream)
+            } else {
+                streamArchive(documents = documents, decipher = decipher, outputStream = outputStream)
+            }
+        }
+
+        return StreamHandler(
+            contentDisposition = contentDisposition,
+            contentType = contentType,
+            stream = streamHandler
+        )
+    }
+
+    /**
+     * Streams an archive containing the provided documents while potentially deciphering them.
+     *
+     * @param documents The documents to be packed into the archive.
+     * @param decipher If true, the documents will be deciphered before being packed.
+     * @param outputStream The output stream to which the archive is written.
+     */
+    private suspend fun streamArchive(
+        documents: List<DocumentEntity>,
+        decipher: Boolean,
+        outputStream: OutputStream
+    ): Unit = withContext(Dispatchers.IO) {
         // Create a PipedOutputStream and PipedInputStream to stream the ZIP archive.
         val pipedOutputStream = PipedOutputStream()
         val pipedInputStream = PipedInputStream(pipedOutputStream)
@@ -82,14 +116,14 @@ internal object DownloadManager {
         // Deferred to capture errors from the launched coroutine
         val deferredPackaging = CompletableDeferred<Unit>()
 
-        // Launch a coroutine to stream the packaging of the documents into the ZIP archive.
+        // Launch a coroutine to stream the packaging of the documents into the archive.
         launch {
             runCatching {
-                pipedOutputStream.use { outputStream ->
+                pipedOutputStream.use { pipedStream ->
                     pack(
-                        outputStream = outputStream,
                         documents = documents,
-                        decipher = decipher
+                        decipher = decipher,
+                        outputStream = pipedStream
                     )
                 }
             }.onFailure { e ->
@@ -101,10 +135,8 @@ internal object DownloadManager {
 
         // Stream the content from pipedInputStream to the response outputStream.
         val streamingResult: Result<Unit> = runCatching {
-            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
-                pipedInputStream.use { inputStream ->
-                    inputStream.copyTo(out = outputStream)
-                }
+            pipedInputStream.use { inputStream ->
+                inputStream.copyTo(out = outputStream)
             }
         }
 
@@ -124,16 +156,16 @@ internal object DownloadManager {
     }
 
     /**
-     * Packs the given documents into a ZIP archive.
+     * Packs the given documents into an archive, potentially deciphering them before packing.
      *
-     * @param outputStream The output stream where the ZIP archive will be written.
      * @param documents The documents to be packed.
      * @param decipher If true, the documents will be deciphered before being packed.
+     * @param outputStream The output stream where the ZIP archive will be written.
      */
     private fun pack(
-        outputStream: OutputStream,
         documents: List<DocumentEntity>,
-        decipher: Boolean
+        decipher: Boolean,
+        outputStream: OutputStream
     ) {
         if (documents.isEmpty()) {
             tracer.debug("No documents provided.")
@@ -182,14 +214,14 @@ internal object DownloadManager {
     }
 
     /**
-     * Generates a unique entry name for a ZIP archive, by appending a count
-     * to the original entry name whenever a duplicate is found.
-     * So, for example, if the original entry name is "file.txt" and a duplicate
+     * Generates a unique entry name for an archive entry, managing duplicate names
+     * by appending a count to ensure each entry is unique.
+     * For example, if the original entry name is "file.txt" and a duplicate
      * is found, the new entry name will be changed to "file(1).txt".
      *
      * @param entryName The original entry name.
-     * @param fileNameCounts A map of entry names and their counts.
-     * @return The unique entry name.
+     * @param fileNameCounts A map tracking the number of occurrences of each entry name.
+     * @return The modified entry name, ensuring uniqueness within the archive.
      */
     private fun generateUniqueZipEntryName(
         entryName: String,
@@ -216,9 +248,10 @@ internal object DownloadManager {
     }
 
     /**
-     * Creates a new filename for a zip archive.
+     * Creates a new filename for an archive, incorporating the current date and time for uniqueness.
      *
-     * @param suffix The suffix of the archive filename.
+     * @param suffix The suffix of the archive filename, related to the operation or document type.
+     * @return A uniquely time-stamped archive filename.
      */
     private fun newArchiveFilename(suffix: String): String {
         val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
@@ -227,30 +260,19 @@ internal object DownloadManager {
     }
 
     /**
-     * Streams a single document file to a client.
+     * Streams a single document file, deciphering it if necessary.
      *
      * @param document The document to be streamed.
-     * @param decipher If true, the document will be deciphered before being streamed.
-     * @param respondOutputStream Lambda function to stream the output.
+     * @param decipher If true, the document will be deciphered before streaming.
+     * @param outputStream The output stream to write the document to.
      */
-    private suspend fun streamDocumentFile(
+    private suspend fun streamSingleDocument(
         document: DocumentEntity,
         decipher: Boolean,
-        respondOutputStream: suspend (
-            contentDisposition: ContentDisposition,
-            contentType: ContentType,
-            stream: suspend (OutputStream) -> Unit
-        ) -> Unit
+        outputStream: OutputStream
     ) {
-        // Create the response headers.
-        val contentDisposition: ContentDisposition = ContentDisposition.Attachment.withParameter(
-            key = ContentDisposition.Parameters.FileName,
-            value = document.detail.originalName
-        )
-
-        runCatching {
-            // Stream the document file to the output stream.
-            respondOutputStream(contentDisposition, ContentType.Application.OctetStream) { outputStream ->
+        withContext(Dispatchers.IO) {
+            runCatching {
                 val documentFile = File(document.detail.path)
 
                 FileInputStream(documentFile).use { inputStream ->
@@ -260,10 +282,10 @@ internal object DownloadManager {
                         inputStream.copyTo(out = outputStream)
                     }
                 }
+            }.onFailure { e ->
+                tracer.error("Error streaming document with ID: ${document.id}: $e")
+                throw DocumentError.FailedToStreamDownload(ownerId = document.ownerId, cause = e)
             }
-        }.onFailure { e ->
-            tracer.error("Error streaming document with ID: ${document.id}: $e")
-            throw DocumentError.FailedToStreamDownload(ownerId = document.ownerId, cause = e)
         }
     }
 }

@@ -36,12 +36,16 @@ internal fun Route.backupDocumentsRoute() {
         }
 
         // Stream the backup to the client.
+        val streamHandler: DownloadManager.StreamHandler = DownloadManager.prepareStream(
+            documents = documents.content,
+            decipher = false,
+            archiveFilename = "backup",
+            archiveAlways = true
+        )
         DownloadManager.backupCountMetric.increment()
-        DownloadManager.stream(
-            archiveFilename = "backup", documents = documents.content, decipher = false, archiveAlways = true,
-            respondOutputStream = { contentDisposition, contentType, stream ->
-                call.response.header(name = HttpHeaders.ContentDisposition, value = contentDisposition.toString())
-                call.respondOutputStream(contentType = contentType, producer = stream)
-            })
+        call.response.header(HttpHeaders.ContentDisposition, streamHandler.contentDisposition.toString())
+        call.respondOutputStream(contentType = streamHandler.contentType) {
+            streamHandler.stream(this)
+        }
     }
 }
