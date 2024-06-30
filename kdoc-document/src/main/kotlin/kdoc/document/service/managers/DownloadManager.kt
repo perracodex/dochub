@@ -6,8 +6,8 @@ package kdoc.document.service.managers
 
 import io.ktor.http.*
 import io.micrometer.core.instrument.Counter
+import kdoc.base.env.MetricsRegistry
 import kdoc.base.env.Tracer
-import kdoc.base.plugins.appMicrometerRegistry
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDateTime
@@ -28,14 +28,16 @@ internal object DownloadManager {
     private val tracer = Tracer<DownloadManager>()
 
     /** Metric for tracking the total number of document downloads. */
-    val downloadCountMetric: Counter = Counter.builder("kdoc_document_downloads_total")
-        .description("Total number of downloaded files")
-        .register(appMicrometerRegistry)
+    val downloadCountMetric: Counter = MetricsRegistry.registerCounter(
+        name = "kdoc_document_downloads_total",
+        description = "Total number of downloaded files"
+    )
 
     /** Metric for tracking the total number of backups. */
-    val backupCountMetric: Counter = Counter.builder("kdoc_document_backups_total")
-        .description("Total number of backups")
-        .register(appMicrometerRegistry)
+    val backupCountMetric: Counter = MetricsRegistry.registerCounter(
+        name = "kdoc_document_backups_total",
+        description = "Total number of backups"
+    )
 
     /**
      * Handler for streaming content to the client.

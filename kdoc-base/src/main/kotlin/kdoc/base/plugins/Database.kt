@@ -12,6 +12,7 @@ import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.base.database.schema.document.DocumentAuditTable
 import kdoc.base.database.schema.document.DocumentTable
+import kdoc.base.env.MetricsRegistry
 
 /**
  * Configures the custom [DbPlugin].
@@ -24,7 +25,7 @@ import kdoc.base.database.schema.document.DocumentTable
 fun Application.configureDatabase() {
 
     install(plugin = DbPlugin) {
-        micrometerRegistry = appMicrometerRegistry
+        micrometerRegistry = MetricsRegistry.registry
 
         // Default admin tables.
         tables.add(RbacFieldRuleTable)

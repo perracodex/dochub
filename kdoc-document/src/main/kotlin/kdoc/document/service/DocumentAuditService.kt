@@ -4,9 +4,7 @@
 
 package kdoc.document.service
 
-import io.micrometer.core.instrument.Counter
 import kdoc.base.env.SessionContext
-import kdoc.base.plugins.appMicrometerRegistry
 import kdoc.document.entity.DocumentAuditRequest
 import kdoc.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers
@@ -46,9 +44,5 @@ internal class DocumentAuditService(
         )
 
         documentAuditRepository.create(documentAuditRequest = request)
-
-        Counter.builder("documents: $operation")
-            .description("Total number of uploaded files")
-            .register(appMicrometerRegistry)
     }
 }

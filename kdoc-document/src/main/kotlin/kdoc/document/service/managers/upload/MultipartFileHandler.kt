@@ -8,8 +8,8 @@ import io.ktor.http.content.*
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Timer
 import kdoc.base.database.schema.document.types.DocumentType
+import kdoc.base.env.MetricsRegistry
 import kdoc.base.env.Tracer
-import kdoc.base.plugins.appMicrometerRegistry
 import kdoc.base.security.snowflake.SnowflakeFactory
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
@@ -241,13 +241,15 @@ internal class MultipartFileHandler(
     }
 
     companion object {
-        private val uploadsCountMetric: Counter = Counter.builder("kdoc_document_uploads_total")
-            .description("Total number of uploaded files")
-            .register(appMicrometerRegistry)
+        private val uploadsCountMetric: Counter = MetricsRegistry.registerCounter(
+            name = "kdoc_document_uploads_total",
+            description = "Total number of uploaded files"
+        )
 
-        private val uploadDurationMetric: Timer = Timer.builder("kdoc_document_uploads_duration")
-            .description("Duration of document upload execution")
-            .register(appMicrometerRegistry)
+        private val uploadDurationMetric: Timer = MetricsRegistry.registerTimer(
+            name = "kdoc_document_uploads_duration",
+            description = "Duration of document upload execution"
+        )
 
         // Must use a character that is not allowed in filenames by the OS.
         // This is only relevant for non-ciphered filenames.
