@@ -12,9 +12,7 @@ import kdoc.base.env.MetricsRegistry
 import kdoc.base.env.Tracer
 import kdoc.base.security.snowflake.SnowflakeFactory
 import kdoc.base.security.utils.EncryptionUtils
-import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
-import kdoc.base.utils.CountingInputStream
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
 import kdoc.document.errors.DocumentError
@@ -46,20 +44,24 @@ internal class MultipartFileHandler(
      * @property originalFilename The original name of the document file.
      * @property storageFilename The name of the document file as stored on disk.
      * @property location The path location of the document file.
-     * @property documentFile The [File] object representing the uploaded file in the storage.
      * @property description Optional description of the document file.
      * @property isCiphered Whether the document file is encrypted.
      * @property size The size of the document in bytes. Without encryption.
+     * @property file The document reference in the storage.
      */
     data class Response(
         val originalFilename: String,
         val storageFilename: String,
         val location: String,
-        val documentFile: File,
         val description: String?,
         val isCiphered: Boolean,
-        val size: Long
-    )
+        val size: Long,
+        private val file: File,
+    ) {
+        fun delete() {
+            file.delete()
+        }
+    }
 
     /**
      * Handles the reception of files from a client's request, persisting them to the storage.
@@ -92,7 +94,7 @@ internal class MultipartFileHandler(
         multipart: MultiPartData
     ): List<Response> = withContext(Dispatchers.IO) {
         val deferredResponses = mutableListOf<Deferred<Response>>()
-        val savedFiles = mutableListOf<File>()
+        val responses = mutableListOf<Response>()
 
         try {
             multipart.forEachPart { part: PartData ->
@@ -112,7 +114,7 @@ internal class MultipartFileHandler(
                                 cipherName = cipher,
                                 streamProvider = part.streamProvider
                             ).also { response ->
-                                savedFiles.add(response.documentFile)
+                                responses.add(response)
                                 uploadsCountMetric.increment()
                             }
                         } catch (e: Exception) {
@@ -137,14 +139,18 @@ internal class MultipartFileHandler(
 
         } catch (e: Exception) {
             tracer.error("Error uploading document: $e")
-            // If any file persistence fails, delete all saved files.
-            savedFiles.forEach { it.delete() }
+
+            // Cancel all deferred operations and delete all saved files.
+            deferredResponses.onEach { it.cancel() }
+                .mapNotNull { deferred -> runCatching { deferred.await() }.getOrNull() }
+                .forEach { response -> response.delete() }
+
             throw DocumentError.FailedToPersistUpload(ownerId = ownerId, cause = e)
         }
     }
 
     /**
-     * Persists the file to disk and returns a [Response] object.
+     * Builds the document storage filename and persists it to the storage.
      *
      * @param ownerId The ID of the owner of the file.
      * @param groupId Optional ID of the group the file belongs to.
@@ -177,38 +183,35 @@ internal class MultipartFileHandler(
             cipherName = cipherName
         )
 
-        val location = File("$uploadsRoot$PATH_SEPARATOR$datePath")
-        location.mkdirs()  // Create directories if they don't exist.
-
-        val documentFile = File(location, storageFilename)
-        var fileSize: Long
-
-        streamProvider().use { rawInputStream ->
-            val countingInputStream = CountingInputStream(wrappedInputStream = rawInputStream)
-            documentFile.outputStream().buffered().use { outputStream ->
-                if (cipher) {
-                    SecureIO.cipher(input = countingInputStream, output = outputStream)
-                } else {
-                    countingInputStream.copyTo(out = outputStream)
-                }
-            }
-
-            fileSize = countingInputStream.totalBytesRead
+        val fileDetails: StorageFileIO.FileDetails = streamProvider().use { rawInputStream ->
+            StorageFileIO.save(
+                uploadsRoot = uploadsRoot,
+                path = datePath,
+                storageFilename = storageFilename,
+                cipher = cipher,
+                inputStream = rawInputStream
+            )
         }
 
         return Response(
             originalFilename = filename,
             storageFilename = storageFilename,
-            location = location.path,
-            documentFile = documentFile,
+            location = fileDetails.location,
+            file = fileDetails.file,
             description = description,
             isCiphered = cipher,
-            size = fileSize
+            size = fileDetails.fileSize
         )
     }
 
     /**
      * Builds the path + filename for a document.
+     *
+     * @param ownerId The ID of the owner of the file.
+     * @param groupId Optional ID of the group the file belongs to.
+     * @param type The [DocumentType] of the file.
+     * @param originalFileName The original name of the file.
+     * @param cipherName Whether the filename should be encrypted.
      */
     private fun buildFilename(
         ownerId: UUID,
@@ -241,18 +244,23 @@ internal class MultipartFileHandler(
     }
 
     companion object {
+        /** Metrics for tracking document uploads. */
         private val uploadsCountMetric: Counter = MetricsRegistry.registerCounter(
             name = "kdoc_document_uploads_total",
             description = "Total number of uploaded files"
         )
 
+        /** Timer for tracking the duration of document uploads. */
         private val uploadDurationMetric: Timer = MetricsRegistry.registerTimer(
             name = "kdoc_document_uploads_duration",
             description = "Duration of document upload execution"
         )
 
-        // Must use a character that is not allowed in filenames by the OS.
-        // This is only relevant for non-ciphered filenames.
+        /**
+         * Delimiter used to separate tokens in the filename.
+         * Must use a character that is allowed in filenames by the OS.
+         * This is only relevant for non-ciphered filenames.
+         */
         private const val NAME_TOKEN_DELIMITER: String = "~"
     }
 }

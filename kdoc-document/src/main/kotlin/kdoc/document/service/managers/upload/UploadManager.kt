@@ -90,7 +90,7 @@ internal class UploadManager(
         } catch (e: Exception) {
             tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.
-            persistedFiles.forEach { it.documentFile.delete() }
+            persistedFiles.forEach { it.delete() }
             throw DocumentError.FailedToPersistUpload(ownerId = ownerId, cause = e)
         }
     }
