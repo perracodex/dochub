@@ -12,6 +12,7 @@ import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentRequest
 import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
+import kdoc.document.service.managers.upload.annotation.UploadAPI
 import java.util.*
 
 /**
@@ -40,6 +41,7 @@ internal class UploadManager(
      * @param multipart The multipart data containing the files and request.
      * @return A list of created DocumentEntity objects or null if the request is invalid.
      */
+    @OptIn(UploadAPI::class)
     suspend fun upload(
         ownerId: UUID,
         groupId: UUID? = null,

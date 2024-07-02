@@ -17,6 +17,7 @@ import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDate
 import kdoc.document.errors.DocumentError
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
+import kdoc.document.service.managers.upload.annotation.UploadAPI
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -32,6 +33,7 @@ import kotlin.system.measureTimeMillis
  * @property uploadsRoot The root directory path where uploaded files must be saved.
  * @property cipher Flag to determine if uploaded files should be ciphered.
  */
+@UploadAPI
 internal class MultipartFileHandler(
     private val uploadsRoot: String,
     private val cipher: Boolean

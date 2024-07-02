@@ -7,12 +7,14 @@ package kdoc.document.service.managers.upload
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.CountingInputStream
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
+import kdoc.document.service.managers.upload.annotation.UploadAPI
 import java.io.File
 import java.io.InputStream
 
 /**
  * Handles the actual persistence of files to the storage.
  */
+@UploadAPI
 internal object StorageFileIO {
 
     /**

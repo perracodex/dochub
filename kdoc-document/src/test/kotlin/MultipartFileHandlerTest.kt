@@ -21,6 +21,7 @@ import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.service.managers.upload.MultipartFileHandler
+import kdoc.document.service.managers.upload.annotation.UploadAPI
 import java.io.File
 import java.util.*
 import kotlin.io.path.createTempDirectory
@@ -46,6 +47,7 @@ class MultipartFileHandlerTest {
         TestUtils.tearDown()
     }
 
+    @OptIn(UploadAPI::class)
     @Test
     fun testUpload(): Unit = testApplication {
         val numberOfFiles = 10
