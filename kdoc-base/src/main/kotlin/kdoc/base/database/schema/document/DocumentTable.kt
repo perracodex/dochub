@@ -32,7 +32,7 @@ object DocumentTable : TimestampedTable(name = "document") {
 
     /** The [DocumentType] of the document */
     val type: Column<DocumentType> = enumerationById(
-        name = "document_type",
+        name = "document_type_id",
         fromId = DocumentType::fromId
     )
 

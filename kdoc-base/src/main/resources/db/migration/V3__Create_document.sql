@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS document (
     document_id UUID,
     owner_id UUID NOT NULL,
     group_id UUID NOT NULL,
-    document_type INT NOT NULL,
+    document_type_id INT NOT NULL,
     description VARCHAR(2048),
     original_name VARCHAR(1024) NOT NULL,
     storage_name VARCHAR(4098) NOT NULL,

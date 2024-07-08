@@ -51,7 +51,7 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
      * The [RbacAccessLevel] representing the access level for the field.
      */
     val accessLevel: Column<RbacAccessLevel> = enumerationById(
-        name = "access_level",
+        name = "access_level_id",
         fromId = RbacAccessLevel::fromId
     )
 
