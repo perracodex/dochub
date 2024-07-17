@@ -2,8 +2,8 @@
 
 [versions]
 
-commons-codec = "1.17.0"                # https://github.com/apache/commons-codec/tags
-database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
+commons-codec = "1.17.1"                # https://github.com/apache/commons-codec/tags
+database-h2 = "2.3.230"                 # https://github.com/h2database/h2database/releases
 exposed = "0.52.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.15.2"                      # https://github.com/flyway/flyway/releases
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
