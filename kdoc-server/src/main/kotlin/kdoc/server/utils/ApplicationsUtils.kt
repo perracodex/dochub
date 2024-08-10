@@ -24,7 +24,6 @@ internal object ApplicationsUtils {
 
             // Dumps the server's endpoints to the console for easy access and testing.
             // This does not include the actual API routes endpoints.
-            NetworkUtils.logEndpoints(reason = "Scheduler", endpoints = listOf("v1/document/dashboard"))
             NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
             NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
             NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
