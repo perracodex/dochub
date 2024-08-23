@@ -62,7 +62,7 @@ internal object DownloadManager {
      * @param archiveAlways Whether to always archive the documents, even if there is only one.
      * @return A [StreamHandler] configured with the appropriate settings for content type and disposition.
      */
-    suspend fun prepareStream(
+    fun prepareStream(
         documents: List<DocumentEntity>,
         decipher: Boolean,
         archiveFilename: String,
