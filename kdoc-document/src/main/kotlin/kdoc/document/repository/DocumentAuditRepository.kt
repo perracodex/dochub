@@ -10,7 +10,9 @@ import kdoc.base.env.SessionContext
 import kdoc.document.entity.DocumentAuditRequest
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of the [IDocumentAuditRepository] interface.
@@ -20,11 +22,11 @@ internal class DocumentAuditRepository(
     private val sessionContext: SessionContext,
 ) : IDocumentAuditRepository {
 
-    override fun create(documentAuditRequest: DocumentAuditRequest): UUID {
+    override fun create(documentAuditRequest: DocumentAuditRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val newAuditId: UUID = DocumentAuditTable.insert { documentRow ->
+            val newAuditId: Uuid = (DocumentAuditTable.insert { documentRow ->
                 documentRow.mapDocumentRequest(documentAuditRequest = documentAuditRequest)
-            } get DocumentAuditTable.id
+            } get DocumentAuditTable.id).toKotlinUuid()
 
             newAuditId
         }
@@ -36,10 +38,10 @@ internal class DocumentAuditRepository(
      */
     private fun UpdateBuilder<Int>.mapDocumentRequest(documentAuditRequest: DocumentAuditRequest) {
         this[DocumentAuditTable.operation] = documentAuditRequest.operation.trim()
-        this[DocumentAuditTable.actorId] = documentAuditRequest.actorId
-        this[DocumentAuditTable.documentId] = documentAuditRequest.documentId
-        this[DocumentAuditTable.groupId] = documentAuditRequest.groupId
-        this[DocumentAuditTable.ownerId] = documentAuditRequest.ownerId
+        this[DocumentAuditTable.actorId] = documentAuditRequest.actorId?.toJavaUuid()
+        this[DocumentAuditTable.documentId] = documentAuditRequest.documentId?.toJavaUuid()
+        this[DocumentAuditTable.groupId] = documentAuditRequest.groupId?.toJavaUuid()
+        this[DocumentAuditTable.ownerId] = documentAuditRequest.ownerId?.toJavaUuid()
         this[DocumentAuditTable.log] = documentAuditRequest.log?.trim()
     }
 }

@@ -16,8 +16,8 @@ import kdoc.document.repository.IDocumentRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import java.util.*
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 
 class TimestampTest : KoinComponent {
@@ -44,8 +44,8 @@ class TimestampTest : KoinComponent {
         )
 
         val documentRequest = DocumentRequest(
-            ownerId = UUID.randomUUID(),
-            groupId = UUID.randomUUID(),
+            ownerId = Uuid.random(),
+            groupId = Uuid.random(),
             type = DocumentType.entries.random(),
             description = "ANyDescription",
             originalName = "AnyName",
@@ -55,7 +55,7 @@ class TimestampTest : KoinComponent {
             size = 0
         )
 
-        val documentId: UUID = documentRepository.create(documentRequest = documentRequest)
+        val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
         val document: DocumentEntity = documentRepository.findById(documentId = documentId)!!
 
         // Assert that the record has timestamps.

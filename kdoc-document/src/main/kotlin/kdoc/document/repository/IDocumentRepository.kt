@@ -9,7 +9,7 @@ import kdoc.base.persistence.pagination.Pageable
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Responsible for managing documents data.
@@ -22,7 +22,7 @@ internal interface IDocumentRepository {
      * @param documentId The ID of the document to be retrieved.
      * @return The resolved [DocumentEntity] if found, null otherwise.
      */
-    fun findById(documentId: UUID): DocumentEntity?
+    fun findById(documentId: Uuid): DocumentEntity?
 
     /**
      * Retrieves all document entities.
@@ -39,7 +39,7 @@ internal interface IDocumentRepository {
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [DocumentEntity] entries.
      */
-    fun findByGroupId(groupId: UUID, pageable: Pageable?): Page<DocumentEntity>
+    fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentEntity>
 
     /**
      * Retrieves all document entities for a specific owner.
@@ -48,7 +48,7 @@ internal interface IDocumentRepository {
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [DocumentEntity] entries.
      */
-    fun findByOwnerId(ownerId: UUID, pageable: Pageable?): Page<DocumentEntity>
+    fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity>
 
     /**
      * Retrieves all document entities matching the provided [filterSet].
@@ -65,7 +65,7 @@ internal interface IDocumentRepository {
      * @param documentRequest The document to be created.
      * @return The ID of the created document.
      */
-    fun create(documentRequest: DocumentRequest): UUID
+    fun create(documentRequest: DocumentRequest): Uuid
 
     /**
      * Updates a document details.
@@ -74,7 +74,7 @@ internal interface IDocumentRepository {
      * @param documentRequest The new details for the document.
      * @return The number of updated records.
      */
-    fun update(documentId: UUID, documentRequest: DocumentRequest): Int
+    fun update(documentId: Uuid, documentRequest: DocumentRequest): Int
 
     /**
      * Sets the cipher state of a document.
@@ -84,7 +84,7 @@ internal interface IDocumentRepository {
      * @param storageName The name of the document in the storage.
      * @return The number of updated records.
      */
-    fun setCipherState(documentId: UUID, isCiphered: Boolean, storageName: String): Int
+    fun setCipherState(documentId: Uuid, isCiphered: Boolean, storageName: String): Int
 
     /**
      * Deletes a document using the provided ID.
@@ -92,7 +92,7 @@ internal interface IDocumentRepository {
      * @param documentId The ID of the document to be deleted.
      * @return The number of delete records.
      */
-    fun delete(documentId: UUID): Int
+    fun delete(documentId: Uuid): Int
 
     /**
      * Deletes all document by group ID.
@@ -100,7 +100,7 @@ internal interface IDocumentRepository {
      * @param groupId The group ID to be used for deletion.
      * @return The number of deleted records.
      */
-    fun deleteByGroup(groupId: UUID): Int
+    fun deleteByGroup(groupId: Uuid): Int
 
     /**
      * Deletes all document.

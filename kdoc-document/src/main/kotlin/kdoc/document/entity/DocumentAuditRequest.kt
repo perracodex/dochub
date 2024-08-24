@@ -4,7 +4,7 @@
 
 package kdoc.document.entity
 
-import kdoc.base.persistence.serializers.SUUID
+import kotlin.uuid.Uuid
 
 /**
  * Represents a request to create an audit log entry for a document.
@@ -18,9 +18,9 @@ import kdoc.base.persistence.serializers.SUUID
  */
 internal data class DocumentAuditRequest(
     val operation: String,
-    val actorId: SUUID? = null,
-    val documentId: SUUID? = null,
-    val groupId: SUUID? = null,
-    val ownerId: SUUID? = null,
+    val actorId: Uuid? = null,
+    val documentId: Uuid? = null,
+    val groupId: Uuid? = null,
+    val ownerId: Uuid? = null,
     val log: String? = null,
 )

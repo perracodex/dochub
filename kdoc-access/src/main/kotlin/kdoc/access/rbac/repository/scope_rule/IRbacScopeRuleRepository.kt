@@ -6,7 +6,7 @@ package kdoc.access.rbac.repository.scope_rule
 
 import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleEntity
 import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Repository for [RbacScopeRuleEntity] data.
@@ -25,5 +25,5 @@ interface IRbacScopeRuleRepository {
      * @param scopeRuleRequests The new set of [RbacScopeRuleRequest] entries to set.
      * @return The new number of rows.
      */
-    fun replace(roleId: UUID, scopeRuleRequests: List<RbacScopeRuleRequest>?): Int
+    fun replace(roleId: Uuid, scopeRuleRequests: List<RbacScopeRuleRequest>?): Int
 }

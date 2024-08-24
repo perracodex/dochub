@@ -7,11 +7,12 @@ package kdoc.document.entity
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.persistence.entity.Meta
-import kdoc.base.persistence.serializers.SUUID
+import kdoc.base.persistence.serializers.UuidS
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for a document.
@@ -26,9 +27,9 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 data class DocumentEntity(
-    val id: SUUID,
-    val ownerId: SUUID,
-    val groupId: SUUID,
+    val id: UuidS,
+    val ownerId: UuidS,
+    val groupId: UuidS,
     @Transient val detail: Detail = Detail(),
     val meta: Meta
 ) {
@@ -64,9 +65,9 @@ data class DocumentEntity(
          */
         fun from(row: ResultRow): DocumentEntity {
             return DocumentEntity(
-                id = row[DocumentTable.id],
-                ownerId = row[DocumentTable.ownerId],
-                groupId = row[DocumentTable.groupId],
+                id = row[DocumentTable.id].toKotlinUuid(),
+                ownerId = row[DocumentTable.ownerId].toKotlinUuid(),
+                groupId = row[DocumentTable.groupId].toKotlinUuid(),
                 detail = Detail(
                     type = row[DocumentTable.type],
                     description = row[DocumentTable.description],

@@ -23,9 +23,9 @@ import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.service.managers.upload.MultipartFileHandler
 import kdoc.document.service.managers.upload.annotation.UploadAPI
 import java.io.File
-import java.util.*
 import kotlin.io.path.createTempDirectory
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 class MultipartFileHandlerTest {
 
@@ -60,8 +60,8 @@ class MultipartFileHandlerTest {
                 routing {
                     post("/test-endpoint") {
                         val multipart: MultiPartData = call.receiveMultipart()
-                        val ownerId: UUID = UUID.randomUUID()
-                        val groupId: UUID = UUID.randomUUID()
+                        val ownerId: Uuid = Uuid.random()
+                        val groupId: Uuid = Uuid.random()
                         val type: DocumentType = DocumentType.GENERAL
 
                         val persistedFiles: List<MultipartFileHandler.Response> = MultipartFileHandler(

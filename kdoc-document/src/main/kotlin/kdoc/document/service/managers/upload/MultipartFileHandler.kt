@@ -21,9 +21,9 @@ import kdoc.document.service.managers.upload.annotation.UploadAPI
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
-import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
+import kotlin.uuid.Uuid
 
 /**
  * Handles multipart form data for file uploads with an option to cipher files,
@@ -76,8 +76,8 @@ internal class MultipartFileHandler(
      * @return A list of [Response] objects containing the file details.
      */
     suspend fun receive(
-        ownerId: UUID,
-        groupId: UUID?,
+        ownerId: Uuid,
+        groupId: Uuid?,
         type: DocumentType,
         multipart: MultiPartData
     ): List<Response> {
@@ -90,8 +90,8 @@ internal class MultipartFileHandler(
     }
 
     private suspend fun process(
-        ownerId: UUID,
-        groupId: UUID?,
+        ownerId: Uuid,
+        groupId: Uuid?,
         type: DocumentType,
         multipart: MultiPartData
     ): List<Response> = withContext(Dispatchers.IO) {
@@ -164,8 +164,8 @@ internal class MultipartFileHandler(
      * @return A [Response] object containing the file details.
      */
     private fun persistFile(
-        ownerId: UUID,
-        groupId: UUID?,
+        ownerId: Uuid,
+        groupId: Uuid?,
         type: DocumentType,
         filename: String,
         description: String?,
@@ -216,8 +216,8 @@ internal class MultipartFileHandler(
      * @param cipherName Whether the filename should be encrypted.
      */
     private fun buildFilename(
-        ownerId: UUID,
-        groupId: UUID?,
+        ownerId: Uuid,
+        groupId: Uuid?,
         type: DocumentType,
         originalFileName: String,
         cipherName: Boolean

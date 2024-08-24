@@ -7,7 +7,7 @@ package kdoc.access.rbac.repository.field_rule
 import kdoc.access.rbac.entity.field_rule.RbacFieldRuleEntity
 import kdoc.access.rbac.entity.field_rule.RbacFieldRuleRequest
 import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Repository for [RbacFieldRuleEntity] data.
@@ -25,5 +25,5 @@ interface IRbacFieldRuleRepository {
      * @param requestList The new set of [RbacFieldRuleRequest] entries to set.
      * @return The new number of rows.
      */
-    fun replace(scopeRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int
+    fun replace(scopeRuleId: Uuid, requestList: List<RbacFieldRuleRequest>?): Int
 }

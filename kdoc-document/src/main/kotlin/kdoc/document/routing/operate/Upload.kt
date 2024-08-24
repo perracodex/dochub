@@ -12,9 +12,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
-import kdoc.base.persistence.serializers.SUUID
-import kdoc.base.persistence.utils.toUUID
-import kdoc.base.persistence.utils.toUUIDOrNull
+import kdoc.base.persistence.utils.toUuid
+import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.settings.AppSettings
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
@@ -22,13 +21,14 @@ import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.managers.upload.UploadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
+import kotlin.uuid.Uuid
 
 @DocumentRouteAPI
 internal fun Route.uploadDocumentsRoute() {
     // Upload a new document.
     post("{owner_id?}/{group_id?}/{type?}/{cipher?}") {
-        val ownerId: SUUID = call.request.queryParameters["owner_id"].toUUID()
-        val groupId: SUUID? = call.request.queryParameters["group_id"].toUUIDOrNull()
+        val ownerId: Uuid = call.request.queryParameters["owner_id"].toUuid()
+        val groupId: Uuid? = call.request.queryParameters["group_id"].toUuidOrNull()
         val type: DocumentType = DocumentType.parse(value = call.request.queryParameters["type"]!!)
         val cipher: Boolean = call.request.queryParameters["cipher"]?.toBoolean()
             ?: AppSettings.storage.cipher

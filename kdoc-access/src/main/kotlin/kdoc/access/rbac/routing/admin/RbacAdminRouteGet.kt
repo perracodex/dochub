@@ -18,7 +18,8 @@ import kdoc.access.rbac.view.RbacLoginView
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kdoc.base.env.SessionContext
-import java.util.*
+import kdoc.base.persistence.utils.toUuidOrNull
+import kotlin.uuid.Uuid
 
 /**
  * Handles the GET request for the RBAC admin panel.
@@ -38,7 +39,7 @@ internal fun Route.rbacAdminRouteGet(rbacService: RbacService) {
         )
 
         val isViewOnly: Boolean = (rbacAccessLevel == RbacAccessLevel.VIEW)
-        val selectedRoleId: UUID? = call.parameters[RbacAdminView.ROLE_KEY]?.let(UUID::fromString)
+        val selectedRoleId: Uuid? = call.parameters[RbacAdminView.ROLE_KEY].toUuidOrNull()
         val rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
 
         // If no role is selected, default to the first role.

@@ -10,10 +10,10 @@ import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.base.persistence.entity.Meta
-import kdoc.base.persistence.serializers.SUUID
+import kdoc.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Represents a single RBAC Role.
@@ -27,7 +27,7 @@ import java.util.*
  */
 @Serializable
 data class RbacRoleEntity(
-    val id: SUUID,
+    val id: UuidS,
     val roleName: String,
     val description: String?,
     val isSuper: Boolean,
@@ -43,14 +43,15 @@ data class RbacRoleEntity(
          * @param rows The [ResultRow] list to map.
          * @return The mapped [RbacRoleEntity] instance.
          */
-        fun from(roleId: UUID, rows: List<ResultRow>): RbacRoleEntity {
+        fun from(roleId: Uuid, rows: List<ResultRow>): RbacRoleEntity {
             // Construct the child entities (if any).
             val scopeRules: List<RbacScopeRuleEntity> = rows
                 .filter { it.getOrNull(RbacScopeRuleTable.id) != null }
                 .distinctBy { it[RbacScopeRuleTable.id] }
                 .map { scopeRuleRow ->
-                    val scopeId: UUID = scopeRuleRow[RbacScopeRuleTable.id]
-                    val fieldRuleRows: List<ResultRow> = rows.filter { it[RbacFieldRuleTable.scopeRuleId] == scopeId }
+                    val fieldRuleRows: List<ResultRow> = rows.filter {
+                        it[RbacFieldRuleTable.scopeRuleId] == scopeRuleRow[RbacScopeRuleTable.id]
+                    }
                     val fieldRuleEntities: List<RbacFieldRuleEntity> = fieldRuleRows.map {
                         RbacFieldRuleEntity.from(row = it)
                     }

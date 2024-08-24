@@ -8,7 +8,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
-import kdoc.base.persistence.utils.toUUIDOrNull
+import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.NetworkUtils
@@ -19,7 +19,7 @@ import kdoc.document.repository.IDocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Document service, where all the documents business logic should be defined.
@@ -36,7 +36,7 @@ internal class DocumentService(
      * @param documentId The ID of the document to be retrieved.
      * @return The resolved [DocumentEntity] if found, null otherwise.
      */
-    suspend fun findById(documentId: UUID): DocumentEntity? = withContext(Dispatchers.IO) {
+    suspend fun findById(documentId: Uuid): DocumentEntity? = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findById(documentId = documentId)
     }
 
@@ -47,7 +47,7 @@ internal class DocumentService(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [DocumentEntity] entries.
      */
-    suspend fun findByOwnerId(ownerId: UUID, pageable: Pageable?): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findByOwnerId(ownerId = ownerId, pageable = pageable)
     }
 
@@ -58,7 +58,7 @@ internal class DocumentService(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [DocumentEntity] entries.
      */
-    suspend fun findByGroupId(groupId: UUID, pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findByGroupId(groupId: Uuid, pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findByGroupId(groupId = groupId, pageable = pageable)
     }
 
@@ -91,7 +91,7 @@ internal class DocumentService(
      */
     suspend fun create(documentRequest: DocumentRequest): DocumentEntity = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new document.")
-        val documentId: UUID = documentRepository.create(documentRequest = documentRequest)
+        val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
         return@withContext findById(documentId = documentId)!!
     }
 
@@ -104,7 +104,7 @@ internal class DocumentService(
      */
     @Suppress("unused")
     suspend fun update(
-        documentId: UUID,
+        documentId: Uuid,
         documentRequest: DocumentRequest
     ): DocumentEntity? = withContext(Dispatchers.IO) {
         tracer.debug("Updating document with ID: $documentId.")
@@ -118,7 +118,7 @@ internal class DocumentService(
      * @param documentId The ID of the document to be deleted.
      * @return The number of delete records.
      */
-    suspend fun delete(documentId: UUID): Int = withContext(Dispatchers.IO) {
+    suspend fun delete(documentId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting document with ID: $documentId.")
         return@withContext documentRepository.delete(documentId = documentId)
     }
@@ -129,7 +129,7 @@ internal class DocumentService(
      * @param groupId The group ID to be used for deletion.
      * @return The number of deleted records.
      */
-    suspend fun deleteByGroup(groupId: UUID): Int = withContext(Dispatchers.IO) {
+    suspend fun deleteByGroup(groupId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all documents by group ID: $groupId.")
         return@withContext documentRepository.deleteByGroup(groupId = groupId)
     }
@@ -179,8 +179,8 @@ internal class DocumentService(
             key.lowercase() to value.trim()
         }
 
-        val documentId: UUID? = params["document_id"]?.toUUIDOrNull()
-        val groupId: UUID? = params["group_id"]?.toUUIDOrNull()
+        val documentId: Uuid? = params["document_id"]?.toUuidOrNull()
+        val groupId: Uuid? = params["group_id"]?.toUuidOrNull()
         if (documentId == null && groupId == null) {
             tracer.error("No document ID or group ID provided.")
             throw IllegalArgumentException("No document ID or group ID provided.")

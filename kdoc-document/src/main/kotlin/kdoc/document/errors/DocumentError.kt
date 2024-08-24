@@ -7,7 +7,7 @@ package kdoc.document.errors
 import io.ktor.http.*
 import kdoc.base.errors.AppException
 import kdoc.base.errors.ErrorCodeRegistry
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Concrete errors for the Document domain.
@@ -31,7 +31,7 @@ sealed class DocumentError(
      *
      * @property documentId The document id that was not found.
      */
-    class DocumentNotFound(val documentId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class DocumentNotFound(val documentId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}DNF",
         description = "Document not found. Document Id: $documentId",
@@ -44,7 +44,7 @@ sealed class DocumentError(
      *
      * @property ownerId The owner id of the document.
      */
-    class NoDocumentProvided(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class NoDocumentProvided(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}NDP",
         description = "No document provided to upload. Owner Id: $ownerId",
@@ -57,7 +57,7 @@ sealed class DocumentError(
      *
      * @property ownerId The owner id of the document.
      */
-    class FailedToStreamDownload(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class FailedToStreamDownload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}FSD",
         description = "Failed to stream download. Owner Id: $ownerId",
@@ -70,7 +70,7 @@ sealed class DocumentError(
      *
      * @property ownerId The owner id of the document.
      */
-    class FailedToPersistUpload(val ownerId: UUID, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class FailedToPersistUpload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}FPU",
         description = "Failed to persist upload. Owner Id: $ownerId",

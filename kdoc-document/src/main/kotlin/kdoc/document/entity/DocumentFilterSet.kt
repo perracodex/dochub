@@ -5,7 +5,7 @@
 package kdoc.document.entity
 
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.persistence.serializers.SUUID
+import kdoc.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 
 /**
@@ -21,9 +21,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class DocumentFilterSet(
-    val id: SUUID? = null,
-    val ownerId: SUUID? = null,
-    val groupId: SUUID? = null,
+    val id: UuidS? = null,
+    val ownerId: UuidS? = null,
+    val groupId: UuidS? = null,
     val name: String? = null,
     val type: List<DocumentType>? = null,
     val description: String? = null

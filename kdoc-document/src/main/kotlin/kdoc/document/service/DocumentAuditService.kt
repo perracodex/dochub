@@ -9,7 +9,7 @@ import kdoc.document.entity.DocumentAuditRequest
 import kdoc.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Document audit service, where all the documents audit logic should be defined.
@@ -29,9 +29,9 @@ internal class DocumentAuditService(
      */
     suspend fun audit(
         operation: String,
-        documentId: UUID? = null,
-        groupId: UUID? = null,
-        ownerId: UUID? = null,
+        documentId: Uuid? = null,
+        groupId: Uuid? = null,
+        ownerId: Uuid? = null,
         log: String? = null,
     ): Unit = withContext(Dispatchers.IO) {
         val request = DocumentAuditRequest(

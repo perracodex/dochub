@@ -10,9 +10,10 @@ import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kdoc.base.persistence.entity.Meta
-import kdoc.base.persistence.serializers.SUUID
+import kdoc.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a single RBAC scope rule for a concrete [RbacRoleEntity].
@@ -30,8 +31,8 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 data class RbacScopeRuleEntity(
-    val id: SUUID,
-    val roleId: SUUID,
+    val id: UuidS,
+    val roleId: UuidS,
     val scope: RbacScope,
     val accessLevel: RbacAccessLevel,
     val fieldRules: List<RbacFieldRuleEntity>?,
@@ -47,8 +48,8 @@ data class RbacScopeRuleEntity(
          */
         fun from(row: ResultRow, fieldRules: List<RbacFieldRuleEntity>): RbacScopeRuleEntity {
             return RbacScopeRuleEntity(
-                id = row[RbacScopeRuleTable.id],
-                roleId = row[RbacScopeRuleTable.roleId],
+                id = row[RbacScopeRuleTable.id].toKotlinUuid(),
+                roleId = row[RbacScopeRuleTable.roleId].toKotlinUuid(),
                 scope = row[RbacScopeRuleTable.scope],
                 accessLevel = row[RbacScopeRuleTable.accessLevel],
                 fieldRules = fieldRules,

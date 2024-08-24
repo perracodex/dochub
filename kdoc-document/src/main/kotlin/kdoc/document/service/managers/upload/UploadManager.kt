@@ -13,7 +13,7 @@ import kdoc.document.entity.DocumentRequest
 import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.managers.upload.annotation.UploadAPI
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Handles the uploading and processing of document files into the storage.
@@ -43,8 +43,8 @@ internal class UploadManager(
      */
     @OptIn(UploadAPI::class)
     suspend fun upload(
-        ownerId: UUID,
-        groupId: UUID? = null,
+        ownerId: Uuid,
+        groupId: Uuid? = null,
         type: DocumentType,
         uploadRoot: String,
         cipher: Boolean,
@@ -67,7 +67,7 @@ internal class UploadManager(
 
         try {
             val output: MutableList<DocumentEntity> = mutableListOf()
-            val targetGroupId: UUID = groupId ?: UUID.randomUUID()
+            val targetGroupId: Uuid = groupId ?: Uuid.random()
 
             persistedFiles.forEach { fileEntry ->
                 val documentRequest = DocumentRequest(
@@ -82,7 +82,7 @@ internal class UploadManager(
                     size = fileEntry.size
                 )
 
-                val documentId: UUID = documentRepository.create(documentRequest = documentRequest)
+                val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
                 val createdDocument: DocumentEntity = documentRepository.findById(documentId = documentId)!!
                 output.add(createdDocument)
             }

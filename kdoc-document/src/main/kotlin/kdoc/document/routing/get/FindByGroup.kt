@@ -12,20 +12,20 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.getPageable
-import kdoc.base.persistence.utils.toUUID
+import kdoc.base.persistence.utils.toUuid
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
-import java.util.*
+import kotlin.uuid.Uuid
 
 @DocumentRouteAPI
 internal fun Route.findDocumentsByGroupRoute() {
     // Find all documents by group.
     get("group/{group_id}") {
-        val groupId: UUID = call.parameters["group_id"].toUUID()
+        val groupId: Uuid = call.parameters["group_id"].toUuid()
         val pageable: Pageable? = call.getPageable()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)

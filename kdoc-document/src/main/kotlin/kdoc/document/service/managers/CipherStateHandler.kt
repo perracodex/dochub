@@ -16,7 +16,7 @@ import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Handles the ciphering and de-ciphering of document files in the storage.
@@ -66,7 +66,7 @@ internal class CipherStateHandler(
         document: DocumentEntity,
         cipher: Boolean
     ): Boolean = withContext(Dispatchers.IO) {
-        val documentId: UUID = document.id
+        val documentId: Uuid = document.id
 
         if (document.detail.isCiphered == cipher) {
             tracer.debug("Document ID: $documentId is already in the desired cipher state.")
