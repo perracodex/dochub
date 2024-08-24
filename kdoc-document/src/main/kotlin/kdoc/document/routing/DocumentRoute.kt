@@ -20,7 +20,7 @@ import kdoc.document.routing.operate.*
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Document Routes API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class DocumentRouteAPI
+internal annotation class DocumentRouteAPI
 
 /**
  * Document related endpoints.
@@ -29,7 +29,7 @@ annotation class DocumentRouteAPI
  * of how to organize routes in diverse ways.
  */
 @OptIn(DocumentRouteAPI::class)
-fun Route.documentRoute() {
+public fun Route.documentRoute() {
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {

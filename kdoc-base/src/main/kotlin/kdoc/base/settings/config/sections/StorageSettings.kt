@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  * @property cipherKey The key used to cipher and de-cipher storage files.
  */
 @Serializable
-data class StorageSettings(
+public data class StorageSettings(
     val uploadsRootPath: String,
     val downloadsBasePath: String,
     val cipher: Boolean,

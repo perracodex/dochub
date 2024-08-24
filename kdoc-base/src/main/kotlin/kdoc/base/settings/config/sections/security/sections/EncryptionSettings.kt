@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @property hmac Settings related to HMAC encryption.
  */
 @Serializable
-data class EncryptionSettings(
+public data class EncryptionSettings(
     val atRest: Spec,
     val atTransit: Spec,
     val atTransitExpiration: Long,
@@ -33,7 +33,7 @@ data class EncryptionSettings(
      * @property sign Signature key to sign the encrypted data.
      */
     @Serializable
-    data class Spec(
+    public data class Spec(
         val algorithm: String,
         val salt: String,
         val key: String,
@@ -58,7 +58,7 @@ data class EncryptionSettings(
      * @property key Secret key for encrypting/decrypting data.
      */
     @Serializable
-    data class Hmac(
+    public data class Hmac(
         val algorithm: String,
         val key: String
     ) : IConfigSection {

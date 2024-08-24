@@ -19,7 +19,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  * Utility class for database field encryption.
  */
 @OptIn(ExperimentalEncodingApi::class)
-object EncryptionUtils {
+public object EncryptionUtils {
     private enum class AlgorithmName {
         AES_256_PBE_CBC,
         AES_256_PBE_GCM,
@@ -30,7 +30,7 @@ object EncryptionUtils {
     /**
      * The type of encryption to use.
      */
-    enum class Type {
+    public enum class Type {
         /** Stable encryption for data at rest, such as encrypted database fields. */
         AT_REST,
 
@@ -44,7 +44,7 @@ object EncryptionUtils {
      *
      * @param type The target [EncryptionUtils.Type] of encryption to use.
      */
-    fun getEncryptor(type: Type): Encryptor {
+    public fun getEncryptor(type: Type): Encryptor {
         val encryptionSpec: EncryptionSettings.Spec = when (type) {
             Type.AT_REST -> AppSettings.security.encryption.atRest
             Type.AT_TRANSIT -> AppSettings.security.encryption.atTransit
@@ -69,7 +69,7 @@ object EncryptionUtils {
      * @param length The desired length of the key in bytes.
      * @return A ByteArray of the specified length.
      */
-    fun String.toByteKey(length: Int): ByteArray {
+    public fun String.toByteKey(length: Int): ByteArray {
         val requiredHexLength: Int = length * 2 // Each byte is represented by two hex characters.
         return (if (this.length < requiredHexLength) padEnd(requiredHexLength, padChar = '0') else take(requiredHexLength))
             .chunked(size = 2)
@@ -94,7 +94,7 @@ object EncryptionUtils {
      * @param value The hexadecimal string to convert to a ByteArray.
      * @return The ByteArray representation of the hexadecimal string.
      */
-    fun hexStringToByteArray(value: String): ByteArray {
+    public fun hexStringToByteArray(value: String): ByteArray {
         return ByteArray(size = value.length / 2).apply {
             for (index in indices) {
                 this[index] = ((Character.digit(value[index * 2], 16) shl 4) +
@@ -110,7 +110,7 @@ object EncryptionUtils {
      * @param key The key to use for encryption.
      * @return The encrypted data.
      */
-    fun aesEncrypt(data: String, key: String): String {
+    public fun aesEncrypt(data: String, key: String): String {
         val normalizedKey: ByteArray = key.toByteKey(length = 32)
         val secretKey = SecretKeySpec(normalizedKey, "AES")
 
@@ -135,7 +135,7 @@ object EncryptionUtils {
      * @param key The key to use for decryption.
      * @return The decrypted data.
      */
-    fun aesDecrypt(data: String, key: String): String {
+    public fun aesDecrypt(data: String, key: String): String {
         val normalizedKey: ByteArray = key.toByteKey(length = 32)
         val secretKey = SecretKeySpec(normalizedKey, "AES")
 

@@ -17,28 +17,28 @@ import kotlin.time.DurationUnit
 import java.time.Instant as JavaInstant
 
 /** Alias for kotlinx [LocalDate], to avoid ambiguity with Java's LocalDate. */
-typealias KLocalDate = LocalDate
+public typealias KLocalDate = LocalDate
 
 /** Alias for kotlinx [LocalTime], to avoid ambiguity with Java's LocalTime. */
-typealias KLocalTime = LocalTime
+public typealias KLocalTime = LocalTime
 
 /** Alias for kotlinx [LocalDateTime], to avoid ambiguity with Java's LocalDateTime. */
-typealias KLocalDateTime = LocalDateTime
+public typealias KLocalDateTime = LocalDateTime
 
 /** Alias for kotlinx [Instant], to avoid ambiguity with Java's Instant. */
-typealias KInstant = Instant
+public typealias KInstant = Instant
 
 /**
  * Singleton providing time-related utility functions.
  */
-object DateTimeUtils {
+public object DateTimeUtils {
 
     /**
      * Enum class for date formats.
      *
      * @property pattern The pattern to format the date.
      */
-    enum class Format(val pattern: String) {
+    public enum class Format(public val pattern: String) {
         /** Format: yyyy-MM-dd, e.g. 2024-04-01 */
         YYYY_MM_DD("yyyy-MM-dd"),
 
@@ -57,11 +57,11 @@ object DateTimeUtils {
      * @property minutes The number of minutes in the interval.
      */
     @Serializable
-    data class Interval(val days: UInt = 0u, val hours: UInt = 0u, val minutes: UInt = 0u) {
+    public data class Interval(val days: UInt = 0u, val hours: UInt = 0u, val minutes: UInt = 0u) {
         /**
          * Converts the overall interval into a total number of minutes.
          */
-        fun toTotalMinutes(): UInt {
+        public fun toTotalMinutes(): UInt {
             return (days * 24u * 60u) + (hours * 60u) + minutes
         }
     }
@@ -69,7 +69,7 @@ object DateTimeUtils {
     /**
      * Returns the system's default timezone.
      */
-    fun timezone(): TimeZone {
+    public fun timezone(): TimeZone {
         return TimeZone.currentSystemDefault()
     }
 
@@ -78,7 +78,7 @@ object DateTimeUtils {
      *
      * @param dob The date of birth to calculate the age from.
      */
-    fun age(dob: KLocalDate): Int {
+    public fun age(dob: KLocalDate): Int {
 
         // Get today's date based on the system clock and timezone.
         val currentDate: KLocalDate = currentUTCDate()
@@ -96,12 +96,12 @@ object DateTimeUtils {
     /**
      * Returns the current date-time in UTC.
      */
-    fun currentUTCDateTime(): KLocalDateTime = Clock.System.now().toLocalDateTime(timeZone = timezone())
+    public fun currentUTCDateTime(): KLocalDateTime = Clock.System.now().toLocalDateTime(timeZone = timezone())
 
     /**
      * Extension function to convert a [LocalDateTime] to epoch seconds.
      */
-    fun KLocalDateTime.toEpochSeconds(timeZone: TimeZone = timezone()): Long {
+    public fun KLocalDateTime.toEpochSeconds(timeZone: TimeZone = timezone()): Long {
         val instant: Instant = this.toInstant(timeZone)
         return instant.epochSeconds
     }
@@ -109,33 +109,33 @@ object DateTimeUtils {
     /**
      * Returns the current date in UTC.
      */
-    fun currentUTCDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
+    public fun currentUTCDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
 
     /**
      * Converts a UTC time to the local time zone.
      */
-    fun utcToLocal(utc: KLocalDateTime): KLocalDateTime {
+    public fun utcToLocal(utc: KLocalDateTime): KLocalDateTime {
         return utc.toInstant(timeZone = TimeZone.UTC).toLocalDateTime(timeZone = timezone())
     }
 
     /**
      * Formats a date using the given [Format] pattern.
      */
-    fun format(date: KLocalDate, pattern: Format): String {
+    public fun format(date: KLocalDate, pattern: Format): String {
         return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDate())
     }
 
     /**
      * Formats a date-time using the given [Format] pattern.
      */
-    fun format(date: KLocalDateTime, pattern: Format): String {
+    public fun format(date: KLocalDateTime, pattern: Format): String {
         return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDateTime())
     }
 
     /**
      * Converts a Kotlin [LocalDateTime] to a Java [Date].
      */
-    fun KLocalDateTime.toJavaDate(): Date {
+    public fun KLocalDateTime.toJavaDate(): Date {
         this.toInstant(timeZone = timezone()).toJavaInstant().let {
             return Date.from(it)
         }
@@ -144,7 +144,7 @@ object DateTimeUtils {
     /**
      * Converts a Kotlin [Duration] to a Java [Instant].
      */
-    fun Duration.toJavaInstant(): JavaInstant {
+    public fun Duration.toJavaInstant(): JavaInstant {
         return JavaInstant.ofEpochMilli(
             System.currentTimeMillis() + this.toLong(unit = DurationUnit.MILLISECONDS)
         )
@@ -153,7 +153,7 @@ object DateTimeUtils {
     /**
      * Converts a Java [Date] to a Kotlin [LocalDateTime].
      */
-    fun javaDateToLocalDateTime(datetime: Date, zoneId: ZoneId = ZoneId.systemDefault()): KLocalDateTime {
+    public fun javaDateToLocalDateTime(datetime: Date, zoneId: ZoneId = ZoneId.systemDefault()): KLocalDateTime {
         val localDateTime: java.time.LocalDateTime = datetime.toInstant()
             .atZone(zoneId)
             .toLocalDateTime()
@@ -164,7 +164,7 @@ object DateTimeUtils {
     /**
      * Extension function flattening the time to 00:00:00.000000000.
      */
-    fun KLocalDateTime.flattenTime(): KLocalDateTime {
+    public fun KLocalDateTime.flattenTime(): KLocalDateTime {
         return KLocalDateTime(
             year = year,
             month = month,
@@ -179,7 +179,7 @@ object DateTimeUtils {
     /**
      * Extension function filling the time with 23:59:59.999999999.
      */
-    fun KLocalDateTime.fillTime(): KLocalDateTime {
+    public fun KLocalDateTime.fillTime(): KLocalDateTime {
         return KLocalDateTime(
             year = year,
             month = month,

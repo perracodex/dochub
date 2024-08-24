@@ -11,7 +11,7 @@ import kdoc.base.persistence.utils.IEnumWithId
  *
  * @property id The unique identifier of the document.
  */
-enum class DocumentType(override val id: Int) : IEnumWithId {
+public enum class DocumentType(override val id: Int) : IEnumWithId {
 
     /** General document type. */
     GENERAL(id = 100),
@@ -37,7 +37,7 @@ enum class DocumentType(override val id: Int) : IEnumWithId {
     /** Report document type. */
     REPORT(id = 107);
 
-    companion object {
+    public companion object {
         private val map: Map<Int, DocumentType> = DocumentType.entries.associateBy(DocumentType::id)
 
         /**
@@ -46,7 +46,7 @@ enum class DocumentType(override val id: Int) : IEnumWithId {
          * @param id The enum element unique identifier.
          * @return The [DocumentType] item corresponding to the given [id].
          */
-        fun fromId(id: Int): DocumentType? = map[id]
+        internal fun fromId(id: Int): DocumentType? = map[id]
 
         /**
          * Parses the given [value] into a [DocumentType] item.
@@ -55,7 +55,7 @@ enum class DocumentType(override val id: Int) : IEnumWithId {
          * @return The [DocumentType] item corresponding to the given [value].
          * @throws IllegalArgumentException If the given [value] is invalid or missing.
          */
-        fun parse(value: String): DocumentType {
+        public fun parse(value: String): DocumentType {
             if (value.isBlank()) {
                 throw IllegalArgumentException("Missing document type.")
             }

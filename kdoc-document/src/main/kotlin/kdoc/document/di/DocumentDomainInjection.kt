@@ -20,12 +20,12 @@ import org.koin.ktor.plugin.RequestScope
 /**
  * Document domain dependency injection module.
  */
-object DocumentDomainInjection {
+public object DocumentDomainInjection {
 
     /**
      * Get the dependency injection module for the Document domain.
      */
-    fun get(): Module {
+    public fun get(): Module {
         return module {
 
             // Scoped definitions within RequestScope for single request lifecycle.

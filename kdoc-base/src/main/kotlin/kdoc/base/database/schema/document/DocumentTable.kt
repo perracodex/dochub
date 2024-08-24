@@ -14,59 +14,59 @@ import java.util.*
 /**
  * Database table definition for document information.
  */
-object DocumentTable : TimestampedTable(name = "document") {
+public object DocumentTable : TimestampedTable(name = "document") {
     /** The record unique identifier. */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "document_id"
     ).autoGenerate()
 
     /** The ID of the actor who owns the document. */
-    val ownerId: Column<UUID> = uuid(
+    public val ownerId: Column<UUID> = uuid(
         name = "owner_id"
     )
 
     /** The group to which the document belongs, allowing documents to be associated. */
-    val groupId: Column<UUID> = uuid(
+    public val groupId: Column<UUID> = uuid(
         name = "group_id"
     )
 
     /** The [DocumentType] of the document */
-    val type: Column<DocumentType> = enumerationById(
+    public val type: Column<DocumentType> = enumerationById(
         name = "document_type_id",
         fromId = DocumentType::fromId
     )
 
     /** Optional description of the document. */
-    val description: Column<String?> = varchar(
+    public val description: Column<String?> = varchar(
         name = "description",
         length = 2048
     ).nullable()
 
     /** The original name of the document. */
-    val originalName: Column<String> = varchar(
+    public val originalName: Column<String> = varchar(
         name = "original_name",
         length = 1024
     )
 
     /** The name of the document in storage. */
-    val storageName: Column<String> = varchar(
+    public val storageName: Column<String> = varchar(
         name = "storage_name",
         length = 4098
     )
 
     /** The storage location of the document. */
-    val location: Column<String> = varchar(
+    public val location: Column<String> = varchar(
         name = "location",
         length = 8192
     )
 
     /** Whether the document is ciphered. */
-    val isCiphered: Column<Boolean> = bool(
+    public val isCiphered: Column<Boolean> = bool(
         name = "is_ciphered"
     )
 
     /** The size of the document in bytes. Without encryption. */
-    val size: Column<Long> = long(
+    public val size: Column<Long> = long(
         name = "document_size"
     )
 

@@ -20,7 +20,7 @@ import javax.crypto.spec.SecretKeySpec
  * caused by their internal fixed buffer size of 512 bytes, which cannot be overridden
  * and leads to suboptimal processing.
  */
-object SecureIO {
+public object SecureIO {
     /** Length in `bytes` of the initialization vector (IV) used in GCM mode of operation. */
     private const val GCM_IV_LENGTH: Int = 12
 
@@ -38,7 +38,7 @@ object SecureIO {
      * @param input The input stream containing the plain data.
      * @param output The output stream where the encrypted data will be written.
      */
-    fun cipher(input: InputStream, output: OutputStream) {
+    public fun cipher(input: InputStream, output: OutputStream) {
         val cipher: Cipher = getCipher(mode = Mode.ENCRYPT)
         cipher.iv.let {
             output.write(it.size)
@@ -53,7 +53,7 @@ object SecureIO {
      * @param input The encrypted input stream to decipher.
      * @param output The output stream to write the deciphered data to.
      */
-    fun decipher(input: InputStream, output: OutputStream) {
+    public fun decipher(input: InputStream, output: OutputStream) {
         val iv: ByteArray = ByteArray(input.read()).apply { input.read(this) }
         val cipher: Cipher = getCipher(mode = Mode.DECRYPT, iv = iv)
         write(input = input, output = output, cipher = cipher)

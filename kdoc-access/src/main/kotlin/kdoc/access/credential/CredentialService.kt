@@ -34,7 +34,7 @@ import kotlin.uuid.Uuid
  *
  * @see HashedPasswordTableAuth
  */
-class CredentialService : KoinComponent {
+internal class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()
 
     /** Lock to ensure thread-safe access and updates to the actor mapping cache. */

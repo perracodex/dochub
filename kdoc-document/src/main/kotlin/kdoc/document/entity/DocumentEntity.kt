@@ -26,7 +26,7 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The document's metadata.
  */
 @Serializable
-data class DocumentEntity(
+public data class DocumentEntity(
     val id: UuidS,
     val ownerId: UuidS,
     val groupId: UuidS,
@@ -45,7 +45,7 @@ data class DocumentEntity(
      * @property isCiphered Whether the document is ciphered.
      * @property size The size of the document in bytes. Without encryption.
      */
-    data class Detail(
+    public data class Detail(
         val type: DocumentType = DocumentType.GENERAL,
         val description: String? = null,
         val originalName: String = "",
@@ -56,7 +56,7 @@ data class DocumentEntity(
         val size: Long = 0L
     )
 
-    companion object {
+    internal companion object {
         /**
          * Maps a [ResultRow] to a [DocumentEntity] instance.
          *

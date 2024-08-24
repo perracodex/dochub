@@ -14,7 +14,7 @@ import kdoc.base.env.health.annotation.HealthCheckAPI
  * @return A list of strings representing the registered routes.
  */
 @HealthCheckAPI
-fun Application.collectRoutes(): List<String> {
+internal fun Application.collectRoutes(): List<String> {
     return routing {}.allRoutes()
 }
 

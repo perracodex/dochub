@@ -23,14 +23,14 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class RbacFieldRuleEntity(
+public data class RbacFieldRuleEntity(
     val id: UuidS,
     val scopeRuleId: UuidS,
     val fieldName: String,
     val accessLevel: RbacAccessLevel,
     val meta: Meta
 ) {
-    companion object {
+    internal companion object {
         /**
          * Maps a [ResultRow] to a [RbacFieldRuleEntity] instance.
          *

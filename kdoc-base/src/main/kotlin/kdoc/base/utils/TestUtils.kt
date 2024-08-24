@@ -16,12 +16,12 @@ import java.io.File
 /**
  * Common utilities for unit testing.
  */
-object TestUtils {
+public object TestUtils {
 
     /**
      * Loads the application settings for testing.
      */
-    fun loadSettings() {
+    public fun loadSettings() {
         val testConfig = ApplicationConfig(configPath = "application.conf")
 
         AppSettings.load(applicationConfig = testConfig)
@@ -30,7 +30,7 @@ object TestUtils {
     /**
      * Sets up the database for testing.
      */
-    fun setupDatabase() {
+    public fun setupDatabase() {
         DatabaseService.init(settings = AppSettings.database) {
             addTable(table = DocumentTable)
         }
@@ -41,7 +41,7 @@ object TestUtils {
      *
      * @param modules The modules to load.
      */
-    fun setupKoin(modules: List<Module> = emptyList()) {
+    public fun setupKoin(modules: List<Module> = emptyList()) {
         startKoin {
             modules(modules)
         }
@@ -50,7 +50,7 @@ object TestUtils {
     /**
      * Tears down the testing environment.
      */
-    fun tearDown() {
+    public fun tearDown() {
         stopKoin()
 
         DatabaseService.close()

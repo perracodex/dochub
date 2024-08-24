@@ -28,7 +28,7 @@ import kdoc.server.utils.ApplicationsUtils
  *
  * @param args Command line arguments passed to the application.
  */
-fun main(args: Array<String>) {
+public fun main(args: Array<String>) {
     EngineMain.main(args)
 }
 
@@ -40,7 +40,7 @@ fun main(args: Array<String>) {
  *
  * See: [Plugins](https://ktor.io/docs/server-plugins.html)
  */
-fun Application.kdocModule() {
+internal fun Application.kdocModule() {
 
     AppSettings.load(applicationConfig = environment.config)
 

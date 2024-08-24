@@ -9,11 +9,11 @@ import java.io.InputStream
 /**
  * A wrapper class for an InputStream that counts the number of bytes read from it.
  */
-class CountingInputStream(private val wrappedInputStream: InputStream) : InputStream() {
+public class CountingInputStream(private val wrappedInputStream: InputStream) : InputStream() {
     /**
      * The total number of bytes read from the InputStream.
      */
-    var totalBytesRead: Long = 0
+    public var totalBytesRead: Long = 0
         private set
 
     override fun read(): Int {

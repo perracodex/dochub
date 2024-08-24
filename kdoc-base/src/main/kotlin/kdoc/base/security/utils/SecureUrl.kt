@@ -54,7 +54,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  * and any tampering with the URL will invalidate the signature, therefore protecting the underlying data.
  */
 @OptIn(ExperimentalEncodingApi::class)
-object SecureUrl {
+public object SecureUrl {
     private const val TOKEN_PART_INDEX: Int = 0
     private const val EXPIRATION_PART_INDEX: Int = 1
     private const val PARTS_COUNT: Int = 2
@@ -69,7 +69,7 @@ object SecureUrl {
      * @param data The original string data to be encrypted within the token.
      * @return A string representing the complete URL with the encrypted token as a query parameter.
      */
-    fun generate(basePath: String, data: String): String {
+    public fun generate(basePath: String, data: String): String {
         val currentTime: Long = DateTimeUtils.currentUTCDateTime().toEpochSeconds()
         val expiresAt: Long = currentTime + AppSettings.security.encryption.atTransitExpiration
         val plainToken = "$data$SEPARATOR$expiresAt"
@@ -86,7 +86,7 @@ object SecureUrl {
      * @param signature The signature to verify the integrity of the token.
      * @return A boolean indicating whether the token is valid (true) or not (false).
      */
-    fun verify(basePath: String, token: String, signature: String): String? {
+    public fun verify(basePath: String, token: String, signature: String): String? {
         // Verify the URL signature for integrity before decryption.
         val url = "$basePath$PARAM_TOKEN$token"
         if (!verifySignature(url = url, receivedSignature = signature)) return null

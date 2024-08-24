@@ -11,7 +11,7 @@ import kdoc.base.settings.AppSettings
 /**
  * Utility object for network-related functionalities.
  */
-object NetworkUtils {
+public object NetworkUtils {
     private val tracer = Tracer<NetworkUtils>()
 
     private const val LISTEN_ALL_INTERFACES: String = "0.0.0.0"
@@ -28,7 +28,7 @@ object NetworkUtils {
      * @param reason A description of why these endpoints are being logged, providing context.
      * @param endpoints A list of endpoint paths (without base URL) to be logged.
      */
-    fun logEndpoints(reason: String, endpoints: List<String>) {
+    public fun logEndpoints(reason: String, endpoints: List<String>) {
         val url: Url = getServerUrl()
         tracer.info("$reason:")
         endpoints.forEach { endpoint ->
@@ -55,7 +55,7 @@ object NetworkUtils {
      *
      * @return The constructed Url object representing the server's base URL.
      */
-    fun getServerUrl(): Url {
+    public fun getServerUrl(): Url {
         val port: Int = getPort()
         val protocol: URLProtocol = getProtocol()
         val host: String = AppSettings.deployment.host
@@ -85,7 +85,7 @@ object NetworkUtils {
      *
      * @return The [URLProtocol] representing HTTP or HTTPS.
      */
-    fun getProtocol(): URLProtocol {
+    public fun getProtocol(): URLProtocol {
         return if (AppSettings.security.useSecureConnection)
             SECURE_PROTOCOL
         else
@@ -98,22 +98,22 @@ object NetworkUtils {
      * @param protocol The protocol string to evaluate, typically "HTTP" or "HTTPS".
      * @return Whether the protocol is secure.
      */
-    fun isSecureProtocol(protocol: String): Boolean {
+    public fun isSecureProtocol(protocol: String): Boolean {
         return (protocol == SECURE_PROTOCOL.name)
     }
 
     /**
-     * Evaluates if any of the provided port numbers are considered insecure.
+     * Evaluates if all the provided port numbers are considered secure.
      *
      * @param ports The list of port numbers to be evaluated.
-     * @return Whether any provided ports are considered insecure.
+     * @return True if all ports are considered secure, false otherwise.
      */
-    fun isInsecurePort(ports: List<Int?>): Boolean {
+    public fun isSecurePort(ports: List<Int?>): Boolean {
         ports.forEach { port ->
             if (port == null || port == 0 || port == 8080) {
-                return true
+                return false
             }
         }
-        return false
+        return true
     }
 }

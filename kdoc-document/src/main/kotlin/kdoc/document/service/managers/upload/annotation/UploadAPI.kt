@@ -9,4 +9,4 @@ package kdoc.document.service.managers.upload.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Upload API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class UploadAPI
+internal annotation class UploadAPI

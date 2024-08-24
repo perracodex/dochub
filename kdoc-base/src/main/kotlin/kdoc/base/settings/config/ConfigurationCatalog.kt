@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
  * @property storage The storage settings for the application.
  */
 @Serializable
-data class ConfigurationCatalog(
+public data class ConfigurationCatalog(
     val apiSchema: ApiSchemaSettings,
     val cors: CorsSettings,
     val database: DatabaseSettings,

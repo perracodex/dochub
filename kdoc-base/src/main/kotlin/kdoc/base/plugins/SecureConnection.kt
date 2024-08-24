@@ -24,7 +24,7 @@ import kdoc.base.settings.AppSettings
  *
  * See: [Ktor HSTS (HTTP Strict Transport Security) Plugin](https://ktor.io/docs/server-hsts.html)
  */
-fun Application.configureSecureConnection() {
+public fun Application.configureSecureConnection() {
 
     if (!AppSettings.security.useSecureConnection)
         return
