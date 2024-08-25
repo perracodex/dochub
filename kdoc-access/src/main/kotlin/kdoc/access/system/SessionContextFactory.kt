@@ -72,7 +72,7 @@ internal object SessionContextFactory : KoinComponent {
         val credentialService: CredentialService by inject()
         val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
 
-        if (userIdPrincipal == null) {
+        userIdPrincipal ?: run {
             tracer.error("Invalid credentials.")
             return null
         }
@@ -81,7 +81,7 @@ internal object SessionContextFactory : KoinComponent {
         val actorService: ActorService by inject()
         val actor: ActorEntity? = actorService.findByUsername(username = username)
 
-        if (actor == null) {
+        actor ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }

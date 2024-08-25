@@ -169,7 +169,7 @@ internal class DocumentService(
             signature = signature
         )
 
-        if (decodedToken == null) {
+        decodedToken ?: run {
             tracer.warning("Invalid or expired token: $token")
             return null
         }
@@ -181,7 +181,7 @@ internal class DocumentService(
 
         val documentId: Uuid? = params["document_id"]?.toUuidOrNull()
         val groupId: Uuid? = params["group_id"]?.toUuidOrNull()
-        if (documentId == null && groupId == null) {
+        (documentId ?: groupId) ?: run {
             tracer.error("No document ID or group ID provided.")
             throw IllegalArgumentException("No document ID or group ID provided.")
         }

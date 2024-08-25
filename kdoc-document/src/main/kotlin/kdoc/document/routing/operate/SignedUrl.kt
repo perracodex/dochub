@@ -25,7 +25,7 @@ internal fun Route.getDocumentSignedUrlRoute() {
     get("url/{document_id?}/{group_id?}") {
         val documentId: Uuid? = call.request.queryParameters["document_id"].toUuidOrNull()
         val groupId: Uuid? = call.request.queryParameters["group_id"]?.toUuidOrNull()
-        if (documentId == null && groupId == null) {
+        (documentId ?: groupId) ?: run {
             call.respond(status = HttpStatusCode.BadRequest, message = "Either document_id or group_id must be provided.")
             return@get
         }
