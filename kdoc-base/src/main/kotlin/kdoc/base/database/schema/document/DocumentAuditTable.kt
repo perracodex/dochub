@@ -4,19 +4,21 @@
 
 package kdoc.base.database.schema.document
 
+import kdoc.base.persistence.utils.autoGenerate
+import kdoc.base.persistence.utils.kotlinUuid
 import kdoc.base.utils.KLocalDateTime
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition to track document audit logs.
  */
 public object DocumentAuditTable : Table(name = "document_audit") {
     /** The record unique identifier. */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "audit_id"
     ).autoGenerate()
 
@@ -27,22 +29,22 @@ public object DocumentAuditTable : Table(name = "document_audit") {
     )
 
     /** The unique identifier of the actor that performed the operation. */
-    public val actorId: Column<UUID?> = uuid(
+    public val actorId: Column<Uuid?> = kotlinUuid(
         name = "actor_id"
     ).nullable()
 
     /** The unique identifier of the document. */
-    public val documentId: Column<UUID?> = uuid(
+    public val documentId: Column<Uuid?> = kotlinUuid(
         name = "document_id"
     ).nullable()
 
     /** The unique identifier of the group that the document belongs to. */
-    public val groupId: Column<UUID?> = uuid(
+    public val groupId: Column<Uuid?> = kotlinUuid(
         name = "group_id"
     ).nullable()
 
     /** The unique identifier of the owner of the document. */
-    public val ownerId: Column<UUID?> = uuid(
+    public val ownerId: Column<Uuid?> = kotlinUuid(
         name = "owner_id"
     ).nullable()
 

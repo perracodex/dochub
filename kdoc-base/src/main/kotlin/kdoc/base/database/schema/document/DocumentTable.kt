@@ -6,27 +6,29 @@ package kdoc.base.database.schema.document
 
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.database.schema.document.types.DocumentType
+import kdoc.base.persistence.utils.autoGenerate
 import kdoc.base.persistence.utils.enumerationById
+import kdoc.base.persistence.utils.kotlinUuid
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition for document information.
  */
 public object DocumentTable : TimestampedTable(name = "document") {
     /** The record unique identifier. */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "document_id"
     ).autoGenerate()
 
     /** The ID of the actor who owns the document. */
-    public val ownerId: Column<UUID> = uuid(
+    public val ownerId: Column<Uuid> = kotlinUuid(
         name = "owner_id"
     )
 
     /** The group to which the document belongs, allowing documents to be associated. */
-    public val groupId: Column<UUID> = uuid(
+    public val groupId: Column<Uuid> = kotlinUuid(
         name = "group_id"
     )
 

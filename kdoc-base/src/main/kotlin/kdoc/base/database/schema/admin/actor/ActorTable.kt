@@ -7,13 +7,16 @@ package kdoc.base.database.schema.admin.actor
 import kdoc.base.database.custom_columns.encryptedValidVarChar
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.base.TimestampedTable
+import kdoc.base.persistence.utils.autoGenerate
+import kdoc.base.persistence.utils.kotlinUuid
+import kdoc.base.persistence.utils.references
 import kdoc.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition holding Actors.
@@ -29,7 +32,7 @@ public object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The unique id of the Actor record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "actor_id"
     ).autoGenerate()
 
@@ -53,7 +56,7 @@ public object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The associated [RbacRoleTable] id.
      */
-    public val roleId: Column<UUID> = uuid(
+    public val roleId: Column<Uuid> = kotlinUuid(
         name = "role_id"
     ).references(
         fkName = "fk_rbac_role__role_id",

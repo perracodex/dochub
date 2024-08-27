@@ -12,7 +12,6 @@ import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for a document.
@@ -65,9 +64,9 @@ public data class DocumentEntity(
          */
         fun from(row: ResultRow): DocumentEntity {
             return DocumentEntity(
-                id = row[DocumentTable.id].toKotlinUuid(),
-                ownerId = row[DocumentTable.ownerId].toKotlinUuid(),
-                groupId = row[DocumentTable.groupId].toKotlinUuid(),
+                id = row[DocumentTable.id],
+                ownerId = row[DocumentTable.ownerId],
+                groupId = row[DocumentTable.groupId],
                 detail = Detail(
                     type = row[DocumentTable.type],
                     description = row[DocumentTable.description],

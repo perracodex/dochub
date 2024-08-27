@@ -17,8 +17,6 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of the [IDocumentRepository] interface.
@@ -31,7 +29,7 @@ internal class DocumentRepository(
     override fun findById(documentId: Uuid): DocumentEntity? {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.selectAll().where {
-                DocumentTable.id eq documentId.toJavaUuid()
+                DocumentTable.id eq documentId
             }.singleOrNull()?.let { resultRow ->
                 DocumentEntity.from(row = resultRow)
             }
@@ -40,14 +38,14 @@ internal class DocumentRepository(
 
     override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity> {
         return fetchByCondition(
-            condition = { DocumentTable.ownerId eq ownerId.toJavaUuid() },
+            condition = { DocumentTable.ownerId eq ownerId },
             pageable = pageable
         )
     }
 
     override fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentEntity> {
         return fetchByCondition(
-            condition = { DocumentTable.groupId eq groupId.toJavaUuid() },
+            condition = { DocumentTable.groupId eq groupId },
             pageable = pageable
         )
     }
@@ -109,17 +107,17 @@ internal class DocumentRepository(
             // This could be removed if the database is configured to use a case-insensitive collation.
             filterSet.id?.let { documentId ->
                 query.andWhere {
-                    DocumentTable.id eq documentId.toJavaUuid()
+                    DocumentTable.id eq documentId
                 }
             }
             filterSet.ownerId?.let { ownerId ->
                 query.andWhere {
-                    DocumentTable.ownerId eq ownerId.toJavaUuid()
+                    DocumentTable.ownerId eq ownerId
                 }
             }
             filterSet.groupId?.let { groupId ->
                 query.andWhere {
-                    DocumentTable.groupId eq groupId.toJavaUuid()
+                    DocumentTable.groupId eq groupId
                 }
             }
             filterSet.name?.let { name ->
@@ -159,9 +157,9 @@ internal class DocumentRepository(
 
     override fun create(documentRequest: DocumentRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val newDocumentId: Uuid = (DocumentTable.insert { documentRow ->
+            val newDocumentId: Uuid = DocumentTable.insert { documentRow ->
                 documentRow.mapDocumentRequest(documentRequest = documentRequest)
-            } get DocumentTable.id).toKotlinUuid()
+            } get DocumentTable.id
 
             newDocumentId
         }
@@ -171,7 +169,7 @@ internal class DocumentRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = DocumentTable.update(
                 where = {
-                    DocumentTable.id eq documentId.toJavaUuid()
+                    DocumentTable.id eq documentId
                 }
             ) { documentRow ->
                 documentRow.mapDocumentRequest(documentRequest = documentRequest)
@@ -185,7 +183,7 @@ internal class DocumentRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.update(
                 where = {
-                    DocumentTable.id eq documentId.toJavaUuid()
+                    DocumentTable.id eq documentId
                 }
             ) {
                 it[DocumentTable.isCiphered] = isCiphered
@@ -197,7 +195,7 @@ internal class DocumentRepository(
     override fun delete(documentId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.deleteWhere {
-                id eq documentId.toJavaUuid()
+                id eq documentId
             }
         }
     }
@@ -205,7 +203,7 @@ internal class DocumentRepository(
     override fun deleteByGroup(groupId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.deleteWhere {
-                DocumentTable.groupId eq groupId.toJavaUuid()
+                DocumentTable.groupId eq groupId
             }
         }
     }
@@ -227,8 +225,8 @@ internal class DocumentRepository(
      * so that it can be used to update or create a database record.
      */
     private fun UpdateBuilder<Int>.mapDocumentRequest(documentRequest: DocumentRequest) {
-        this[DocumentTable.ownerId] = documentRequest.ownerId.toJavaUuid()
-        this[DocumentTable.groupId] = documentRequest.groupId.toJavaUuid()
+        this[DocumentTable.ownerId] = documentRequest.ownerId
+        this[DocumentTable.groupId] = documentRequest.groupId
         this[DocumentTable.type] = documentRequest.type
         this[DocumentTable.description] = documentRequest.description?.trim()
         this[DocumentTable.originalName] = documentRequest.originalName.trim()
