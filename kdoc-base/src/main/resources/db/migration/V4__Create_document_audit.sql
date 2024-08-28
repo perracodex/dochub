@@ -13,6 +13,12 @@ CREATE TABLE IF NOT EXISTS document_audit (
     owner_id UUID NULL,
     log TEXT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT pk_audit_id PRIMARY KEY (audit_id)
 );
+
+CREATE TRIGGER IF NOT EXISTS tg_document_audit__updated_at
+BEFORE UPDATE ON document_audit
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

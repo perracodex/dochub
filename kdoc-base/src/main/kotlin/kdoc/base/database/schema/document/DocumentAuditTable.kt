@@ -4,19 +4,17 @@
 
 package kdoc.base.database.schema.document
 
-import kdoc.base.persistence.utils.autoGenerate
-import kdoc.base.persistence.utils.kotlinUuid
-import kdoc.base.utils.KLocalDateTime
+import kdoc.base.database.custom_columns.autoGenerate
+import kdoc.base.database.custom_columns.kotlinUuid
+import kdoc.base.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import kotlin.uuid.Uuid
 
 /**
  * Database table definition to track document audit logs.
  */
-public object DocumentAuditTable : Table(name = "document_audit") {
+public object DocumentAuditTable : TimestampedTable(name = "document_audit") {
     /** The record unique identifier. */
     public val id: Column<Uuid> = kotlinUuid(
         name = "audit_id"
@@ -52,11 +50,6 @@ public object DocumentAuditTable : Table(name = "document_audit") {
     public val log: Column<String?> = text(
         name = "log"
     ).nullable()
-
-    /** The date and time the audit log entry was created. */
-    public val createdAt: Column<KLocalDateTime> = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,

@@ -4,12 +4,12 @@
 
 package kdoc.base.database.schema.admin.rbac
 
+import kdoc.base.database.custom_columns.autoGenerate
+import kdoc.base.database.custom_columns.kotlinUuid
+import kdoc.base.database.custom_columns.references
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.base.TimestampedTable
-import kdoc.base.persistence.utils.autoGenerate
 import kdoc.base.persistence.utils.enumerationById
-import kdoc.base.persistence.utils.kotlinUuid
-import kdoc.base.persistence.utils.references
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
