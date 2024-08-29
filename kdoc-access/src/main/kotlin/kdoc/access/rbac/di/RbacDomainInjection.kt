@@ -5,12 +5,12 @@
 package kdoc.access.rbac.di
 
 import kdoc.access.actor.repository.IActorRepository
-import kdoc.access.rbac.repository.field_rule.IRbacFieldRuleRepository
-import kdoc.access.rbac.repository.field_rule.RbacFieldRuleRepository
+import kdoc.access.rbac.repository.field.IRbacFieldRuleRepository
+import kdoc.access.rbac.repository.field.RbacFieldRuleRepository
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.repository.role.RbacRoleRepository
-import kdoc.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
-import kdoc.access.rbac.repository.scope_rule.RbacScopeRuleRepository
+import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
+import kdoc.access.rbac.repository.scope.RbacScopeRuleRepository
 import kdoc.access.rbac.service.RbacService
 import org.koin.core.module.Module
 import org.koin.dsl.module

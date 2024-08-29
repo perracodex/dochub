@@ -6,7 +6,7 @@ package kdoc.access.rbac.repository.role
 
 import kdoc.access.rbac.entity.role.RbacRoleEntity
 import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
+import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kdoc.base.database.schema.admin.actor.ActorTable
 import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable

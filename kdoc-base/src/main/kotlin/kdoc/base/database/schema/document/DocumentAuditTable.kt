@@ -4,8 +4,8 @@
 
 package kdoc.base.database.schema.document
 
-import kdoc.base.database.custom_columns.autoGenerate
-import kdoc.base.database.custom_columns.kotlinUuid
+import kdoc.base.database.columns.autoGenerate
+import kdoc.base.database.columns.kotlinUuid
 import kdoc.base.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

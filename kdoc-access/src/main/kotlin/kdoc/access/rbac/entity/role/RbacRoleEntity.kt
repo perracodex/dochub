@@ -4,8 +4,8 @@
 
 package kdoc.access.rbac.entity.role
 
-import kdoc.access.rbac.entity.field_rule.RbacFieldRuleEntity
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleEntity
+import kdoc.access.rbac.entity.field.RbacFieldRuleEntity
+import kdoc.access.rbac.entity.scope.RbacScopeRuleEntity
 import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable

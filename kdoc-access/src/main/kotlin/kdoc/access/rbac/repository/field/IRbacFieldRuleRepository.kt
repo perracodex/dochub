@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.repository.field_rule
+package kdoc.access.rbac.repository.field
 
-import kdoc.access.rbac.entity.field_rule.RbacFieldRuleEntity
-import kdoc.access.rbac.entity.field_rule.RbacFieldRuleRequest
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kdoc.access.rbac.entity.field.RbacFieldRuleEntity
+import kdoc.access.rbac.entity.field.RbacFieldRuleRequest
+import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**

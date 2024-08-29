@@ -19,6 +19,7 @@ internal fun Application.configureKoin() {
 
     install(plugin = Koin) {
         modules(
+            // Load all the DI modules for the application.
             RbacDomainInjection.get(),
             ActorDomainInjection.get(),
             DocumentDomainInjection.get(),

@@ -12,7 +12,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kdoc.access.rbac.entity.role.RbacRoleEntity
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacService
 import kdoc.access.rbac.view.RbacAdminView

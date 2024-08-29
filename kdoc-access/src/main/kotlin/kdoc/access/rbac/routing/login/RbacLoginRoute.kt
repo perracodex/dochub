@@ -38,7 +38,6 @@ internal fun Route.rbacLoginRoute() {
         }
     }
 
-
     authenticate(RbacLoginView.RBAC_LOGIN_PATH) {
         post("rbac/login") {
             call.respondRedirect(url = RbacAdminView.RBAC_ADMIN_PATH)

@@ -8,7 +8,7 @@ import kdoc.access.actor.entity.ActorRequest
 import kdoc.access.credential.CredentialService
 import kdoc.access.rbac.entity.role.RbacRoleEntity
 import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope

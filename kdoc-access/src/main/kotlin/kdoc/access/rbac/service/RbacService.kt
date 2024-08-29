@@ -8,10 +8,10 @@ import kdoc.access.actor.entity.ActorEntity
 import kdoc.access.actor.repository.IActorRepository
 import kdoc.access.rbac.entity.role.RbacRoleEntity
 import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleEntity
-import kdoc.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kdoc.access.rbac.entity.scope.RbacScopeRuleEntity
+import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
-import kdoc.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
+import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kdoc.base.env.SessionContext
@@ -149,8 +149,9 @@ internal class RbacService(
      * @return The [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      */
     suspend fun getPermissionLevel(sessionContext: SessionContext, scope: RbacScope): RbacAccessLevel {
-        if (isCacheEmpty())
-            RbacAccessLevel.NONE
+        if (isCacheEmpty()) {
+            return RbacAccessLevel.NONE
+        }
 
         return cache[sessionContext.actorId]?.let { role ->
             if (role.isLocked) {
@@ -205,6 +206,7 @@ internal class RbacService(
 
         val roleId: Uuid = roleRepository.create(roleRequest = roleRequest)
 
+        // After creating the role must refresh the cache to reflect the new role.
         refresh()
 
         return@withContext roleRepository.findById(roleId = roleId)!!
@@ -229,6 +231,7 @@ internal class RbacService(
             roleRequest = roleRequest
         )
 
+        // After updating the role must refresh the cache to reflect the changes.
         refresh()
 
         return@withContext if (updateCount > 0) {
@@ -258,6 +261,7 @@ internal class RbacService(
             scopeRuleRequests = scopeRuleRequests
         )
 
+        // After updating the scope rules must refresh the cache to reflect the changes.
         refresh()
 
         return@withContext updateCount

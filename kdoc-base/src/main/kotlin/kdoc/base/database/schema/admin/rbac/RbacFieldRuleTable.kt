@@ -4,9 +4,9 @@
 
 package kdoc.base.database.schema.admin.rbac
 
-import kdoc.base.database.custom_columns.autoGenerate
-import kdoc.base.database.custom_columns.kotlinUuid
-import kdoc.base.database.custom_columns.references
+import kdoc.base.database.columns.autoGenerate
+import kdoc.base.database.columns.kotlinUuid
+import kdoc.base.database.columns.references
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.persistence.utils.enumerationById

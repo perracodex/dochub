@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.repository.field_rule
+package kdoc.access.rbac.repository.field
 
-import kdoc.access.rbac.entity.field_rule.RbacFieldRuleRequest
+import kdoc.access.rbac.entity.field.RbacFieldRuleRequest
 import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.ResultRow

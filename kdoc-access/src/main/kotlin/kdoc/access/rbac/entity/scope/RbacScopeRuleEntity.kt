@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.scope_rule
+package kdoc.access.rbac.entity.scope
 
-import kdoc.access.rbac.entity.field_rule.RbacFieldRuleEntity
+import kdoc.access.rbac.entity.field.RbacFieldRuleEntity
 import kdoc.access.rbac.entity.role.RbacRoleEntity
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel

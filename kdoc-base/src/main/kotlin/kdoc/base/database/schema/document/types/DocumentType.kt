@@ -56,9 +56,7 @@ public enum class DocumentType(override val id: Int) : IEnumWithId {
          * @throws IllegalArgumentException If the given [value] is invalid or missing.
          */
         public fun parse(value: String): DocumentType {
-            if (value.isBlank()) {
-                throw IllegalArgumentException("Missing document type.")
-            }
+            require(value.isNotBlank()) { "Missing document type." }
 
             val target: String = value.trim()
             entries.forEach { documentType ->

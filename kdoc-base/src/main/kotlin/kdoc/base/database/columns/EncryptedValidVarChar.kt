@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.base.database.custom_columns
+package kdoc.base.database.columns
 
 import kdoc.base.persistence.validators.IValidator
 import org.jetbrains.exposed.crypt.EncryptedVarCharColumnType

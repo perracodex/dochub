@@ -4,10 +4,10 @@
 
 package kdoc.base.database.schema.admin.actor
 
-import kdoc.base.database.custom_columns.autoGenerate
-import kdoc.base.database.custom_columns.encryptedValidVarChar
-import kdoc.base.database.custom_columns.kotlinUuid
-import kdoc.base.database.custom_columns.references
+import kdoc.base.database.columns.autoGenerate
+import kdoc.base.database.columns.encryptedValidVarChar
+import kdoc.base.database.columns.kotlinUuid
+import kdoc.base.database.columns.references
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.security.utils.EncryptionUtils
