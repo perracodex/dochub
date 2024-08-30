@@ -35,12 +35,12 @@ public data class HealthCheck(
     val security: SecurityCheck,
     val snowflake: SnowflakeCheck
 ) {
-    internal constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall) : this(
         health = mutableListOf(),
         application = ApplicationCheck(),
         database = DatabaseService.getHealthCheck(),
         deployment = DeploymentCheck(call = call),
-        endpoints = call?.application?.collectRoutes() ?: emptyList(),
+        endpoints = call.application.collectRoutes(),
         runtime = RuntimeCheck(call = call),
         security = SecurityCheck(),
         snowflake = SnowflakeCheck()
