@@ -4,7 +4,7 @@
 
 package kdoc.base.persistence.entity
 
-import kdoc.base.utils.KLocalDateTime
+import kdoc.base.persistence.serializers.ZonedTimestamp
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ResultRow
@@ -18,8 +18,8 @@ import org.jetbrains.exposed.sql.Table
  */
 @Serializable
 public data class Meta(
-    val createdAt: KLocalDateTime,
-    val updatedAt: KLocalDateTime
+    val createdAt: ZonedTimestamp,
+    val updatedAt: ZonedTimestamp
 ) {
     public companion object {
         /**
@@ -34,8 +34,8 @@ public data class Meta(
             val updatedAt: Column<*> = table.columns.single { it.name == "updated_at" }
 
             return Meta(
-                createdAt = row[createdAt] as KLocalDateTime,
-                updatedAt = row[updatedAt] as KLocalDateTime
+                createdAt = row[createdAt] as ZonedTimestamp,
+                updatedAt = row[updatedAt] as ZonedTimestamp
             )
         }
     }

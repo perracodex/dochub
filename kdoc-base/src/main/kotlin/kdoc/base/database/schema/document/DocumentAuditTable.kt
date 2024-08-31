@@ -51,6 +51,9 @@ public object DocumentAuditTable : TimestampedTable(name = "document_audit") {
         name = "log"
     ).nullable()
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_audit_id"

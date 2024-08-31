@@ -8,7 +8,6 @@ import kdoc.access.rbac.entity.field.RbacFieldRuleRequest
 import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.field.IRbacFieldRuleRepository
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
-import kdoc.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert
@@ -75,6 +74,5 @@ internal class RbacScopeRuleRepository(
         this[RbacScopeRuleTable.roleId] = roleId
         this[RbacScopeRuleTable.scope] = scopeRuleRequest.scope
         this[RbacScopeRuleTable.accessLevel] = scopeRuleRequest.accessLevel
-        this[RbacScopeRuleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

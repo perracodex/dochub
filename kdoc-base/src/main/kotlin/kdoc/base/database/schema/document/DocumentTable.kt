@@ -72,6 +72,9 @@ public object DocumentTable : TimestampedTable(name = "document") {
         name = "document_size"
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_document_id"

@@ -4,9 +4,11 @@
 
 package kdoc.base.utils
 
+import kdoc.base.persistence.serializers.ZonedTimestamp
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -97,6 +99,16 @@ public object DateTimeUtils {
     public fun currentUTCDateTime(): KLocalDateTime = Clock.System.now().toLocalDateTime(timeZone = timezone())
 
     /**
+     * Returns the current date-time with the specified or default time zone.
+     *
+     * @param zoneId The time zone ID, defaulting to the system's default time zone.
+     * @return An OffsetDateTime representing the current moment in the specified time zone.
+     */
+    public fun currentZonedTimestamp(zoneId: ZoneId = ZoneId.systemDefault()): ZonedTimestamp {
+        return OffsetDateTime.now(zoneId)
+    }
+
+    /**
      * Extension function to convert a [LocalDateTime] to epoch seconds.
      */
     public fun KLocalDateTime.toEpochSeconds(timeZone: TimeZone = timezone()): Long {
@@ -149,7 +161,11 @@ public object DateTimeUtils {
     }
 
     /**
-     * Converts a Java [Date] to a Kotlin [LocalDateTime].
+     * Converts a Java [Date] to a Kotlin [LocalDateTime] in the specified time zone.
+     *
+     * @param datetime The [Date] to be converted.
+     * @param zoneId The time zone to apply during the conversion. Defaults to the system's default time zone.
+     * @return A [KLocalDateTime] representing the same moment in time as the input [Date], adjusted to the specified time zone.
      */
     public fun javaDateToLocalDateTime(datetime: Date, zoneId: ZoneId = ZoneId.systemDefault()): KLocalDateTime {
         val localDateTime: java.time.LocalDateTime = datetime.toInstant()
