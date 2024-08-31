@@ -7,7 +7,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
-import kdoc.base.persistence.serializers.ZonedTimestamp
+import kdoc.base.persistence.serializers.OffsetTimestamp
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.entity.DocumentEntity
@@ -69,8 +69,8 @@ class TimestampTest : KoinComponent {
             actual = document.meta.updatedAt
         )
 
-        val createdAt: ZonedTimestamp = document.meta.createdAt
-        val updatedAt: ZonedTimestamp = document.meta.updatedAt
+        val createdAt: OffsetTimestamp = document.meta.createdAt
+        val updatedAt: OffsetTimestamp = document.meta.updatedAt
         documentRepository.update(documentId = documentId, documentRequest = documentRequest)
         val updatedDocument: DocumentEntity = documentRepository.findById(documentId = documentId)!!
 
