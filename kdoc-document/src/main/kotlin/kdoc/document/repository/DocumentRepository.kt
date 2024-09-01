@@ -9,7 +9,7 @@ import kdoc.base.database.service.transactionWithSchema
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
-import kdoc.base.persistence.pagination.applyPagination
+import kdoc.base.persistence.pagination.paginate
 import kdoc.document.entity.DocumentEntity
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
@@ -66,7 +66,7 @@ internal class DocumentRepository(
 
             // Fetch the paginated content.
             val content: List<DocumentEntity> = query
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     DocumentEntity.from(row = resultRow)
                 }
@@ -84,7 +84,7 @@ internal class DocumentRepository(
             val totalElements: Int = DocumentTable.selectAll().count().toInt()
 
             val content: List<DocumentEntity> = DocumentTable.selectAll()
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     DocumentEntity.from(row = resultRow)
                 }
@@ -142,7 +142,7 @@ internal class DocumentRepository(
             val totalFilteredElements: Int = query.count().toInt()
 
             val content: List<DocumentEntity> = query
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     DocumentEntity.from(row = resultRow)
                 }
