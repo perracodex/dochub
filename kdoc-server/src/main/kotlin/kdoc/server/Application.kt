@@ -70,9 +70,9 @@ internal fun Application.kdocModule() {
 
     configureSessions()
 
-    configureRoutes()
-
     configuredApiSchema()
+
+    configureRoutes()
 
     configureMicroMeterMetrics()
 

@@ -22,7 +22,7 @@ import kotlin.uuid.Uuid
 @DocumentRouteAPI
 internal fun Route.getDocumentSignedUrlRoute() {
     // Generate the signed URL for a document download.
-    get("url/{document_id?}/{group_id?}") {
+    get("v1/document/url/{document_id?}/{group_id?}") {
         val documentId: Uuid? = call.request.queryParameters["document_id"].toUuidOrNull()
         val groupId: Uuid? = call.request.queryParameters["group_id"]?.toUuidOrNull()
         (documentId ?: groupId) ?: run {

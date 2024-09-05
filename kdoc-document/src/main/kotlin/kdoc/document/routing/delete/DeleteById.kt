@@ -20,7 +20,7 @@ import kotlin.uuid.Uuid
 @DocumentRouteAPI
 internal fun Route.deleteDocumentByIdRoute() {
     // Delete a document by ID.
-    delete("{document_id}") {
+    delete("v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters["document_id"].toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)

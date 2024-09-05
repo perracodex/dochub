@@ -23,7 +23,7 @@ import org.koin.ktor.plugin.scope
 @DocumentRouteAPI
 internal fun Route.searchDocumentsRoute() {
     // Search (Filter) documents.
-    post<DocumentFilterSet>("/search") { request ->
+    post<DocumentFilterSet>("v1/document/search") { request ->
         val pageable: Pageable? = call.getPageable()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)

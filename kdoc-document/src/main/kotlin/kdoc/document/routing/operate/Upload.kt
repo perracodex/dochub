@@ -26,7 +26,7 @@ import kotlin.uuid.Uuid
 @DocumentRouteAPI
 internal fun Route.uploadDocumentsRoute() {
     // Upload a new document.
-    post("{owner_id?}/{group_id?}/{type?}/{cipher?}") {
+    post("v1/document/{owner_id?}/{group_id?}/{type?}/{cipher?}") {
         val ownerId: Uuid = call.request.queryParameters["owner_id"].toUuid()
         val groupId: Uuid? = call.request.queryParameters["group_id"].toUuidOrNull()
         val type: DocumentType = DocumentType.parse(value = call.request.queryParameters["type"]!!)

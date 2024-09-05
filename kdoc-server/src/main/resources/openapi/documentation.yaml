@@ -22,6 +22,29 @@ paths:
                   value: "Hello World."
                 Example#2:
                   value: ""
+    post:
+      description: "Search (Filter) documents."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
   /auth/token/create:
     post:
       description: "Creates a new token and responds with it."
@@ -54,14 +77,14 @@ paths:
         \ in Postman set the endpoint and in the Headers add an Authorization key\
         \ <br> with a 'Bearer' holding a previous valid token."
       responses:
-        "400":
-          description: "Bad Request"
+        "200":
+          description: "OK"
           content:
             '*/*':
               schema:
                 type: "string"
-        "200":
-          description: "OK"
+        "400":
+          description: "Bad Request"
           content:
             '*/*':
               schema:
@@ -126,7 +149,7 @@ paths:
                   description: ""
                   value: "/rbac/login"
         "200":
-          description: "OK"
+          description: "OK <br> Respond with HTML view of the RBAC admin panel."
           content:
             text/plain:
               schema:
@@ -157,6 +180,15 @@ paths:
                 Example#2:
                   description: ""
                   value: "/rbac/login"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid or missing role ID."
         "200":
           description: "OK"
           content:
@@ -171,6 +203,17 @@ paths:
     get:
       description: ""
       responses:
+        "302":
+          description: "Found <br> If the actor is not null, redirect to the admin\
+            \ view."
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
         "200":
           description: "OK"
           content:
@@ -181,16 +224,6 @@ paths:
                 text/html:
                   description: "HTML document"
                   value: ""
-        "302":
-          description: "Found <br> Redirect"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  description: ""
-                  value: "/rbac/admin"
     post:
       description: ""
       responses:
@@ -256,43 +289,10 @@ paths:
             items:
               type: "string"
       responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Page_? extends DocumentEntity"
-    post:
-      description: "Search (Filter) documents."
-      parameters:
-        - name: "sort"
-          in: "query"
-          required: false
-          schema:
-            type: "array"
-            items:
-              type: "string"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Page_? extends DocumentEntity"
-  /v1/document/{document_id}:
-    get:
-      description: "Find a documents by ID."
-      parameters:
-        - name: "document_id"
-          in: "path"
-          required: true
-          schema:
-            type: "string"
-      responses:
         "400":
           description: "Bad Request"
           content:
-            '*/*':
+            application/json:
               schema:
                 type: "string"
         "200":
@@ -300,8 +300,8 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/DocumentEntity"
-  /v1/document/{document_id}/{document_id}:
+                $ref: "#/components/schemas/Page_? extends DocumentEntity"
+  /v1/document/{document_id}:
     delete:
       description: "Delete a document by ID."
       parameters:
@@ -324,6 +324,36 @@ paths:
               schema:
                 type: "integer"
                 format: "int32"
+    get:
+      description: "Find a documents by ID."
+      parameters:
+        - name: "document_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: "string"
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DocumentEntity"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: "string"
   /v1/document/{owner_id}/{group_id}/{type}/{cipher}:
     post:
       description: "Upload a new document."
@@ -358,10 +388,19 @@ paths:
               examples:
                 Example#1:
                   value: "Invalid request."
+            application/json:
+              schema:
+                type: "string"
         "500":
           description: "Internal Server Error"
           content:
             '*/*':
+              schema:
+                type: "string"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
               schema:
                 type: "string"
         "201":
@@ -385,6 +424,18 @@ paths:
               examples:
                 Example#1:
                   value: "No documents found."
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: "string"
   /v1/document/cipher/{cipher}:
     put:
       description: "Changes the cipher state of all documents."
@@ -420,6 +471,9 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -435,6 +489,12 @@ paths:
               examples:
                 Example#1:
                   value: "Unable to initiate download."
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: "string"
   /v1/document/group/{group_id}:
     delete:
       description: "Delete all documents by group."
@@ -477,6 +537,9 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -506,6 +569,9 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -547,6 +613,85 @@ paths:
                 type: "string"
 components:
   schemas:
+    Sort:
+      type: "object"
+      properties:
+        table:
+          type: "string"
+        field:
+          type: "string"
+        direction:
+          type: "string"
+          enum:
+            - "ASC"
+            - "DESC"
+      required:
+        - "field"
+        - "direction"
+    Page:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+      required:
+        - "content"
+    Page_? extends DocumentEntity:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+          items:
+            type: "object"
     ApplicationCheck:
       type: "object"
       properties:
@@ -558,104 +703,6 @@ components:
           type: "boolean"
       required:
         - "errors"
-    Datasource:
-      type: "object"
-      properties:
-        totalConnections:
-          type: "integer"
-          format: "int32"
-        activeConnections:
-          type: "integer"
-          format: "int32"
-        idleConnections:
-          type: "integer"
-          format: "int32"
-        threadsAwaitingConnection:
-          type: "integer"
-          format: "int32"
-        connectionTimeout:
-          type: "integer"
-          format: "int64"
-        maxLifetime:
-          type: "integer"
-          format: "int64"
-        keepaliveTime:
-          type: "integer"
-          format: "int64"
-        maxPoolSize:
-          type: "integer"
-          format: "int32"
-    ConnectionTest:
-      type: "object"
-      properties:
-        established:
-          type: "boolean"
-        name:
-          type: "string"
-        version:
-          type: "string"
-        dialect:
-          type: "string"
-        url:
-          type: "string"
-        vendor:
-          type: "string"
-        autoCommit:
-          type: "boolean"
-        catalog:
-          type: "string"
-      required:
-        - "name"
-        - "version"
-        - "dialect"
-        - "url"
-        - "vendor"
-        - "catalog"
-    Configuration:
-      type: "object"
-      properties:
-        poolSize:
-          type: "integer"
-          format: "int32"
-        connectionTimeout:
-          type: "integer"
-          format: "int64"
-        transactionRetryAttempts:
-          type: "integer"
-          format: "int32"
-        warnLongQueriesDurationMs:
-          type: "integer"
-          format: "int64"
-        jdbcDriver:
-          type: "string"
-        jdbcUrl:
-          type: "string"
-      required:
-        - "jdbcDriver"
-        - "jdbcUrl"
-    DatabaseCheck:
-      type: "object"
-      properties:
-        errors:
-          type: "array"
-          items:
-            type: "string"
-        alive:
-          type: "boolean"
-        datasource:
-          $ref: "#/components/schemas/Datasource"
-        connectionTest:
-          $ref: "#/components/schemas/ConnectionTest"
-        configuration:
-          $ref: "#/components/schemas/Configuration"
-        tables:
-          type: "array"
-          items:
-            type: "string"
-      required:
-        - "errors"
-        - "configuration"
-        - "tables"
     Configured:
       type: "object"
       properties:
@@ -814,6 +861,104 @@ components:
           format: "int64"
       required:
         - "errors"
+    Datasource:
+      type: "object"
+      properties:
+        totalConnections:
+          type: "integer"
+          format: "int32"
+        activeConnections:
+          type: "integer"
+          format: "int32"
+        idleConnections:
+          type: "integer"
+          format: "int32"
+        threadsAwaitingConnection:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        maxLifetime:
+          type: "integer"
+          format: "int64"
+        keepaliveTime:
+          type: "integer"
+          format: "int64"
+        maxPoolSize:
+          type: "integer"
+          format: "int32"
+    ConnectionTest:
+      type: "object"
+      properties:
+        established:
+          type: "boolean"
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
+    Configuration:
+      type: "object"
+      properties:
+        poolSize:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        transactionRetryAttempts:
+          type: "integer"
+          format: "int32"
+        warnLongQueriesDurationMs:
+          type: "integer"
+          format: "int64"
+        jdbcDriver:
+          type: "string"
+        jdbcUrl:
+          type: "string"
+      required:
+        - "jdbcDriver"
+        - "jdbcUrl"
+    DatabaseCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        alive:
+          type: "boolean"
+        datasource:
+          $ref: "#/components/schemas/Datasource"
+        connectionTest:
+          $ref: "#/components/schemas/ConnectionTest"
+        configuration:
+          $ref: "#/components/schemas/Configuration"
+        tables:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "errors"
+        - "configuration"
+        - "tables"
     HealthCheck:
       type: "object"
       properties:
@@ -823,113 +968,43 @@ components:
             type: "string"
         application:
           $ref: "#/components/schemas/ApplicationCheck"
-        database:
-          $ref: "#/components/schemas/DatabaseCheck"
         deployment:
           $ref: "#/components/schemas/DeploymentCheck"
-        endpoints:
-          type: "array"
-          items:
-            type: "string"
         runtime:
           $ref: "#/components/schemas/RuntimeCheck"
         security:
           $ref: "#/components/schemas/SecurityCheck"
         snowflake:
           $ref: "#/components/schemas/SnowflakeCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        endpoints:
+          type: "array"
+          items:
+            type: "string"
       required:
         - "health"
         - "application"
-        - "database"
         - "deployment"
-        - "endpoints"
         - "runtime"
         - "security"
         - "snowflake"
+        - "database"
+        - "endpoints"
     Function1:
       type: "object"
       properties: { }
     Function1_? super HTML:
       type: "object"
-    Sort:
+    Uuid:
       type: "object"
       properties:
-        table:
-          type: "string"
-        field:
-          type: "string"
-        direction:
-          type: "string"
-          enum:
-            - "ASC"
-            - "DESC"
-      required:
-        - "field"
-        - "direction"
-    Page:
-      type: "object"
-      properties:
-        totalPages:
+        mostSignificantBits:
           type: "integer"
-          format: "int32"
-        pageIndex:
+          format: "int64"
+        leastSignificantBits:
           type: "integer"
-          format: "int32"
-        totalElements:
-          type: "integer"
-          format: "int32"
-        elementsPerPage:
-          type: "integer"
-          format: "int32"
-        elementsInPage:
-          type: "integer"
-          format: "int32"
-        hasNext:
-          type: "boolean"
-        hasPrevious:
-          type: "boolean"
-        overflow:
-          type: "boolean"
-        sort:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Sort"
-        content:
-          type: "array"
-      required:
-        - "content"
-    Page_? extends DocumentEntity:
-      type: "object"
-      properties:
-        totalPages:
-          type: "integer"
-          format: "int32"
-        pageIndex:
-          type: "integer"
-          format: "int32"
-        totalElements:
-          type: "integer"
-          format: "int32"
-        elementsPerPage:
-          type: "integer"
-          format: "int32"
-        elementsInPage:
-          type: "integer"
-          format: "int32"
-        hasNext:
-          type: "boolean"
-        hasPrevious:
-          type: "boolean"
-        overflow:
-          type: "boolean"
-        sort:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Sort"
-        content:
-          type: "array"
-          items:
-            type: "object"
+          format: "int64"
     Detail:
       type: "object"
       properties:
@@ -954,6 +1029,9 @@ components:
           type: "string"
         path:
           type: "string"
+        size:
+          type: "integer"
+          format: "int64"
       required:
         - "type"
         - "originalName"
@@ -964,9 +1042,11 @@ components:
       type: "object"
       properties:
         createdAt:
-          $ref: "#/components/schemas/LocalDateTime"
+          type: "string"
+          format: "date-time"
         updatedAt:
-          $ref: "#/components/schemas/LocalDateTime"
+          type: "string"
+          format: "date-time"
       required:
         - "createdAt"
         - "updatedAt"
@@ -974,14 +1054,11 @@ components:
       type: "object"
       properties:
         id:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         ownerId:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         groupId:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         detail:
           $ref: "#/components/schemas/Detail"
         meta:

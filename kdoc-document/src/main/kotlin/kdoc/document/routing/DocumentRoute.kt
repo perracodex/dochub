@@ -33,34 +33,28 @@ public fun Route.documentRoute() {
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            route("v1/document") {
-                uploadDocumentsRoute()
+            uploadDocumentsRoute()
 
-                searchDocumentsRoute()
-                findDocumentsByOwnerRoute()
+            searchDocumentsRoute()
+            findDocumentsByOwnerRoute()
 
-                findDocumentsByGroupRoute()
-                deleteDocumentsByGroupRoute()
+            findDocumentsByGroupRoute()
+            deleteDocumentsByGroupRoute()
 
-                getDocumentSignedUrlRoute()
-                downloadDocumentRoute()
+            getDocumentSignedUrlRoute()
+            downloadDocumentRoute()
 
-                route("{document_id}") {
-                    findDocumentByIdRoute()
-                    deleteDocumentByIdRoute()
-                }
-            }
+            findDocumentByIdRoute()
+            deleteDocumentByIdRoute()
         }
     }
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            route("v1/document") {
-                changeDocumentsCipherStateRoute()
-                backupDocumentsRoute()
-                findAllDocumentsRoute()
-                deleteAllDocumentsRoute()
-            }
+            changeDocumentsCipherStateRoute()
+            backupDocumentsRoute()
+            findAllDocumentsRoute()
+            deleteAllDocumentsRoute()
         }
     }
 }

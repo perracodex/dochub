@@ -32,7 +32,6 @@ import kdoc.document.routing.documentRoute
 internal fun Application.configureRoutes() {
 
     routing {
-
         documentRoute()
         accessTokenRoute()
         healthCheckRoute()
