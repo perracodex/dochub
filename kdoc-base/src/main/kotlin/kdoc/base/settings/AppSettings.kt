@@ -94,6 +94,13 @@ public object AppSettings {
     public val security: SecuritySettings get() = configuration.security
 
     /**
+     * Provides access to the storage configuration settings.
+     * These settings manage the storage of uploaded files,
+     * including the root path for uploads, the base URL for downloads,
+     */
+    public val storage: StorageSettings get() = configuration.storage
+
+    /**
      * Initializes the application's configuration settings by loading them from the provided [ApplicationConfig].
      * This method must be called as the very first step during the application startup process to ensure that all
      * other components have access to a consistently configured environment.
