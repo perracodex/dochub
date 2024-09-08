@@ -8,9 +8,13 @@ import io.ktor.server.http.content.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
-import kdoc.access.rbac.routing.admin.rbacAdminRoute
+import kdoc.access.rbac.plugin.withRbac
+import kdoc.access.rbac.routing.admin.rbacAdminLoadRoute
+import kdoc.access.rbac.routing.admin.rbacAdminUpdateRoute
 import kdoc.access.rbac.routing.login.rbacLoginRoute
 import kdoc.access.rbac.routing.login.rbacLogoutRoute
+import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kdoc.base.plugins.RateLimitScope
 
 /**
@@ -25,6 +29,10 @@ public fun Route.rbacRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
         rbacLoginRoute()
         rbacLogoutRoute()
-        rbacAdminRoute()
+
+        withRbac(scope = RbacScope.RBAC_ADMIN, accessLevel = RbacAccessLevel.VIEW) {
+            rbacAdminLoadRoute()
+            rbacAdminUpdateRoute()
+        }
     }
 }
