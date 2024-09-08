@@ -5,11 +5,10 @@
 package kdoc.base.database.schema.document
 
 import kdoc.base.database.columns.autoGenerate
+import kdoc.base.database.columns.enumerationById
 import kdoc.base.database.columns.kotlinUuid
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.persistence.utils.enumerationById
-import kdoc.base.persistence.utils.getEnumById
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
@@ -35,8 +34,7 @@ public object DocumentTable : TimestampedTable(name = "document") {
 
     /** The [DocumentType] of the document */
     public val type: Column<DocumentType> = enumerationById(
-        name = "document_type_id",
-        fromId = ::getEnumById
+        name = "document_type_id"
     )
 
     /** Optional description of the document. */

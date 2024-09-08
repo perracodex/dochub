@@ -4,7 +4,7 @@
 
 package kdoc.base.database.schema.admin.rbac.types
 
-import kdoc.base.persistence.utils.IEnumWithId
+import kdoc.base.database.columns.IEnumWithId
 
 /**
  * Enum representing the access level to a scope.

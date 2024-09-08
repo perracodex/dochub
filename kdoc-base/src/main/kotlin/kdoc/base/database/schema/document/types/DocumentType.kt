@@ -4,7 +4,7 @@
 
 package kdoc.base.database.schema.document.types
 
-import kdoc.base.persistence.utils.IEnumWithId
+import kdoc.base.database.columns.IEnumWithId
 
 /**
  * Represents the type of document.

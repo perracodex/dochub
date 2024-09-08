@@ -4,7 +4,7 @@
 
 package kdoc.base.database.schema.admin.rbac.types
 
-import kdoc.base.persistence.utils.IEnumWithId
+import kdoc.base.database.columns.IEnumWithId
 
 /**
  * Enum to represent the scopes that can be accessed.
