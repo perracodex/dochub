@@ -10,10 +10,8 @@ import kdoc.access.actor.service.ActorService
 import kdoc.base.env.Tracer
 import kdoc.base.security.hash.SecureHash
 import kdoc.base.security.hash.SecureSalt
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.ConcurrentHashMap
@@ -73,62 +71,69 @@ internal class CredentialService : KoinComponent {
      */
     private suspend fun isCacheEmpty(): Boolean {
         if (cache.isEmpty()) {
-            refresh()
+            refreshActors()
         }
 
         return cache.isEmpty()
     }
 
     /**
-     * Refreshes the cached credentials by clearing it and reloading from the database.
-     * If an actorId is provided, only the credentials for that actor are refreshed;
-     * otherwise all actors are refreshed.
+     * Refreshes the cached credentials for a single actor.
+     * This operation implies generating a new hash for the actor's password in the memory cache.
      *
-     * @param actorId The id of the Actor to refresh. If null, refreshes all actors.
+     * @param actorId The id of the Actor to refresh.
+     * @throws IllegalStateException If no actor is found with the provided id.
      */
-    suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
-        tracer.info("Refreshing credentials cache.")
+    suspend fun refreshActor(actorId: Uuid) {
+        tracer.info("Refreshing credentials cache for actor with ID: $actorId")
 
         val actorService: ActorService by inject()
+        val actor: ActorEntity? = actorService.findById(actorId)
+        checkNotNull(actor) { "No actor found with id $actorId." }
 
-        // Refresh a single actor or all actors based on the actorId parameter.
-        val actorsToRefresh: List<ActorEntity> = actorId?.let {
-            actorService.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
-        } ?: actorService.findAll()
+        val hashedPassword: SecureHash = HashedPasswordTableAuth.hashPassword(
+            password = actor.password,
+            salt = SecureSalt.generate()
+        )
 
-        check(actorsToRefresh.isNotEmpty()) {
-            "No actor(s) found for the given criteria."
+        lock.withLock {
+            cache[actor.username.lowercase()] = hashedPassword
         }
 
-        // Prepare the new cache mapping for the specified actors.
-        // Null if refreshing a single actor since the existing cache will be updated directly.
-        val newCache: ConcurrentHashMap<String, SecureHash>? = if (actorId == null) ConcurrentHashMap() else null
+        tracer.info("Refreshed credentials cache for actor with ID: $actorId")
+    }
 
-        actorsToRefresh.forEach { actor ->
-            val salt: SecureSalt = SecureSalt.generate()
+    /**
+     * Refreshes the cached credentials by clearing it and reloading from the database.
+     * This operation implies generating a new hash for all actors passwords in the memory cache.
+     *
+     * @throws IllegalStateException If no actors are found in the system.
+     */
+    suspend fun refreshActors() {
+        tracer.info("Refreshing credentials cache for all actors.")
+
+        val actorService: ActorService by inject()
+        val actors: List<ActorEntity> = actorService.findAll()
+        check(actors.isNotEmpty()) { "No actors found in the system." }
+
+        val newCache: ConcurrentHashMap<String, SecureHash> = ConcurrentHashMap()
+
+        actors.forEach { actor ->
             val hashedPassword: SecureHash = HashedPasswordTableAuth.hashPassword(
                 password = actor.password,
-                salt = salt
+                salt = SecureSalt.generate()
             )
 
-            actorId?.let {
-                // Update only the specified actor's cache entry.
-                lock.withLock {
-                    cache[actor.username.lowercase()] = hashedPassword
-                }
-            } ?: run {
-                // Add the updated credentials to the new cache for later replacement of the entire cache.
-                newCache?.put(key = actor.username.lowercase(), value = hashedPassword)
-            }
+            newCache[actor.username.lowercase()] = hashedPassword
         }
 
         // Replace the current cache with the new one if refreshing all actors.
-        actorId ?: lock.withLock {
+        lock.withLock {
             cache.clear()
-            cache.putAll(newCache!!)
+            cache.putAll(newCache)
         }
 
-        tracer.info("Credentials cache refreshed.")
+        tracer.info("Refreshed credentials cache for all actors.")
     }
 
     companion object {
