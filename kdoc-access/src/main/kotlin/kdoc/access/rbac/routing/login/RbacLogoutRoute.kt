@@ -13,7 +13,7 @@ import kdoc.access.rbac.view.RbacLoginView
 import kdoc.base.env.SessionContext
 
 /**
- * The route for logging out of the RBAC admin panel.
+ * The route for logging out of the RBAC dashboard.
  */
 @RbacAPI
 internal fun Route.rbacLogoutRoute() {
