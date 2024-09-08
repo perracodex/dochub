@@ -25,6 +25,7 @@ import kotlinx.serialization.Serializable
  */
 @OptIn(HealthCheckAPI::class)
 @Serializable
+@ConsistentCopyVisibility
 public data class HealthCheck internal constructor(
     val health: MutableList<String>,
     val application: ApplicationCheck,
