@@ -10,6 +10,7 @@ import kdoc.base.database.columns.references
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.persistence.utils.enumerationById
+import kdoc.base.persistence.utils.getEnumById
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -55,7 +56,7 @@ public object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
      */
     public val accessLevel: Column<RbacAccessLevel> = enumerationById(
         name = "access_level_id",
-        fromId = RbacAccessLevel::fromId
+        fromId = ::getEnumById
     )
 
     override val primaryKey: Table.PrimaryKey = PrimaryKey(

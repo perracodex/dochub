@@ -38,16 +38,6 @@ public enum class DocumentType(override val id: Int) : IEnumWithId {
     REPORT(id = 107);
 
     public companion object {
-        private val map: Map<Int, DocumentType> = DocumentType.entries.associateBy(DocumentType::id)
-
-        /**
-         * Retrieves the [DocumentType] item corresponding to the given [id].
-         *
-         * @param id The enum element unique identifier.
-         * @return The [DocumentType] item corresponding to the given [id].
-         */
-        internal fun fromId(id: Int): DocumentType? = map[id]
-
         /**
          * Parses the given [value] into a [DocumentType] item.
          *
