@@ -20,9 +20,8 @@ import kdoc.base.persistence.utils.toUuidOrNull
 import kotlin.uuid.Uuid
 
 /**
- * Handles the POST request for the RBAC dashboard, processing updates to RBAC settings based on user input.
- * This includes adjusting roles, scopes, and permissions according to form submissions. The function ensures
- * that only authorized modifications are applied, with redirects handling any unauthorized access attempts.
+ * Processes updates to RBAC settings based on user submissions from the dashboard form.
+ * Validates session context and authorizes modifications, redirecting to the login screen if unauthorized.
  */
 @RbacAPI
 internal fun Route.rbacDashboardUpdateRoute() {

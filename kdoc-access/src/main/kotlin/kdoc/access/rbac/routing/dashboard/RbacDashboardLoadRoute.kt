@@ -18,9 +18,9 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuidOrNull
 
 /**
- * Handles the GET request for the RBAC dashboard. This function retrieves the current session context,
- * validates user access, and renders the dashboard based on the user's RBAC permissions and role selections.
- * It ensures secure and role-appropriate visibility of RBAC configurations.
+ * Retrieves the current session context and renders the RBAC dashboard based on the
+ * user's permissions and role selections.
+ * Redirects to the login screen if the session context is invalid.
  */
 @RbacAPI
 internal fun Route.rbacDashboardLoadRoute() {
