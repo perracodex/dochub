@@ -36,13 +36,13 @@ internal fun Route.rbacDashboardLoadRoute() {
         RbacDashboardManager.determineAccessDetails(
             sessionContext = sessionContext,
             roleId = call.parameters[RbacDashboardView.ROLE_KEY].toUuidOrNull()
-        ).let { accessDetails ->
+        ).let { context ->
             // Respond with HTML view of the RBAC dashboard.
             call.respondHtml(status = HttpStatusCode.OK) {
                 RbacDashboardView.build(
                     html = this,
                     isUpdated = false,
-                    dashboardContext = accessDetails
+                    dashboardContext = context
                 )
             }
         }
