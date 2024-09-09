@@ -11,7 +11,8 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.plugin.withRbac
 import kdoc.access.rbac.routing.dashboard.rbacDashboardLoadRoute
 import kdoc.access.rbac.routing.dashboard.rbacDashboardUpdateRoute
-import kdoc.access.rbac.routing.login.rbacLoginRoute
+import kdoc.access.rbac.routing.login.rbacLoginAccessRoute
+import kdoc.access.rbac.routing.login.rbacLoginSubmissionRoute
 import kdoc.access.rbac.routing.login.rbacLogoutRoute
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
@@ -30,7 +31,8 @@ public fun Route.rbacRoute() {
     staticResources(remotePath = "/static-rbac", basePackage = "rbac")
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
-        rbacLoginRoute()
+        rbacLoginAccessRoute()
+        rbacLoginSubmissionRoute()
         rbacLogoutRoute()
 
         withRbac(scope = RbacScope.RBAC_DASHBOARD, accessLevel = RbacAccessLevel.VIEW) {

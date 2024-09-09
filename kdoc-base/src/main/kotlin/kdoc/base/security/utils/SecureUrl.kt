@@ -24,7 +24,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  *
  * URL Composition:
  * - Base URL: The starting URL to which the token and signature are appended.
- * - Token: Encrypted string that includes user data and an expiration timestamp, formatted as "data:expiration".
+ * - Token: Encrypted string that includes actor data and an expiration timestamp, formatted as "data:expiration".
  * - Signature: A cryptographic hash ensuring the integrity of the URL, generated using HMAC.
  *
  * Detailed Token and URL Format:
