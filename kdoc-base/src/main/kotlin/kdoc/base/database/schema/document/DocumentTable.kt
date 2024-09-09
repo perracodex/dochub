@@ -34,7 +34,8 @@ public object DocumentTable : TimestampedTable(name = "document") {
 
     /** The [DocumentType] of the document */
     public val type: Column<DocumentType> = enumerationById(
-        name = "document_type_id"
+        name = "document_type_id",
+        entries = DocumentType.entries
     )
 
     /** Optional description of the document. */
