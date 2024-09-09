@@ -29,7 +29,7 @@ internal annotation class DocumentRouteAPI
  * of how to organize routes in diverse ways.
  */
 @OptIn(DocumentRouteAPI::class)
-public fun Route.documentRoute() {
+public fun Route.documentRoutes() {
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
         authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
