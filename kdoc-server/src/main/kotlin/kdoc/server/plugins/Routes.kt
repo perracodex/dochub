@@ -7,13 +7,13 @@ package kdoc.server.plugins
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.access.rbac.routing.rbacRoute
-import kdoc.access.token.accessTokenRoute
+import kdoc.access.rbac.routing.rbacRoutes
+import kdoc.access.token.routing.accessTokenRoutes
 import kdoc.base.env.SessionContext
 import kdoc.base.env.health.routing.healthCheckRoute
 import kdoc.base.events.sseRoute
 import kdoc.base.security.snowflake.snowflakeRoute
-import kdoc.document.routing.documentRoute
+import kdoc.document.routing.documentRoutes
 
 /**
  * Initializes and sets up routing for the application.
@@ -32,11 +32,11 @@ import kdoc.document.routing.documentRoute
 internal fun Application.configureRoutes() {
 
     routing {
-        documentRoute()
-        accessTokenRoute()
+        documentRoutes()
+        accessTokenRoutes()
         healthCheckRoute()
         snowflakeRoute()
-        rbacRoute()
+        rbacRoutes()
         sseRoute()
 
         // Server root endpoint.
