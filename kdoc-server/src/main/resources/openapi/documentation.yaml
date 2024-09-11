@@ -55,12 +55,15 @@ paths:
             '*/*':
               schema:
                 type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid session context. Use either admin/admin or guest/guest."
         "200":
           description: "OK"
           content:
             '*/*':
               schema:
-                type: "string"
+                $ref: "#/components/schemas/Function1_? super String"
         "500":
           description: "Internal Server Error"
           content:
@@ -82,13 +85,16 @@ paths:
           content:
             '*/*':
               schema:
-                type: "string"
+                $ref: "#/components/schemas/Function1_? super String"
         "400":
           description: "Bad Request"
           content:
             '*/*':
               schema:
                 type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid session context. Use either admin/admin or guest/guest."
         "500":
           description: "Internal Server Error"
           content:
@@ -128,7 +134,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HealthCheck"
-  /rbac/admin:
+  /rbac/dashboard:
     get:
       description: ""
       parameters:
@@ -201,11 +207,11 @@ paths:
                   value: ""
   /rbac/login:
     get:
-      description: ""
+      description: "Redirects actors to the dashboard if they have an existing session\
+        \ <br> or to the login page if no valid session is found."
       responses:
         "302":
-          description: "Found <br> If the actor is not null, redirect to the admin\
-            \ view."
+          description: "Found <br> Redirect"
           content:
             text/plain:
               schema:
@@ -213,7 +219,7 @@ paths:
               examples:
                 Example#1:
                   description: ""
-                  value: "/rbac/admin"
+                  value: "/rbac/dashboard"
         "200":
           description: "OK"
           content:
@@ -236,10 +242,10 @@ paths:
               examples:
                 Example#1:
                   description: ""
-                  value: "/rbac/admin"
+                  value: "/rbac/dashboard"
   /rbac/logout:
     post:
-      description: ""
+      description: "Clears the session and redirects to the login page."
       responses:
         "302":
           description: "Found <br> Redirect"
@@ -692,6 +698,11 @@ components:
           type: "array"
           items:
             type: "object"
+    Function1:
+      type: "object"
+      properties: { }
+    Function1_? super String:
+      type: "object"
     ApplicationCheck:
       type: "object"
       properties:
@@ -991,9 +1002,6 @@ components:
         - "snowflake"
         - "database"
         - "endpoints"
-    Function1:
-      type: "object"
-      properties: { }
     Function1_? super HTML:
       type: "object"
     Uuid:
