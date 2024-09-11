@@ -31,13 +31,12 @@ internal sealed class DocumentError(
     reason = reason,
     cause = cause
 ) {
-
     /**
      * Error for when a document is not found.
      *
-     * @property documentId The document id that was not found.
+     * @param documentId The document id that was not found.
      */
-    class DocumentNotFound(val documentId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class DocumentNotFound(documentId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.NotFound,
         code = "DOCUMENT_NOT_FOUND",
         description = "Document not found. Document Id: $documentId",
@@ -48,9 +47,9 @@ internal sealed class DocumentError(
     /**
      * Error for when no document has been provided to upload.
      *
-     * @property ownerId The owner id of the document.
+     * @param ownerId The owner id of the document.
      */
-    class NoDocumentProvided(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class NoDocumentProvided(ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "NO_DOCUMENT_PROVIDED",
         description = "No document provided to upload. Owner Id: $ownerId",
@@ -61,9 +60,9 @@ internal sealed class DocumentError(
     /**
      * Error for when there was an issue streaming a download.
      *
-     * @property ownerId The owner id of the document.
+     * @param ownerId The owner id of the document.
      */
-    class FailedToStreamDownload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class FailedToStreamDownload(ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "FAILED_TO_STREAM_DOWNLOAD",
         description = "Failed to stream download. Owner Id: $ownerId",
@@ -74,9 +73,9 @@ internal sealed class DocumentError(
     /**
      * Error for when there was an issue persisting an upload.
      *
-     * @property ownerId The owner id of the document.
+     * @param ownerId The owner id of the document.
      */
-    class FailedToPersistUpload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
+    class FailedToPersistUpload(ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
         code = "FAILED_TO_PERSIST_UPLOAD",
         description = "Failed to persist upload. Owner Id: $ownerId",
