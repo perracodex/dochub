@@ -6,7 +6,6 @@ package kdoc.document.errors
 
 import io.ktor.http.*
 import kdoc.base.errors.AppException
-import kdoc.base.errors.ErrorCodeRegistry
 import kotlin.uuid.Uuid
 
 /**
@@ -24,7 +23,14 @@ internal sealed class DocumentError(
     description: String,
     reason: String? = null,
     cause: Throwable? = null
-) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
+) : AppException(
+    status = status,
+    context = "DOCUMENT",
+    code = code,
+    description = description,
+    reason = reason,
+    cause = cause
+) {
 
     /**
      * Error for when a document is not found.
@@ -33,7 +39,7 @@ internal sealed class DocumentError(
      */
     class DocumentNotFound(val documentId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.NotFound,
-        code = "${TAG}DNF",
+        code = "DOCUMENT_NOT_FOUND",
         description = "Document not found. Document Id: $documentId",
         reason = reason,
         cause = cause
@@ -46,7 +52,7 @@ internal sealed class DocumentError(
      */
     class NoDocumentProvided(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}NDP",
+        code = "NO_DOCUMENT_PROVIDED",
         description = "No document provided to upload. Owner Id: $ownerId",
         reason = reason,
         cause = cause
@@ -59,7 +65,7 @@ internal sealed class DocumentError(
      */
     class FailedToStreamDownload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}FSD",
+        code = "FAILED_TO_STREAM_DOWNLOAD",
         description = "Failed to stream download. Owner Id: $ownerId",
         reason = reason,
         cause = cause
@@ -72,17 +78,9 @@ internal sealed class DocumentError(
      */
     class FailedToPersistUpload(val ownerId: Uuid, reason: String? = null, cause: Throwable? = null) : DocumentError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}FPU",
+        code = "FAILED_TO_PERSIST_UPLOAD",
         description = "Failed to persist upload. Owner Id: $ownerId",
         reason = reason,
         cause = cause
     )
-
-    companion object {
-        private const val TAG: String = "DOC."
-
-        init {
-            ErrorCodeRegistry.registerTag(tag = TAG)
-        }
-    }
 }
