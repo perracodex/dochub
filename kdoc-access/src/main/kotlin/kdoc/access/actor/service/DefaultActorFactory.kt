@@ -6,7 +6,7 @@ package kdoc.access.actor.service
 
 import kdoc.access.actor.entity.ActorRequest
 import kdoc.access.credential.CredentialService
-import kdoc.access.rbac.entity.role.RbacRoleEntity
+import kdoc.access.rbac.entity.role.RbacRoleDto
 import kdoc.access.rbac.entity.role.RbacRoleRequest
 import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
@@ -81,7 +81,7 @@ internal object DefaultActorFactory : KoinComponent {
      * @param actorService The [ActorService] instance to create the Actors.
      */
     private suspend fun createActors(actorService: ActorService) {
-        val rbacRoles: List<RbacRoleEntity> = getRoles()
+        val rbacRoles: List<RbacRoleDto> = getRoles()
 
         rbacRoles.forEach { role ->
             val credential: String = role.roleName.lowercase()
@@ -100,9 +100,9 @@ internal object DefaultActorFactory : KoinComponent {
     /**
      * Gets the default roles, creating them if none are found in the database.
      */
-    private suspend fun getRoles(): List<RbacRoleEntity> {
+    private suspend fun getRoles(): List<RbacRoleDto> {
         val rbacService: RbacService by inject()
-        val rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
+        val rbacRoles: List<RbacRoleDto> = rbacService.findAllRoles()
         if (rbacRoles.isNotEmpty()) {
             return rbacRoles
         }

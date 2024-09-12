@@ -4,9 +4,9 @@
 
 package kdoc.access.actor.repository
 
-import kdoc.access.actor.entity.ActorEntity
+import kdoc.access.actor.entity.ActorDto
 import kdoc.access.actor.entity.ActorRequest
-import kdoc.access.rbac.entity.role.RbacRoleEntity
+import kdoc.access.rbac.entity.role.RbacRoleDto
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.base.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
@@ -19,39 +19,39 @@ import kotlin.uuid.Uuid
 
 /**
  * Implementation of [IActorRepository].
- * Responsible for managing [ActorEntity] data.
+ * Responsible for managing [ActorDto] data.
  */
 internal class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
 
-    override suspend fun findByUsername(username: String): ActorEntity? {
+    override suspend fun findByUsername(username: String): ActorDto? {
         return transaction {
             ActorTable.selectAll().where {
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
-                ActorEntity.from(row = resultRow, role = role)
+                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
+                ActorDto.from(row = resultRow, role = role)
             }
         }
     }
 
-    override suspend fun findAll(): List<ActorEntity> {
+    override suspend fun findAll(): List<ActorDto> {
         return transaction {
             ActorTable.selectAll().map { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
-                ActorEntity.from(row = resultRow, role = role)
+                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
+                ActorDto.from(row = resultRow, role = role)
             }
         }
     }
 
-    override suspend fun findById(actorId: Uuid): ActorEntity? {
+    override suspend fun findById(actorId: Uuid): ActorDto? {
         return transaction {
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
-                ActorEntity.from(row = resultRow, role = role)
+                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
+                ActorDto.from(row = resultRow, role = role)
             }
         }
     }

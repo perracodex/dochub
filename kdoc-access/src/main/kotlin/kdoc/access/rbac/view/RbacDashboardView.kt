@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.view
 
-import kdoc.access.rbac.entity.role.RbacRoleEntity
+import kdoc.access.rbac.entity.role.RbacRoleDto
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
@@ -52,7 +52,7 @@ internal object RbacDashboardView {
             }
 
             // If no role is selected, default to the first role.
-            val currentRole: RbacRoleEntity = dashboardContext.rbacRoles.find { role ->
+            val currentRole: RbacRoleDto = dashboardContext.rbacRoles.find { role ->
                 role.id == dashboardContext.targetRole.id
             } ?: dashboardContext.rbacRoles.first()
 

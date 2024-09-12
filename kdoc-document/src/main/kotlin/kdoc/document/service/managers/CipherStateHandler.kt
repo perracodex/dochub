@@ -10,7 +10,7 @@ import kdoc.base.persistence.pagination.Page
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +35,7 @@ internal class CipherStateHandler(
      * @return The number of documents affected by the operation.
      */
     suspend fun changeState(cipher: Boolean): Int = withContext(Dispatchers.IO) {
-        val documents: Page<DocumentEntity> = documentRepository.findAll()
+        val documents: Page<DocumentDto> = documentRepository.findAll()
         if (documents.totalElements == 0) {
             tracer.debug("No documents found to change cipher state.")
             return@withContext 0
@@ -63,7 +63,7 @@ internal class CipherStateHandler(
      * @return True if the cipher state was changed, false if the document file was not found.
      */
     private suspend fun changeDocumentCipherState(
-        document: DocumentEntity,
+        document: DocumentDto,
         cipher: Boolean
     ): Boolean = withContext(Dispatchers.IO) {
         val documentId: Uuid = document.id

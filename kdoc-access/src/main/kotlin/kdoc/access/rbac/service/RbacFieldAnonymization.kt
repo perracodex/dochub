@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.service
 
-import kdoc.access.rbac.entity.base.BaseRbacEntity
+import kdoc.access.rbac.entity.base.BaseRbacDto
 import kdoc.base.utils.KLocalDate
 import kdoc.base.utils.KLocalDateTime
 import kdoc.base.utils.KLocalTime
@@ -25,9 +25,9 @@ import kdoc.base.utils.KLocalTime
  * To distinguish between actual instances of midnight and anonymized values, we should consider implementing
  * an additional utility method that would adjust genuine "00:00:00.000" time values, whenever encountered,
  * to a slightly different time (e.g., "00:00:00.001") to prevent confusion with the anonymized time placeholder.
- * Another approach could be to just change entity time fields to text fields, and anonymize them as strings.
+ * Another approach could be to just change Time fields to Text fields, and anonymize them as strings.
  *
- * @see [BaseRbacEntity]
+ * @see [BaseRbacDto]
  */
 public object RbacFieldAnonymization {
     private const val ANONYMIZED_STRING: String = "##########"

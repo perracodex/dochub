@@ -6,7 +6,7 @@ package kdoc.document.repository
 
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
 import kotlin.uuid.Uuid
@@ -20,44 +20,44 @@ internal interface IDocumentRepository {
      * Retrieves a document by its ID.
      *
      * @param documentId The ID of the document to be retrieved.
-     * @return The resolved [DocumentEntity] if found, null otherwise.
+     * @return The resolved [DocumentDto] if found, null otherwise.
      */
-    fun findById(documentId: Uuid): DocumentEntity?
+    fun findById(documentId: Uuid): DocumentDto?
 
     /**
-     * Retrieves all document entities.
+     * Retrieves all document entries.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    fun findAll(pageable: Pageable? = null): Page<DocumentEntity>
+    fun findAll(pageable: Pageable? = null): Page<DocumentDto>
 
     /**
-     * Retrieves all document entities for a specific group.
+     * Retrieves all document entries for a specific group.
      *
      * @param groupId The target group ID.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentEntity>
+    fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentDto>
 
     /**
-     * Retrieves all document entities for a specific owner.
+     * Retrieves all document entries for a specific owner.
      *
      * @param ownerId The target owner ID.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity>
+    fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentDto>
 
     /**
-     * Retrieves all document entities matching the provided [filterSet].
+     * Retrieves all document entries matching the provided [filterSet].
      *
      * @param filterSet The [DocumentFilterSet] to be applied.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    fun search(filterSet: DocumentFilterSet, pageable: Pageable? = null): Page<DocumentEntity>
+    fun search(filterSet: DocumentFilterSet, pageable: Pageable? = null): Page<DocumentDto>
 
     /**
      * Creates a new document.

@@ -8,7 +8,7 @@ import io.ktor.http.content.*
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.entity.DocumentRequest
 import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
@@ -39,7 +39,7 @@ internal class UploadManager(
      * @param uploadRoot The root path where uploaded files are stored.
      * @param cipher Whether the document should be ciphered.
      * @param multipart The multipart data containing the files and request.
-     * @return A list of created DocumentEntity objects or null if the request is invalid.
+     * @return A list of created [DocumentDto] entries or null if the request is invalid.
      */
     @OptIn(UploadAPI::class)
     suspend fun upload(
@@ -49,7 +49,7 @@ internal class UploadManager(
         uploadRoot: String,
         cipher: Boolean,
         multipart: MultiPartData
-    ): List<DocumentEntity> {
+    ): List<DocumentDto> {
 
         // Receive the uploaded files.
 
@@ -66,7 +66,7 @@ internal class UploadManager(
         // Create the document references in the database.
 
         try {
-            val output: MutableList<DocumentEntity> = mutableListOf()
+            val output: MutableList<DocumentDto> = mutableListOf()
             val targetGroupId: Uuid = groupId ?: Uuid.random()
 
             persistedFiles.forEach { fileEntry ->
@@ -83,7 +83,7 @@ internal class UploadManager(
                 )
 
                 val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
-                val createdDocument: DocumentEntity = documentRepository.findById(documentId = documentId)!!
+                val createdDocument: DocumentDto = documentRepository.findById(documentId = documentId)!!
                 output.add(createdDocument)
             }
 

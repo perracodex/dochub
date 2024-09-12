@@ -10,7 +10,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
 import org.jetbrains.exposed.sql.*
@@ -26,24 +26,24 @@ internal class DocumentRepository(
     private val sessionContext: SessionContext
 ) : IDocumentRepository {
 
-    override fun findById(documentId: Uuid): DocumentEntity? {
+    override fun findById(documentId: Uuid): DocumentDto? {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.selectAll().where {
                 DocumentTable.id eq documentId
             }.singleOrNull()?.let { resultRow ->
-                DocumentEntity.from(row = resultRow)
+                DocumentDto.from(row = resultRow)
             }
         }
     }
 
-    override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity> {
+    override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentDto> {
         return fetchByCondition(
             condition = { DocumentTable.ownerId eq ownerId },
             pageable = pageable
         )
     }
 
-    override fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentEntity> {
+    override fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentDto> {
         return fetchByCondition(
             condition = { DocumentTable.groupId eq groupId },
             pageable = pageable
@@ -56,7 +56,7 @@ internal class DocumentRepository(
     private fun fetchByCondition(
         condition: SqlExpressionBuilder.() -> Op<Boolean>,
         pageable: Pageable?
-    ): Page<DocumentEntity> {
+    ): Page<DocumentDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start a query with the target condition.
             val query: Query = DocumentTable.selectAll().andWhere(condition)
@@ -65,10 +65,10 @@ internal class DocumentRepository(
             val totalElements: Int = query.count().toInt()
 
             // Fetch the paginated content.
-            val content: List<DocumentEntity> = query
+            val content: List<DocumentDto> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentEntity.from(row = resultRow)
+                    DocumentDto.from(row = resultRow)
                 }
 
             Page.build(
@@ -79,17 +79,17 @@ internal class DocumentRepository(
         }
     }
 
-    override fun findAll(pageable: Pageable?): Page<DocumentEntity> {
+    override fun findAll(pageable: Pageable?): Page<DocumentDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Need counting the overall elements before applying pagination.
             // A separate simple count query is by far more performant
             // than having a 'count over' expression as part of the main query.
             val totalElements: Int = DocumentTable.selectAll().count().toInt()
 
-            val content: List<DocumentEntity> = DocumentTable.selectAll()
+            val content: List<DocumentDto> = DocumentTable.selectAll()
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentEntity.from(row = resultRow)
+                    DocumentDto.from(row = resultRow)
                 }
 
             Page.build(
@@ -100,7 +100,7 @@ internal class DocumentRepository(
         }
     }
 
-    override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<DocumentEntity> {
+    override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<DocumentDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all records.
             val query: Query = DocumentTable.selectAll()
@@ -144,10 +144,10 @@ internal class DocumentRepository(
             // Count total elements after applying filters.
             val totalFilteredElements: Int = query.count().toInt()
 
-            val content: List<DocumentEntity> = query
+            val content: List<DocumentDto> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentEntity.from(row = resultRow)
+                    DocumentDto.from(row = resultRow)
                 }
 
             Page.build(

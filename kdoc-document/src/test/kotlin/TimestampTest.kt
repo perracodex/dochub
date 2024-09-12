@@ -10,7 +10,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.serializers.OffsetTimestamp
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.entity.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
 import org.koin.core.component.KoinComponent
@@ -56,7 +56,7 @@ class TimestampTest : KoinComponent {
         )
 
         val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
-        val document: DocumentEntity = documentRepository.findById(documentId = documentId)!!
+        val document: DocumentDto = documentRepository.findById(documentId = documentId)!!
 
         // Assert that the record has timestamps.
         assertNotNull(actual = document)
@@ -72,7 +72,7 @@ class TimestampTest : KoinComponent {
         val createdAt: OffsetTimestamp = document.meta.createdAt
         val updatedAt: OffsetTimestamp = document.meta.updatedAt
         documentRepository.update(documentId = documentId, documentRequest = documentRequest)
-        val updatedDocument: DocumentEntity = documentRepository.findById(documentId = documentId)!!
+        val updatedDocument: DocumentDto = documentRepository.findById(documentId = documentId)!!
 
         // The createdAt timestamp should not change.
         assertEquals(

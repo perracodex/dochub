@@ -5,7 +5,7 @@
 import io.ktor.test.dispatcher.*
 import kdoc.access.actor.di.ActorDomainInjection
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.access.rbac.entity.role.RbacRoleEntity
+import kdoc.access.rbac.entity.role.RbacRoleDto
 import kdoc.access.rbac.entity.role.RbacRoleRequest
 import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
@@ -56,8 +56,8 @@ class RbacRoleTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val roleEntity: RbacRoleEntity = rbacService.createRole(roleRequest = roleRequest)
-        val existingRoleEntity: RbacRoleEntity? = rbacService.findRoleById(roleId = roleEntity.id)
+        val roleEntity: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val existingRoleEntity: RbacRoleDto? = rbacService.findRoleById(roleId = roleEntity.id)
         assertNotNull(actual = existingRoleEntity, message = "The role was not found in the database after it was created.")
         assertEquals(expected = roleName, actual = existingRoleEntity.roleName)
         assertEquals(expected = description, actual = existingRoleEntity.description)
@@ -70,7 +70,7 @@ class RbacRoleTest : KoinComponent {
         // Update the role.
         val newRoleName = "new_role_name"
         val newDescription = "New role description"
-        val updatedRoleEntity: RbacRoleEntity? = rbacService.updateRole(
+        val updatedRoleEntity: RbacRoleDto? = rbacService.updateRole(
             roleId = roleEntity.id,
             roleRequest = roleRequest.copy(
                 roleName = newRoleName,

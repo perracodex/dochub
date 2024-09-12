@@ -15,7 +15,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.settings.AppSettings
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.managers.upload.UploadManager
@@ -43,7 +43,7 @@ internal fun Route.uploadDocumentsRoute() {
 
         // Upload the document to the storage.
         val uploadManager: UploadManager = call.scope.get<UploadManager> { parametersOf(sessionContext) }
-        val createdDocuments: List<DocumentEntity> = uploadManager.upload(
+        val createdDocuments: List<DocumentDto> = uploadManager.upload(
             ownerId = ownerId,
             groupId = groupId,
             type = type,

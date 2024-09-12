@@ -12,7 +12,7 @@ import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.NetworkUtils
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.entity.DocumentFilterSet
 import kdoc.document.entity.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
@@ -31,55 +31,55 @@ internal class DocumentService(
     private val tracer = Tracer<DocumentService>()
 
     /**
-     * Retrieves a document entity by its ID.
+     * Retrieves a document by its ID.
      *
      * @param documentId The ID of the document to be retrieved.
-     * @return The resolved [DocumentEntity] if found, null otherwise.
+     * @return The resolved [DocumentDto] if found, null otherwise.
      */
-    suspend fun findById(documentId: Uuid): DocumentEntity? = withContext(Dispatchers.IO) {
+    suspend fun findById(documentId: Uuid): DocumentDto? = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findById(documentId = documentId)
     }
 
     /**
-     * Retrieves a document entity by its owner ID.
+     * Retrieves a document by its owner ID.
      *
      * @param ownerId The owner ID of the document to be retrieved.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    suspend fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentDto> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findByOwnerId(ownerId = ownerId, pageable = pageable)
     }
 
     /**
-     * Retrieves all document entities by group ID.
+     * Retrieves all document entries by group ID.
      *
      * @param groupId The group the documents belongs to.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    suspend fun findByGroupId(groupId: Uuid, pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findByGroupId(groupId: Uuid, pageable: Pageable? = null): Page<DocumentDto> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findByGroupId(groupId = groupId, pageable = pageable)
     }
 
     /**
-     * Retrieves all document entities.
+     * Retrieves all document entries.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    suspend fun findAll(pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findAll(pageable: Pageable? = null): Page<DocumentDto> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.findAll(pageable = pageable)
     }
 
     /**
-     * Retrieves all document entities matching the provided [filterSet].
+     * Retrieves all document entries matching the provided [filterSet].
      *
      * @param filterSet The [DocumentFilterSet] to be applied.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [DocumentEntity] entries.
+     * @return List of [DocumentDto] entries.
      */
-    suspend fun search(filterSet: DocumentFilterSet, pageable: Pageable? = null): Page<DocumentEntity> = withContext(Dispatchers.IO) {
+    suspend fun search(filterSet: DocumentFilterSet, pageable: Pageable? = null): Page<DocumentDto> = withContext(Dispatchers.IO) {
         return@withContext documentRepository.search(filterSet = filterSet, pageable = pageable)
     }
 
@@ -89,7 +89,7 @@ internal class DocumentService(
      * @param documentRequest The document to be created.
      * @return The ID of the created document.
      */
-    suspend fun create(documentRequest: DocumentRequest): DocumentEntity = withContext(Dispatchers.IO) {
+    suspend fun create(documentRequest: DocumentRequest): DocumentDto = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new document.")
         val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
         return@withContext findById(documentId = documentId)!!
@@ -106,7 +106,7 @@ internal class DocumentService(
     suspend fun update(
         documentId: Uuid,
         documentRequest: DocumentRequest
-    ): DocumentEntity? = withContext(Dispatchers.IO) {
+    ): DocumentDto? = withContext(Dispatchers.IO) {
         tracer.debug("Updating document with ID: $documentId.")
         val updatedCount: Int = documentRepository.update(documentId = documentId, documentRequest = documentRequest)
         return@withContext if (updatedCount > 0) findById(documentId = documentId) else null
@@ -154,14 +154,14 @@ internal class DocumentService(
     }
 
     /**
-     * Retrieves a list of [DocumentEntity] references based on the provided token and signature.
+     * Retrieves a list of [DocumentDto] references based on the provided token and signature.
      * If the signature is invalid or expired, the method will return null.
      *
      * @param token The token to verify.
      * @param signature The signature to verify.
-     * @return The [DocumentEntity] if the verification is successful, null otherwise.
+     * @return The [DocumentDto] if the verification is successful, null otherwise.
      */
-    suspend fun findBySignature(token: String, signature: String): List<DocumentEntity>? {
+    suspend fun findBySignature(token: String, signature: String): List<DocumentDto>? {
         val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
         val decodedToken: String? = SecureUrl.verify(
             basePath = basePath,

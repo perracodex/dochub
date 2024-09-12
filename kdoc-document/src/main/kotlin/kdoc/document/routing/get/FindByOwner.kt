@@ -13,7 +13,7 @@ import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.getPageable
 import kdoc.base.persistence.utils.toUuid
-import kdoc.document.entity.DocumentEntity
+import kdoc.document.entity.DocumentDto
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -33,7 +33,7 @@ internal fun Route.findDocumentsByOwnerRoute() {
             .audit(operation = "find by owner", ownerId = ownerId, log = pageable?.toString())
 
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val documents: Page<DocumentEntity> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
+        val documents: Page<DocumentDto> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
 
         call.respond(status = HttpStatusCode.OK, message = documents)
     }

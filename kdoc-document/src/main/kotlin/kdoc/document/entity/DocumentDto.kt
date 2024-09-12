@@ -14,9 +14,9 @@ import kotlinx.serialization.Transient
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the entity for a document.
+ * Represents a concrete document.
  * To protect potentially sensitive information, some fields are marked as [Transient],
- * meaning that they are not serialized when converting the entity to JSON.
+ * meaning that they are not serialized when converting the instance to JSON.
  *
  * @property id The document's unique id.
  * @property ownerId The ID of the actor who owns the document.
@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The document's metadata.
  */
 @Serializable
-public data class DocumentEntity(
+public data class DocumentDto(
     val id: UuidS,
     val ownerId: UuidS,
     val groupId: UuidS,
@@ -57,13 +57,13 @@ public data class DocumentEntity(
 
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [DocumentEntity] instance.
+         * Maps a [ResultRow] to a [DocumentDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [DocumentEntity] instance.
+         * @return The mapped [DocumentDto] instance.
          */
-        fun from(row: ResultRow): DocumentEntity {
-            return DocumentEntity(
+        fun from(row: ResultRow): DocumentDto {
+            return DocumentDto(
                 id = row[DocumentTable.id],
                 ownerId = row[DocumentTable.ownerId],
                 groupId = row[DocumentTable.groupId],
