@@ -4,9 +4,9 @@
 
 package kdoc.access.rbac.repository.field
 
-import kdoc.access.rbac.entity.field.RbacFieldRuleDto
-import kdoc.access.rbac.entity.field.RbacFieldRuleRequest
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.field.RbacFieldRuleDto
+import kdoc.access.rbac.model.field.RbacFieldRuleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**

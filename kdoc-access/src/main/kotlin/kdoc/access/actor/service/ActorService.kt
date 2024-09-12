@@ -4,8 +4,8 @@
 
 package kdoc.access.actor.service
 
-import kdoc.access.actor.entity.ActorDto
-import kdoc.access.actor.entity.ActorRequest
+import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.ActorRequest
 import kdoc.access.actor.repository.IActorRepository
 import kdoc.access.credential.CredentialService
 import kdoc.access.rbac.repository.role.IRbacRoleRepository

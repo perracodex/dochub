@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.view
 
-import kdoc.access.rbac.entity.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRoleDto
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel

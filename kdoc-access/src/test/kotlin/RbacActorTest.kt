@@ -4,13 +4,13 @@
 
 import io.ktor.test.dispatcher.*
 import kdoc.access.actor.di.ActorDomainInjection
-import kdoc.access.actor.entity.ActorDto
-import kdoc.access.actor.entity.ActorRequest
+import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.ActorRequest
 import kdoc.access.actor.service.ActorService
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.access.rbac.entity.role.RbacRoleDto
-import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRoleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
@@ -60,7 +60,7 @@ class RbacActorTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val roleEntity: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
 
         // Create the actor.
         val actorService: ActorService by inject()
@@ -69,7 +69,7 @@ class RbacActorTest : KoinComponent {
         val password = "any_password"
         val actorId: Uuid = actorService.create(
             actorRequest = ActorRequest(
-                roleId = roleEntity.id,
+                roleId = rbacRole.id,
                 username = username,
                 password = password,
                 isLocked = false
@@ -91,7 +91,7 @@ class RbacActorTest : KoinComponent {
         assertFailsWith<ExposedSQLException> {
             actorService.create(
                 actorRequest = ActorRequest(
-                    roleId = roleEntity.id,
+                    roleId = rbacRole.id,
                     username = username,
                     password = password,
                     isLocked = false

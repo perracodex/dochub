@@ -15,7 +15,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.settings.AppSettings
-import kdoc.document.entity.DocumentDto
+import kdoc.document.model.DocumentDto
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.managers.upload.UploadManager

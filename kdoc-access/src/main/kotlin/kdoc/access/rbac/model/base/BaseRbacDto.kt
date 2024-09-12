@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.base
+package kdoc.access.rbac.model.base
 
 import kdoc.access.rbac.service.RbacFieldAnonymization
 import kotlin.reflect.KClass

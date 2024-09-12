@@ -6,8 +6,8 @@ package kdoc.access.rbac.service
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kdoc.access.rbac.entity.role.RbacRoleDto
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel

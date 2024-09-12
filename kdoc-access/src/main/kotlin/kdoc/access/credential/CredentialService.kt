@@ -5,7 +5,7 @@
 package kdoc.access.credential
 
 import io.ktor.server.auth.*
-import kdoc.access.actor.entity.ActorDto
+import kdoc.access.actor.model.ActorDto
 import kdoc.access.actor.service.ActorService
 import kdoc.base.env.Tracer
 import kdoc.base.security.hash.SecureHash

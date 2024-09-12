@@ -4,8 +4,8 @@
 
 package kdoc.access.actor.repository
 
-import kdoc.access.actor.entity.ActorDto
-import kdoc.access.actor.entity.ActorRequest
+import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.ActorRequest
 import kotlin.uuid.Uuid
 
 /**

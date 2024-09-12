@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.service
 
-import kdoc.access.rbac.entity.base.BaseRbacDto
+import kdoc.access.rbac.model.base.BaseRbacDto
 import kdoc.base.utils.KLocalDate
 import kdoc.base.utils.KLocalDateTime
 import kdoc.base.utils.KLocalTime

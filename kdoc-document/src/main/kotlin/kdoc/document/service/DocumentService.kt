@@ -12,9 +12,9 @@ import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings
 import kdoc.base.utils.NetworkUtils
-import kdoc.document.entity.DocumentDto
-import kdoc.document.entity.DocumentFilterSet
-import kdoc.document.entity.DocumentRequest
+import kdoc.document.model.DocumentDto
+import kdoc.document.model.DocumentFilterSet
+import kdoc.document.model.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

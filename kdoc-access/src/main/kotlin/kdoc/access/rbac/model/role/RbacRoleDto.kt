@@ -2,14 +2,14 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.role
+package kdoc.access.rbac.model.role
 
-import kdoc.access.rbac.entity.field.RbacFieldRuleDto
-import kdoc.access.rbac.entity.scope.RbacScopeRuleDto
+import kdoc.access.rbac.model.field.RbacFieldRuleDto
+import kdoc.access.rbac.model.scope.RbacScopeRuleDto
 import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
 import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
-import kdoc.base.persistence.entity.Meta
+import kdoc.base.persistence.model.Meta
 import kdoc.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

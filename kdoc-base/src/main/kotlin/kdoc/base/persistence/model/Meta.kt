@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.base.persistence.entity
+package kdoc.base.persistence.model
 
 import kdoc.base.database.schema.base.TimestampedTable
 import kdoc.base.persistence.serializers.OffsetTimestamp

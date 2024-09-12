@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.document.entity
+package kdoc.document.model
 
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.persistence.entity.Meta
+import kdoc.base.persistence.model.Meta
 import kdoc.base.persistence.serializers.UuidS
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable

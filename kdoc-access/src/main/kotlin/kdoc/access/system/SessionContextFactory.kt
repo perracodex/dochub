@@ -6,7 +6,7 @@ package kdoc.access.system
 
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import kdoc.access.actor.entity.ActorDto
+import kdoc.access.actor.model.ActorDto
 import kdoc.access.actor.service.ActorService
 import kdoc.access.credential.CredentialService
 import kdoc.base.env.SessionContext

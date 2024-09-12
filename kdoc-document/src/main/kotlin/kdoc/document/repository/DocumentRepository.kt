@@ -10,9 +10,9 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
-import kdoc.document.entity.DocumentDto
-import kdoc.document.entity.DocumentFilterSet
-import kdoc.document.entity.DocumentRequest
+import kdoc.document.model.DocumentDto
+import kdoc.document.model.DocumentFilterSet
+import kdoc.document.model.DocumentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

@@ -4,8 +4,8 @@
 
 package kdoc.access.rbac.repository.role
 
-import kdoc.access.rbac.entity.role.RbacRoleDto
-import kdoc.access.rbac.entity.role.RbacRoleRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRoleRequest
 import kotlin.uuid.Uuid
 
 /**

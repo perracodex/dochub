@@ -4,11 +4,11 @@
 
 package kdoc.access.rbac.service
 
-import kdoc.access.actor.entity.ActorDto
+import kdoc.access.actor.model.ActorDto
 import kdoc.access.actor.repository.IActorRepository
-import kdoc.access.rbac.entity.role.RbacRoleDto
-import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRoleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel

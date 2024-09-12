@@ -4,7 +4,7 @@
 
 package kdoc.document.repository
 
-import kdoc.document.entity.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditRequest
 import kotlin.uuid.Uuid
 
 /**

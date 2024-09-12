@@ -10,7 +10,7 @@ import kdoc.base.persistence.pagination.Page
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings
-import kdoc.document.entity.DocumentDto
+import kdoc.document.model.DocumentDto
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.coroutines.Dispatchers

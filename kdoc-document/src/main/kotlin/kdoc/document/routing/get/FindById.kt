@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
-import kdoc.document.entity.DocumentDto
+import kdoc.document.model.DocumentDto
 import kdoc.document.errors.DocumentError
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService

@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.field
+package kdoc.access.rbac.model.field
 
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kotlinx.serialization.Serializable

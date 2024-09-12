@@ -7,7 +7,7 @@ package kdoc.document.repository
 import kdoc.base.database.schema.document.DocumentAuditTable
 import kdoc.base.database.service.transactionWithSchema
 import kdoc.base.env.SessionContext
-import kdoc.document.entity.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditRequest
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.uuid.Uuid

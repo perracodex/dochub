@@ -6,9 +6,9 @@ package kdoc.document.repository
 
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
-import kdoc.document.entity.DocumentDto
-import kdoc.document.entity.DocumentFilterSet
-import kdoc.document.entity.DocumentRequest
+import kdoc.document.model.DocumentDto
+import kdoc.document.model.DocumentFilterSet
+import kdoc.document.model.DocumentRequest
 import kotlin.uuid.Uuid
 
 /**

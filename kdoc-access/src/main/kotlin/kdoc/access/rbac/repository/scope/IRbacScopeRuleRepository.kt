@@ -4,8 +4,8 @@
 
 package kdoc.access.rbac.repository.scope
 
-import kdoc.access.rbac.entity.scope.RbacScopeRuleDto
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleDto
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**

@@ -10,8 +10,8 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.serializers.OffsetTimestamp
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
-import kdoc.document.entity.DocumentDto
-import kdoc.document.entity.DocumentRequest
+import kdoc.document.model.DocumentDto
+import kdoc.document.model.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

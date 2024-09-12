@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.actor.entity
+package kdoc.access.actor.model
 
 import kdoc.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable

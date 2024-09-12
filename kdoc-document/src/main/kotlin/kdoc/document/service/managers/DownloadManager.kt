@@ -11,7 +11,7 @@ import kdoc.base.env.Tracer
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDateTime
-import kdoc.document.entity.DocumentDto
+import kdoc.document.model.DocumentDto
 import kdoc.document.errors.DocumentError
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

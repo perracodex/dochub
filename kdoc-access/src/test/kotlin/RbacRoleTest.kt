@@ -5,9 +5,9 @@
 import io.ktor.test.dispatcher.*
 import kdoc.access.actor.di.ActorDomainInjection
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.access.rbac.entity.role.RbacRoleDto
-import kdoc.access.rbac.entity.role.RbacRoleRequest
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRoleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
@@ -56,11 +56,11 @@ class RbacRoleTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val roleEntity: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
-        val existingRoleEntity: RbacRoleDto? = rbacService.findRoleById(roleId = roleEntity.id)
-        assertNotNull(actual = existingRoleEntity, message = "The role was not found in the database after it was created.")
-        assertEquals(expected = roleName, actual = existingRoleEntity.roleName)
-        assertEquals(expected = description, actual = existingRoleEntity.description)
+        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val existingRole: RbacRoleDto? = rbacService.findRoleById(roleId = rbacRole.id)
+        assertNotNull(actual = existingRole, message = "The role was not found in the database after it was created.")
+        assertEquals(expected = roleName, actual = existingRole.roleName)
+        assertEquals(expected = description, actual = existingRole.description)
 
         // Try to create the same role again.
         assertFailsWith<ExposedSQLException> {
@@ -70,15 +70,15 @@ class RbacRoleTest : KoinComponent {
         // Update the role.
         val newRoleName = "new_role_name"
         val newDescription = "New role description"
-        val updatedRoleEntity: RbacRoleDto? = rbacService.updateRole(
-            roleId = roleEntity.id,
+        val updatedRole: RbacRoleDto? = rbacService.updateRole(
+            roleId = rbacRole.id,
             roleRequest = roleRequest.copy(
                 roleName = newRoleName,
                 description = newDescription
             )
         )
-        assertNotNull(actual = updatedRoleEntity, message = "The role was not updated.")
-        assertEquals(expected = newRoleName, actual = updatedRoleEntity.roleName)
-        assertEquals(expected = newDescription, actual = updatedRoleEntity.description)
+        assertNotNull(actual = updatedRole, message = "The role was not updated.")
+        assertEquals(expected = newRoleName, actual = updatedRole.roleName)
+        assertEquals(expected = newDescription, actual = updatedRole.description)
     }
 }

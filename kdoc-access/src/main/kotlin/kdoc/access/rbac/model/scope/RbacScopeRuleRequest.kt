@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.scope
+package kdoc.access.rbac.model.scope
 
-import kdoc.access.rbac.entity.field.RbacFieldRuleRequest
+import kdoc.access.rbac.model.field.RbacFieldRuleRequest
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kotlinx.serialization.Serializable

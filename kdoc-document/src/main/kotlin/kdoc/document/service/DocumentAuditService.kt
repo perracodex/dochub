@@ -5,7 +5,7 @@
 package kdoc.document.service
 
 import kdoc.base.env.SessionContext
-import kdoc.document.entity.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditRequest
 import kdoc.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

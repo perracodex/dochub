@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.rbac.entity.role
+package kdoc.access.rbac.model.role
 
-import kdoc.access.rbac.entity.scope.RbacScopeRuleDto
-import kdoc.access.rbac.entity.scope.RbacScopeRuleRequest
+import kdoc.access.rbac.model.scope.RbacScopeRuleDto
+import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kotlinx.serialization.Serializable
 
 /**

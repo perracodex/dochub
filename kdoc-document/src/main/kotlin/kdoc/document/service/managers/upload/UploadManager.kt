@@ -8,8 +8,8 @@ import io.ktor.http.content.*
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
-import kdoc.document.entity.DocumentDto
-import kdoc.document.entity.DocumentRequest
+import kdoc.document.model.DocumentDto
+import kdoc.document.model.DocumentRequest
 import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.managers.upload.annotation.UploadAPI

@@ -4,9 +4,9 @@
 
 package kdoc.access.actor.repository
 
-import kdoc.access.actor.entity.ActorDto
-import kdoc.access.actor.entity.ActorRequest
-import kdoc.access.rbac.entity.role.RbacRoleDto
+import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.ActorRequest
+import kdoc.access.rbac.model.role.RbacRoleDto
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.base.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
