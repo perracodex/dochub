@@ -158,24 +158,24 @@ internal class DocumentRepository(
         }
     }
 
-    override fun create(documentRequest: DocumentRequest): Uuid {
+    override fun create(request: DocumentRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
             val newDocumentId: Uuid = DocumentTable.insert { documentRow ->
-                documentRow.mapDocumentRequest(documentRequest = documentRequest)
+                documentRow.mapDocumentRequest(request = request)
             } get DocumentTable.id
 
             newDocumentId
         }
     }
 
-    override fun update(documentId: Uuid, documentRequest: DocumentRequest): Int {
+    override fun update(documentId: Uuid, request: DocumentRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
                 }
             ) { documentRow ->
-                documentRow.mapDocumentRequest(documentRequest = documentRequest)
+                documentRow.mapDocumentRequest(request = request)
             }
 
             updateCount
@@ -227,15 +227,15 @@ internal class DocumentRepository(
      * Populates an SQL [UpdateBuilder] with data from an [DocumentRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapDocumentRequest(documentRequest: DocumentRequest) {
-        this[DocumentTable.ownerId] = documentRequest.ownerId
-        this[DocumentTable.groupId] = documentRequest.groupId
-        this[DocumentTable.type] = documentRequest.type
-        this[DocumentTable.description] = documentRequest.description?.trim()
-        this[DocumentTable.originalName] = documentRequest.originalName.trim()
-        this[DocumentTable.storageName] = documentRequest.storageName.trim()
-        this[DocumentTable.location] = documentRequest.location.trim()
-        this[DocumentTable.isCiphered] = documentRequest.isCiphered
-        this[DocumentTable.size] = documentRequest.size
+    private fun UpdateBuilder<Int>.mapDocumentRequest(request: DocumentRequest) {
+        this[DocumentTable.ownerId] = request.ownerId
+        this[DocumentTable.groupId] = request.groupId
+        this[DocumentTable.type] = request.type
+        this[DocumentTable.description] = request.description?.trim()
+        this[DocumentTable.originalName] = request.originalName.trim()
+        this[DocumentTable.storageName] = request.storageName.trim()
+        this[DocumentTable.location] = request.location.trim()
+        this[DocumentTable.isCiphered] = request.isCiphered
+        this[DocumentTable.size] = request.size
     }
 }

@@ -62,19 +62,19 @@ internal interface IDocumentRepository {
     /**
      * Creates a new document.
      *
-     * @param documentRequest The document to be created.
+     * @param request The document to be created.
      * @return The ID of the created document.
      */
-    fun create(documentRequest: DocumentRequest): Uuid
+    fun create(request: DocumentRequest): Uuid
 
     /**
      * Updates a document details.
      *
      * @param documentId The ID of the document to be updated.
-     * @param documentRequest The new details for the document.
+     * @param request The new details for the document.
      * @return The number of updated records.
      */
-    fun update(documentId: Uuid, documentRequest: DocumentRequest): Int
+    fun update(documentId: Uuid, request: DocumentRequest): Int
 
     /**
      * Sets the cipher state of a document.

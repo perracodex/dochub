@@ -8,9 +8,9 @@ import io.ktor.http.content.*
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
+import kdoc.document.errors.DocumentError
 import kdoc.document.model.DocumentDto
 import kdoc.document.model.DocumentRequest
-import kdoc.document.errors.DocumentError
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.managers.upload.annotation.UploadAPI
 import kotlin.uuid.Uuid
@@ -82,7 +82,7 @@ internal class UploadManager(
                     size = fileEntry.size
                 )
 
-                val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
+                val documentId: Uuid = documentRepository.create(request = documentRequest)
                 val createdDocument: DocumentDto = documentRepository.findById(documentId = documentId)!!
                 output.add(createdDocument)
             }

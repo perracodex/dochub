@@ -4,7 +4,7 @@
 
 package kdoc.document.repository
 
-import kdoc.document.model.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditLogRequest
 import kotlin.uuid.Uuid
 
 /**
@@ -15,8 +15,8 @@ internal interface IDocumentAuditRepository {
     /**
      * Creates a new audit log entry.
      *
-     * @param documentAuditRequest The new audit log entry data.
+     * @param request The new audit log entry data.
      * @return The ID of the created audit log entry.
      */
-    fun create(documentAuditRequest: DocumentAuditRequest): Uuid
+    fun create(request: DocumentAuditLogRequest): Uuid
 }

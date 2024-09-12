@@ -5,7 +5,7 @@
 package kdoc.document.service
 
 import kdoc.base.env.SessionContext
-import kdoc.document.model.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditLogRequest
 import kdoc.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +34,7 @@ internal class DocumentAuditService(
         ownerId: Uuid? = null,
         log: String? = null,
     ): Unit = withContext(Dispatchers.IO) {
-        val request = DocumentAuditRequest(
+        val request = DocumentAuditLogRequest(
             operation = operation,
             actorId = sessionContext.actorId,
             documentId = documentId,
@@ -43,6 +43,6 @@ internal class DocumentAuditService(
             log = log
         )
 
-        documentAuditRepository.create(documentAuditRequest = request)
+        documentAuditRepository.create(request = request)
     }
 }

@@ -86,12 +86,12 @@ internal class DocumentService(
     /**
      * Creates a new document.
      *
-     * @param documentRequest The document to be created.
+     * @param request The document to be created.
      * @return The ID of the created document.
      */
-    suspend fun create(documentRequest: DocumentRequest): DocumentDto = withContext(Dispatchers.IO) {
+    suspend fun create(request: DocumentRequest): DocumentDto = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new document.")
-        val documentId: Uuid = documentRepository.create(documentRequest = documentRequest)
+        val documentId: Uuid = documentRepository.create(request = request)
         return@withContext findById(documentId = documentId)!!
     }
 
@@ -99,16 +99,16 @@ internal class DocumentService(
      * Updates a document's details.
      *
      * @param documentId The ID of the document to be updated.
-     * @param documentRequest The new details for the document.
+     * @param request The new details for the document.
      * @return The number of updated records.
      */
     @Suppress("unused")
     suspend fun update(
         documentId: Uuid,
-        documentRequest: DocumentRequest
+        request: DocumentRequest
     ): DocumentDto? = withContext(Dispatchers.IO) {
         tracer.debug("Updating document with ID: $documentId.")
-        val updatedCount: Int = documentRepository.update(documentId = documentId, documentRequest = documentRequest)
+        val updatedCount: Int = documentRepository.update(documentId = documentId, request = request)
         return@withContext if (updatedCount > 0) findById(documentId = documentId) else null
     }
 

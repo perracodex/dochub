@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
  * @property ownerId The unique identifier of the owner of a document being audited.
  * @property log Additional log information.
  */
-internal data class DocumentAuditRequest(
+internal data class DocumentAuditLogRequest(
     val operation: String,
     val actorId: Uuid? = null,
     val documentId: Uuid? = null,

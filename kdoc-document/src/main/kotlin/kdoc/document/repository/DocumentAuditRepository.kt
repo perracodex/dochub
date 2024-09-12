@@ -7,7 +7,7 @@ package kdoc.document.repository
 import kdoc.base.database.schema.document.DocumentAuditTable
 import kdoc.base.database.service.transactionWithSchema
 import kdoc.base.env.SessionContext
-import kdoc.document.model.DocumentAuditRequest
+import kdoc.document.model.DocumentAuditLogRequest
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.uuid.Uuid
@@ -20,10 +20,10 @@ internal class DocumentAuditRepository(
     private val sessionContext: SessionContext,
 ) : IDocumentAuditRepository {
 
-    override fun create(documentAuditRequest: DocumentAuditRequest): Uuid {
+    override fun create(request: DocumentAuditLogRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
             val newAuditId: Uuid = DocumentAuditTable.insert { documentRow ->
-                documentRow.mapDocumentRequest(documentAuditRequest = documentAuditRequest)
+                documentRow.mapDocumentRequest(request = request)
             } get DocumentAuditTable.id
 
             newAuditId
@@ -31,15 +31,15 @@ internal class DocumentAuditRepository(
     }
 
     /**
-     * Populates an SQL [UpdateBuilder] with data from an [DocumentAuditRequest] instance,
+     * Populates an SQL [UpdateBuilder] with data from an [DocumentAuditLogRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapDocumentRequest(documentAuditRequest: DocumentAuditRequest) {
-        this[DocumentAuditTable.operation] = documentAuditRequest.operation.trim()
-        this[DocumentAuditTable.actorId] = documentAuditRequest.actorId
-        this[DocumentAuditTable.documentId] = documentAuditRequest.documentId
-        this[DocumentAuditTable.groupId] = documentAuditRequest.groupId
-        this[DocumentAuditTable.ownerId] = documentAuditRequest.ownerId
-        this[DocumentAuditTable.log] = documentAuditRequest.log?.trim()
+    private fun UpdateBuilder<Int>.mapDocumentRequest(request: DocumentAuditLogRequest) {
+        this[DocumentAuditTable.operation] = request.operation.trim()
+        this[DocumentAuditTable.actorId] = request.actorId
+        this[DocumentAuditTable.documentId] = request.documentId
+        this[DocumentAuditTable.groupId] = request.groupId
+        this[DocumentAuditTable.ownerId] = request.ownerId
+        this[DocumentAuditTable.log] = request.log?.trim()
     }
 }
