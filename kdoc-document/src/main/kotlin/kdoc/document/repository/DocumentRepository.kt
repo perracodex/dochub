@@ -58,13 +58,12 @@ internal class DocumentRepository(
         pageable: Pageable?
     ): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // Start a query with the target condition.
-            val query: Query = DocumentTable.selectAll().andWhere(condition)
+            val query: Query = DocumentTable.selectAll()
+                .andWhere(condition)
 
-            // Count total elements that match the condition for accurate pagination information.
+            // Determine the total records involved in the query before applying pagination.
             val totalElements: Int = query.count().toInt()
 
-            // Fetch the paginated content.
             val content: List<Document> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
@@ -81,12 +80,12 @@ internal class DocumentRepository(
 
     override fun findAll(pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // Need counting the overall elements before applying pagination.
-            // A separate simple count query is by far more performant
-            // than having a 'count over' expression as part of the main query.
-            val totalElements: Int = DocumentTable.selectAll().count().toInt()
+            val query: Query = DocumentTable.selectAll()
 
-            val content: List<Document> = DocumentTable.selectAll()
+            // Determine the total records involved in the query before applying pagination.
+            val totalElements: Int = query.count().toInt()
+
+            val content: List<Document> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
                     Document.from(row = resultRow)
@@ -141,8 +140,8 @@ internal class DocumentRepository(
                 }
             }
 
-            // Count total elements after applying filters.
-            val totalFilteredElements: Int = query.count().toInt()
+            // Determine the total records involved in the query before applying pagination.
+            val totalElements: Int = query.count().toInt()
 
             val content: List<Document> = query
                 .paginate(pageable = pageable)
@@ -152,7 +151,7 @@ internal class DocumentRepository(
 
             Page.build(
                 content = content,
-                totalElements = totalFilteredElements,
+                totalElements = totalElements,
                 pageable = pageable
             )
         }
