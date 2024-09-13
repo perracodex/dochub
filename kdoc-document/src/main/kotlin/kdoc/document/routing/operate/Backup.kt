@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
-import kdoc.document.model.DocumentDto
+import kdoc.document.model.Document
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -29,7 +29,7 @@ internal fun Route.backupDocumentsRoute() {
 
         // Get all documents.
         val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val documents: Page<DocumentDto> = documentService.findAll()
+        val documents: Page<Document> = documentService.findAll()
         if (documents.totalElements == 0) {
             call.respond(status = HttpStatusCode.NoContent, message = "No documents found.")
             return@get

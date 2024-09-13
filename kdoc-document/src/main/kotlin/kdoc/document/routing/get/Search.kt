@@ -12,7 +12,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.getPageable
-import kdoc.document.model.DocumentDto
+import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
@@ -31,7 +31,7 @@ internal fun Route.searchDocumentsRoute() {
             .audit(operation = "search", log = "$request | ${pageable?.toString()}")
 
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val documents: Page<DocumentDto> = service.search(filterSet = request, pageable = pageable)
+        val documents: Page<Document> = service.search(filterSet = request, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
     }
 }

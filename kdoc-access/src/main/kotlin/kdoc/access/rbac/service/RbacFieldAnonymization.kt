@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.service
 
-import kdoc.access.rbac.model.base.BaseRbacDto
+import kdoc.access.rbac.model.base.BaseRbac
 import kdoc.base.utils.KLocalDate
 import kdoc.base.utils.KLocalDateTime
 import kdoc.base.utils.KLocalTime
@@ -27,7 +27,7 @@ import kdoc.base.utils.KLocalTime
  * to a slightly different time (e.g., "00:00:00.001") to prevent confusion with the anonymized time placeholder.
  * Another approach could be to just change Time fields to Text fields, and anonymize them as strings.
  *
- * @see [BaseRbacDto]
+ * @see [BaseRbac]
  */
 public object RbacFieldAnonymization {
     private const val ANONYMIZED_STRING: String = "##########"

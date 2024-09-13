@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
-import kdoc.document.model.DocumentDto
+import kdoc.document.model.Document
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -37,7 +37,7 @@ internal fun Route.downloadDocumentRoute() {
 
         // Get all document files for the given token and signature.
         val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val documents: List<DocumentDto>? = documentService.findBySignature(token = token, signature = signature)
+        val documents: List<Document>? = documentService.findBySignature(token = token, signature = signature)
         if (documents.isNullOrEmpty()) {
             auditService.audit(operation = "download verification failed", log = "token=$token | signature=$signature")
             call.respond(status = HttpStatusCode.Forbidden, message = "Unable to initiate download.")

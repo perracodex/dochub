@@ -44,7 +44,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends DocumentDto"
+                $ref: "#/components/schemas/Page_? extends Document"
   /auth/token/create:
     post:
       description: "Creates a new token and responds with it."
@@ -306,7 +306,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends DocumentDto"
+                $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/{document_id}:
     delete:
       description: "Delete a document by ID."
@@ -353,7 +353,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/DocumentDto"
+                $ref: "#/components/schemas/Document"
         "404":
           description: "Not Found"
           content:
@@ -416,7 +416,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/DocumentDto"
+                  $ref: "#/components/schemas/Document"
   /v1/document/backup:
     get:
       description: "Downloads a backup file containing all the documents."
@@ -554,7 +554,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends DocumentDto"
+                $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/owner/{owner_id}:
     get:
       description: "Find all documents by owner."
@@ -586,7 +586,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends DocumentDto"
+                $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/url/{document_id}/{group_id}:
     get:
       description: "Generate the signed URL for a document download."
@@ -666,7 +666,7 @@ components:
           type: "array"
       required:
         - "content"
-    Page_? extends DocumentDto:
+    Page_? extends Document:
       type: "object"
       properties:
         totalPages:
@@ -1058,7 +1058,7 @@ components:
       required:
         - "createdAt"
         - "updatedAt"
-    DocumentDto:
+    Document:
       type: "object"
       properties:
         id:

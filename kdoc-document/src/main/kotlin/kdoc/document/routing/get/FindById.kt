@@ -10,8 +10,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
-import kdoc.document.model.DocumentDto
 import kdoc.document.errors.DocumentError
+import kdoc.document.model.Document
 import kdoc.document.routing.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -30,7 +30,7 @@ internal fun Route.findDocumentByIdRoute() {
             .audit(operation = "find by document id", documentId = documentId)
 
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val document: DocumentDto? = service.findById(documentId = documentId)
+        val document: Document? = service.findById(documentId = documentId)
 
         document?.let {
             call.respond(status = HttpStatusCode.OK, message = document)

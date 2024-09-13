@@ -4,12 +4,12 @@
 
 package kdoc.access.rbac.repository.scope
 
-import kdoc.access.rbac.model.scope.RbacScopeRuleDto
+import kdoc.access.rbac.model.scope.RbacScopeRule
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**
- * Repository for [RbacScopeRuleDto] data.
+ * Repository for [RbacScopeRule] data.
  * Responsible for managing [RbacScopeRuleRequest] data.
  *
  * @see RbacScopeRuleRequest

@@ -10,7 +10,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
-import kdoc.document.model.DocumentDto
+import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest
 import org.jetbrains.exposed.sql.*
@@ -26,24 +26,24 @@ internal class DocumentRepository(
     private val sessionContext: SessionContext
 ) : IDocumentRepository {
 
-    override fun findById(documentId: Uuid): DocumentDto? {
+    override fun findById(documentId: Uuid): Document? {
         return transactionWithSchema(schema = sessionContext.schema) {
             DocumentTable.selectAll().where {
                 DocumentTable.id eq documentId
             }.singleOrNull()?.let { resultRow ->
-                DocumentDto.from(row = resultRow)
+                Document.from(row = resultRow)
             }
         }
     }
 
-    override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<DocumentDto> {
+    override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<Document> {
         return fetchByCondition(
             condition = { DocumentTable.ownerId eq ownerId },
             pageable = pageable
         )
     }
 
-    override fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<DocumentDto> {
+    override fun findByGroupId(groupId: Uuid, pageable: Pageable?): Page<Document> {
         return fetchByCondition(
             condition = { DocumentTable.groupId eq groupId },
             pageable = pageable
@@ -56,7 +56,7 @@ internal class DocumentRepository(
     private fun fetchByCondition(
         condition: SqlExpressionBuilder.() -> Op<Boolean>,
         pageable: Pageable?
-    ): Page<DocumentDto> {
+    ): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start a query with the target condition.
             val query: Query = DocumentTable.selectAll().andWhere(condition)
@@ -65,10 +65,10 @@ internal class DocumentRepository(
             val totalElements: Int = query.count().toInt()
 
             // Fetch the paginated content.
-            val content: List<DocumentDto> = query
+            val content: List<Document> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentDto.from(row = resultRow)
+                    Document.from(row = resultRow)
                 }
 
             Page.build(
@@ -79,17 +79,17 @@ internal class DocumentRepository(
         }
     }
 
-    override fun findAll(pageable: Pageable?): Page<DocumentDto> {
+    override fun findAll(pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Need counting the overall elements before applying pagination.
             // A separate simple count query is by far more performant
             // than having a 'count over' expression as part of the main query.
             val totalElements: Int = DocumentTable.selectAll().count().toInt()
 
-            val content: List<DocumentDto> = DocumentTable.selectAll()
+            val content: List<Document> = DocumentTable.selectAll()
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentDto.from(row = resultRow)
+                    Document.from(row = resultRow)
                 }
 
             Page.build(
@@ -100,7 +100,7 @@ internal class DocumentRepository(
         }
     }
 
-    override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<DocumentDto> {
+    override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all records.
             val query: Query = DocumentTable.selectAll()
@@ -144,10 +144,10 @@ internal class DocumentRepository(
             // Count total elements after applying filters.
             val totalFilteredElements: Int = query.count().toInt()
 
-            val content: List<DocumentDto> = query
+            val content: List<Document> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    DocumentDto.from(row = resultRow)
+                    Document.from(row = resultRow)
                 }
 
             Page.build(

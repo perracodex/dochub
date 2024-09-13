@@ -6,7 +6,7 @@ package kdoc.access.system
 
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.Actor
 import kdoc.access.actor.service.ActorService
 import kdoc.access.credential.CredentialService
 import kdoc.base.env.SessionContext
@@ -84,7 +84,7 @@ internal object SessionContextFactory : KoinComponent {
         // Resolve the actor. Return null if no actor corresponds to the provided username.
         val username: String = userIdPrincipal.name
         val actorService: ActorService by inject()
-        val actor: ActorDto = actorService.findByUsername(username = username) ?: run {
+        val actor: Actor = actorService.findByUsername(username = username) ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }

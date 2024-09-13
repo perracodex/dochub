@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The document's metadata.
  */
 @Serializable
-public data class DocumentDto(
+public data class Document(
     val id: SUuid,
     val ownerId: SUuid,
     val groupId: SUuid,
@@ -57,13 +57,13 @@ public data class DocumentDto(
 
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [DocumentDto] instance.
+         * Maps a [ResultRow] to a [Document] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [DocumentDto] instance.
+         * @return The mapped [Document] instance.
          */
-        fun from(row: ResultRow): DocumentDto {
-            return DocumentDto(
+        fun from(row: ResultRow): Document {
+            return Document(
                 id = row[DocumentTable.id],
                 ownerId = row[DocumentTable.ownerId],
                 groupId = row[DocumentTable.groupId],

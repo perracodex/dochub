@@ -4,11 +4,11 @@
 
 import io.ktor.test.dispatcher.*
 import kdoc.access.actor.di.ActorDomainInjection
-import kdoc.access.actor.model.ActorDto
+import kdoc.access.actor.model.Actor
 import kdoc.access.actor.model.ActorRequest
 import kdoc.access.actor.service.ActorService
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.access.rbac.model.role.RbacRoleDto
+import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.role.RbacRoleRequest
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
@@ -60,7 +60,7 @@ class RbacActorTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val rbacRole: RbacRole = rbacService.createRole(roleRequest = roleRequest)
 
         // Create the actor.
         val actorService: ActorService by inject()
@@ -76,7 +76,7 @@ class RbacActorTest : KoinComponent {
             )
         )
 
-        var actor: ActorDto? = actorService.findByUsername(username = username)
+        var actor: Actor? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
         assertEquals(expected = password, actual = actor.password)
@@ -100,7 +100,7 @@ class RbacActorTest : KoinComponent {
         }
 
         // Find a role by Actor ID.
-        val roleByActor: RbacRoleDto? = rbacService.findRoleByActorId(actorId = actorId)
+        val roleByActor: RbacRole? = rbacService.findRoleByActorId(actorId = actorId)
         assertNotNull(actual = roleByActor, message = "The role was not found in the database after it was created.")
         assertEquals(expected = roleName, actual = roleByActor.roleName)
         assertEquals(expected = description, actual = roleByActor.description)

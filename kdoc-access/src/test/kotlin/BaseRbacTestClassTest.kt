@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kdoc.access.rbac.model.base.BaseRbacDto
+import kdoc.access.rbac.model.base.BaseRbac
 import kdoc.access.rbac.service.RbacFieldAnonymization
 import kdoc.base.utils.KLocalDate
 import kdoc.base.utils.KLocalDateTime
@@ -17,7 +17,7 @@ class BaseRbacTestClassTest {
         data class TestClass(
             val id: Int,
             val name: String
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,
@@ -48,13 +48,13 @@ class BaseRbacTestClassTest {
             val id: Int,
             val name: String,
             val nested: ChildClass? = null
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         data class ParentClass(
             val id: Int,
             val name: String,
             val nested: ChildClass? = null
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = ParentClass(
             id = 1,
@@ -96,7 +96,7 @@ class BaseRbacTestClassTest {
             val date: KLocalDate,
             val time: KLocalTime,
             val dateTime: KLocalDateTime
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,
@@ -132,7 +132,7 @@ class BaseRbacTestClassTest {
             val float: Float,
             val long: Long,
             val int: Int
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,

@@ -11,8 +11,8 @@ import kdoc.base.env.Tracer
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.DateTimeUtils
 import kdoc.base.utils.KLocalDateTime
-import kdoc.document.model.DocumentDto
 import kdoc.document.errors.DocumentError
+import kdoc.document.model.Document
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,7 +63,7 @@ internal object DownloadManager {
      * @return A [StreamHandler] configured with the appropriate settings for content type and disposition.
      */
     fun prepareStream(
-        documents: List<DocumentDto>,
+        documents: List<Document>,
         decipher: Boolean,
         archiveFilename: String,
         archiveAlways: Boolean
@@ -85,7 +85,7 @@ internal object DownloadManager {
         // Define the stream handler function, which decides how to stream the content.
         val streamHandler: suspend (OutputStream) -> Unit = { outputStream ->
             if (documents.size == 1 && !archiveAlways) {
-                val document: DocumentDto = documents.first()
+                val document: Document = documents.first()
                 streamSingleDocument(document = document, decipher = decipher, outputStream = outputStream)
             } else {
                 streamArchive(documents = documents, decipher = decipher, outputStream = outputStream)
@@ -107,7 +107,7 @@ internal object DownloadManager {
      * @param outputStream The output stream to which the archive is written.
      */
     private suspend fun streamArchive(
-        documents: List<DocumentDto>,
+        documents: List<Document>,
         decipher: Boolean,
         outputStream: OutputStream
     ): Unit = withContext(Dispatchers.IO) {
@@ -165,7 +165,7 @@ internal object DownloadManager {
      * @param outputStream The output stream where the ZIP archive will be written.
      */
     private fun pack(
-        documents: List<DocumentDto>,
+        documents: List<Document>,
         decipher: Boolean,
         outputStream: OutputStream
     ) {
@@ -269,7 +269,7 @@ internal object DownloadManager {
      * @param outputStream The output stream to write the document to.
      */
     private suspend fun streamSingleDocument(
-        document: DocumentDto,
+        document: Document,
         decipher: Boolean,
         outputStream: OutputStream
     ) {
