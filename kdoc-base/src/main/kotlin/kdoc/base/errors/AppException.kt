@@ -34,7 +34,7 @@ public abstract class AppException(
      */
     public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
-        return "Status: ${statusCode.value} | $errorCode | $context| $description $formattedReason"
+        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason"
     }
 
     /**
@@ -44,9 +44,9 @@ public abstract class AppException(
      */
     public fun toErrorResponse(): ErrorResponse {
         return ErrorResponse(
-            status = statusCode.value,
+            statusCode = statusCode.value,
+            errorCode = errorCode,
             context = context,
-            code = errorCode,
             description = description,
             reason = reason
         )
@@ -56,17 +56,17 @@ public abstract class AppException(
      * Data class representing a serializable error response,
      * encapsulating the structured error information that can be sent in an HTTP response.
      *
-     * @param status The HTTP status code associated with the error.
+     * @param statusCode The [HttpStatusCode] associated with the error.
+     * @param errorCode The unique code identifying the error.
      * @param context A context identifier for the error, typically the module or feature where it occurred.
-     * @param code The unique code identifying the error.
      * @param description A brief description of the error.
      * @param reason An optional human-readable reason for the error, providing more context.
      */
     @Serializable
     public data class ErrorResponse(
-        val status: Int,
+        val statusCode: Int,
+        val errorCode: String,
         val context: String,
-        val code: String,
         val description: String,
         val reason: String?
     )
