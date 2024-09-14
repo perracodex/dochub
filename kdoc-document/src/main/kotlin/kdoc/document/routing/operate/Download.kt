@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kdoc.base.env.SessionContext
 import kdoc.document.model.Document
 import kdoc.document.routing.DocumentRouteAPI
@@ -21,8 +22,8 @@ import org.koin.ktor.plugin.scope
 internal fun Route.downloadDocumentRoute() {
     // Serve a document file to download.
     get("v1/document/download/{token?}/{signature?}") {
-        val token: String? = call.request.queryParameters["token"]
-        val signature: String? = call.request.queryParameters["signature"]
+        val token: String = call.request.queryParameters.getOrFail(name = "token")
+        val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 
         // Audit the download attempt.
         val sessionContext: SessionContext? = SessionContext.from(call = call)
@@ -30,7 +31,7 @@ internal fun Route.downloadDocumentRoute() {
         auditService.audit(operation = "download", log = "token=$token | signature=$signature")
 
         // If the token or signature is missing, return a bad request response.
-        if (token.isNullOrBlank() || signature.isNullOrBlank()) {
+        if (token.isBlank() || signature.isBlank()) {
             call.respond(status = HttpStatusCode.BadRequest, message = "Missing token or signature.")
             return@get
         }

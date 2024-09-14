@@ -41,6 +41,17 @@ internal class DocumentService(
     }
 
     /**
+     * Retrieves a document by its ID or throws an exception if not found.
+     *
+     * @param documentId The ID of the document to be retrieved.
+     * @return The resolved [Document].
+     * @throws IllegalStateException if the document doesn't exist.
+     */
+    suspend fun findByIdOrThrow(documentId: Uuid): Document = withContext(Dispatchers.IO) {
+        return@withContext documentRepository.findByIdOrThrow(documentId = documentId)
+    }
+
+    /**
      * Retrieves a document by its owner ID.
      *
      * @param ownerId The owner ID of the document to be retrieved.
@@ -91,8 +102,7 @@ internal class DocumentService(
      */
     suspend fun create(request: DocumentRequest): Document = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new document.")
-        val documentId: Uuid = documentRepository.create(request = request)
-        return@withContext findById(documentId = documentId)!!
+        return@withContext documentRepository.createAndGet(request = request)
     }
 
     /**

@@ -10,6 +10,7 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
+import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest
@@ -34,6 +35,11 @@ internal class DocumentRepository(
                 Document.from(row = resultRow)
             }
         }
+    }
+
+    override fun findByIdOrThrow(documentId: Uuid): Document {
+        return findById(documentId = documentId)
+            ?: throw DocumentError.DocumentNotFound(documentId = documentId)
     }
 
     override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<Document> {
@@ -164,6 +170,13 @@ internal class DocumentRepository(
             } get DocumentTable.id
 
             newDocumentId
+        }
+    }
+
+    override fun createAndGet(request: DocumentRequest): Document {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            val documentId: Uuid = create(request = request)
+            findByIdOrThrow(documentId = documentId)
         }
     }
 

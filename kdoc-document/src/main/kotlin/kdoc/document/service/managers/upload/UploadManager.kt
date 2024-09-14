@@ -82,9 +82,8 @@ internal class UploadManager(
                     size = fileEntry.size
                 )
 
-                val documentId: Uuid = documentRepository.create(request = documentRequest)
-                val createdDocument: Document = documentRepository.findById(documentId = documentId)!!
-                output.add(createdDocument)
+                val newDocument: Document = documentRepository.createAndGet(request = documentRequest)
+                output.add(newDocument)
             }
 
             return output

@@ -79,7 +79,7 @@ class MultipartFileHandlerTest {
 
                         persistedFiles.forEach { fileDetails ->
                             assertTrue(fileDetails.originalFilename.startsWith(filenamePrefix))
-                            assertTrue(fileDetails.description!!.startsWith(descriptionPrefix))
+                            assertTrue(fileDetails.description != null && fileDetails.description.startsWith(descriptionPrefix))
                             assertNotEquals(illegal = fileDetails.originalFilename, actual = fileDetails.storageFilename)
                         }
 

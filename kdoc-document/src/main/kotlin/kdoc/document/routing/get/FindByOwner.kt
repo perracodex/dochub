@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
@@ -25,7 +26,7 @@ import kotlin.uuid.Uuid
 internal fun Route.findDocumentsByOwnerRoute() {
     // Find all documents by owner.
     get("v1/document/owner/{owner_id}") {
-        val ownerId: Uuid = call.parameters["owner_id"].toUuid()
+        val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
@@ -34,7 +35,6 @@ internal fun Route.findDocumentsByOwnerRoute() {
 
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
-
         call.respond(status = HttpStatusCode.OK, message = documents)
     }
 }

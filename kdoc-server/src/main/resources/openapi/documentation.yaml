@@ -192,9 +192,6 @@ paths:
             '*/*':
               schema:
                 type: "string"
-              examples:
-                Example#1:
-                  value: "Invalid or missing role ID."
         "200":
           description: "OK"
           content:
@@ -342,9 +339,6 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -354,12 +348,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Document"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
-              schema:
-                type: "string"
   /v1/document/{owner_id}/{group_id}/{type}/{cipher}:
     post:
       description: "Upload a new document."

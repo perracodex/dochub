@@ -56,7 +56,8 @@ class TimestampTest : KoinComponent {
         )
 
         val documentId: Uuid = documentRepository.create(request = documentRequest)
-        val document: Document = documentRepository.findById(documentId = documentId)!!
+        val document: Document = documentRepository.findById(documentId = documentId)
+            ?: fail("Document not found.")
 
         // Assert that the record has timestamps.
         assertNotNull(actual = document)
@@ -72,7 +73,8 @@ class TimestampTest : KoinComponent {
         val createdAt: OffsetTimestamp = document.meta.createdAt
         val updatedAt: OffsetTimestamp = document.meta.updatedAt
         documentRepository.update(documentId = documentId, request = documentRequest)
-        val updatedDocument: Document = documentRepository.findById(documentId = documentId)!!
+        val updatedDocument: Document = documentRepository.findById(documentId = documentId)
+            ?: fail("Document not found.")
 
         // The createdAt timestamp should not change.
         assertEquals(

@@ -9,6 +9,7 @@ import kdoc.base.utils.KLocalDateTime
 import kdoc.base.utils.KLocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class BaseRbacTestClassTest {
 
@@ -79,13 +80,16 @@ class BaseRbacTestClassTest {
             )
         )
 
+        assertNotNull(processed.nested)
+        assertNotNull(processed.nested.nested)
+        assertNotNull(processed.nested.nested.nested)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.id), actual = true)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.name), actual = true)
-        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested!!.id), actual = true)
+        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.id), actual = true)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.name), actual = true)
-        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested!!.id), actual = false)
+        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested.id), actual = false)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested.name), actual = true)
-        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested.nested!!.id), actual = false)
+        assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested.nested.id), actual = false)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.nested.nested.name), actual = false)
     }
 

@@ -10,6 +10,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
@@ -27,9 +28,9 @@ import kotlin.uuid.Uuid
 internal fun Route.uploadDocumentsRoute() {
     // Upload a new document.
     post("v1/document/{owner_id?}/{group_id?}/{type?}/{cipher?}") {
-        val ownerId: Uuid = call.request.queryParameters["owner_id"].toUuid()
+        val ownerId: Uuid = call.request.queryParameters.getOrFail(name = "owner_id").toUuid()
         val groupId: Uuid? = call.request.queryParameters["group_id"].toUuidOrNull()
-        val type: DocumentType = DocumentType.parse(value = call.request.queryParameters["type"]!!)
+        val type: DocumentType = DocumentType.parse(value = call.request.queryParameters.getOrFail(name = "type"))
         val cipher: Boolean = call.request.queryParameters["cipher"]?.toBoolean()
             ?: AppSettings.storage.cipher
 
