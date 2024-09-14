@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
  * The application exception class, directly incorporating HTTP status, error code, and description.
  *
  * @param statusCode The [HttpStatusCode] associated with this error.
- * @param context A context identifier for the error, typically the module or feature where it occurred.
  * @param errorCode A unique code identifying the type of error.
+ * @param context A context identifier for the error, typically the module or feature where it occurred.
  * @param description A human-readable description of the error.
  * @param reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
