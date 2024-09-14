@@ -20,7 +20,9 @@ import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
 internal fun Route.backupDocumentsRoute() {
-    // Downloads a backup file containing all the documents.
+    /**
+     * Downloads a backup file containing all the documents.
+     */
     get("v1/document/backup") {
         // Audit the backup action.
         val sessionContext: SessionContext? = SessionContext.from(call = call)

@@ -20,7 +20,9 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteAPI
 internal fun Route.deleteDocumentsByGroupRoute() {
-    // Delete all documents by group.
+    /**
+     * Delete all documents by group.
+     */
     delete("v1/document/group/{group_id}") {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
 

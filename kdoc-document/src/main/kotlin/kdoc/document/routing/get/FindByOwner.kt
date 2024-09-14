@@ -24,7 +24,9 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteAPI
 internal fun Route.findDocumentsByOwnerRoute() {
-    // Find all documents by owner.
+    /**
+     * Find all documents by owner.
+     */
     get("v1/document/owner/{owner_id}") {
         val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()

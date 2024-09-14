@@ -20,7 +20,9 @@ import org.koin.ktor.plugin.scope
 
 @DocumentRouteAPI
 internal fun Route.downloadDocumentRoute() {
-    // Serve a document file to download.
+    /**
+     * Serve a document file to download.
+     */
     get("v1/document/download/{token?}/{signature?}") {
         val token: String = call.request.queryParameters.getOrFail(name = "token")
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
