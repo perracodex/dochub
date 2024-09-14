@@ -23,7 +23,7 @@ paths:
                 Example#2:
                   value: ""
     post:
-      description: "Search (Filter) documents."
+      description: "Search (filter) for documents."
       parameters:
         - name: "sort"
           in: "query"
@@ -266,7 +266,7 @@ paths:
                 $ref: "#/components/schemas/SnowflakeData"
   /v1/document:
     delete:
-      description: "Delete all Document entries."
+      description: "Delete all document entries."
       responses:
         "200":
           description: "OK"
@@ -276,7 +276,7 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
-      description: "Find all documents."
+      description: "Find all existing documents."
       parameters:
         - name: "sort"
           in: "query"
@@ -316,7 +316,7 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
-      description: "Find a documents by ID."
+      description: "Find a document by ID."
       parameters:
         - name: "document_id"
           in: "path"
@@ -399,7 +399,7 @@ paths:
                   value: "No documents found."
   /v1/document/cipher/{cipher}:
     put:
-      description: "Changes the cipher state of all documents."
+      description: "Change the cipher state of all documents."
       parameters:
         - name: "cipher"
           in: "path"
