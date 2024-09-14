@@ -32,10 +32,13 @@ public object NetworkUtils {
      * @param endpoints A list of endpoint paths (without base URL) to be logged.
      */
     public fun logEndpoints(reason: String, endpoints: List<String>) {
-        val url: Url = getServerUrl()
         tracer.info("$reason:")
+        val baseUrl: Url = getServerUrl()
         endpoints.forEach { endpoint ->
-            tracer.info("$url/$endpoint")
+            val finalUrl: String = URLBuilder(url = baseUrl).apply {
+                appendPathSegments(endpoint.trim())
+            }.buildString()
+            tracer.info(finalUrl)
         }
     }
 
