@@ -70,7 +70,7 @@ internal fun Application.kdocModule() {
 
     configureSessions()
 
-    configuredApiSchema()
+    configureApiSchema()
 
     configureRoutes()
 
