@@ -26,12 +26,10 @@ import kdoc.base.env.Tracer
  */
 @TokenAPI
 internal suspend fun ApplicationCall.respondWithToken() {
-    runCatching {
-        this.principal<SessionContext>()?.let { sessionContext ->
-            return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
-        } ?: throw IllegalArgumentException("Invalid actor. ${CredentialService.HINT}")
-    }.onSuccess { newJwtToken ->
-        this.respond(status = HttpStatusCode.OK, message = newJwtToken)
+    val token: String = runCatching {
+        val sessionContext: SessionContext = this.principal<SessionContext>()
+            ?: throw IllegalArgumentException("Invalid session context. ${CredentialService.HINT}")
+        return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
     }.onFailure { e ->
         Tracer(ref = ApplicationCall::respondWithToken)
             .error(message = "Failed to generate token.", cause = e)
@@ -51,5 +49,7 @@ internal suspend fun ApplicationCall.respondWithToken() {
                 )
             }
         }
-    }
+    }.getOrThrow()
+
+    this.respond(status = HttpStatusCode.OK, message = token)
 }
