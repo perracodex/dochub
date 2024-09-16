@@ -36,7 +36,7 @@ internal class CipherStateHandler(
      */
     suspend fun changeState(cipher: Boolean): Int = withContext(Dispatchers.IO) {
         val documents: Page<Document> = documentRepository.findAll()
-        if (documents.totalElements == 0) {
+        if (documents.details.totalElements == 0) {
             tracer.debug("No documents found to change cipher state.")
             return@withContext 0
         }
