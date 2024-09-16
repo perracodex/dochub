@@ -32,7 +32,7 @@ internal fun Route.backupDocumentsRoute() {
         // Get all documents.
         val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = documentService.findAll()
-        if (documents.totalElements == 0) {
+        if (documents.details.totalElements == 0) {
             call.respond(status = HttpStatusCode.NoContent, message = "No documents found.")
             return@get
         }
