@@ -10,7 +10,6 @@ import kdoc.base.env.SessionContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
-import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest
@@ -35,11 +34,6 @@ internal class DocumentRepository(
                 Document.from(row = resultRow)
             }
         }
-    }
-
-    override fun findByIdOrThrow(documentId: Uuid): Document {
-        return findById(documentId = documentId)
-            ?: throw DocumentError.DocumentNotFound(documentId = documentId)
     }
 
     override fun findByOwnerId(ownerId: Uuid, pageable: Pageable?): Page<Document> {
@@ -163,24 +157,18 @@ internal class DocumentRepository(
         }
     }
 
-    override fun create(request: DocumentRequest): Uuid {
+    override fun create(request: DocumentRequest): Document {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val newDocumentId: Uuid = DocumentTable.insert { documentRow ->
+            val documentId: Uuid = DocumentTable.insert { documentRow ->
                 documentRow.mapDocumentRequest(request = request)
             } get DocumentTable.id
 
-            newDocumentId
+            findById(documentId = documentId)
+                ?: throw IllegalStateException("Failed to create document.")
         }
     }
 
-    override fun createAndGet(request: DocumentRequest): Document {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            val documentId: Uuid = create(request = request)
-            findByIdOrThrow(documentId = documentId)
-        }
-    }
-
-    override fun update(documentId: Uuid, request: DocumentRequest): Int {
+    override fun update(documentId: Uuid, request: DocumentRequest): Document? {
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = DocumentTable.update(
                 where = {
@@ -190,7 +178,11 @@ internal class DocumentRepository(
                 documentRow.mapDocumentRequest(request = request)
             }
 
-            updateCount
+            if (updateCount > 0) {
+                findById(documentId = documentId)
+            } else {
+                null
+            }
         }
     }
 

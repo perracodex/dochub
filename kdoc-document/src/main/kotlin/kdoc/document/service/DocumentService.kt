@@ -41,17 +41,6 @@ internal class DocumentService(
     }
 
     /**
-     * Retrieves a document by its ID or throws an exception if not found.
-     *
-     * @param documentId The ID of the document to be retrieved.
-     * @return The resolved [Document].
-     * @throws IllegalStateException if the document doesn't exist.
-     */
-    suspend fun findByIdOrThrow(documentId: Uuid): Document = withContext(Dispatchers.IO) {
-        return@withContext documentRepository.findByIdOrThrow(documentId = documentId)
-    }
-
-    /**
      * Retrieves a document by its owner ID.
      *
      * @param ownerId The owner ID of the document to be retrieved.
@@ -98,11 +87,11 @@ internal class DocumentService(
      * Creates a new document.
      *
      * @param request The document to be created.
-     * @return The ID of the created document.
+     * @return The newly created [Document].
      */
     suspend fun create(request: DocumentRequest): Document = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new document.")
-        return@withContext documentRepository.createAndGet(request = request)
+        return@withContext documentRepository.create(request = request)
     }
 
     /**
@@ -110,7 +99,7 @@ internal class DocumentService(
      *
      * @param documentId The ID of the document to be updated.
      * @param request The new details for the document.
-     * @return The number of updated records.
+     * @return The Updated [Document], or null if not found.
      */
     @Suppress("unused")
     suspend fun update(
@@ -118,8 +107,7 @@ internal class DocumentService(
         request: DocumentRequest
     ): Document? = withContext(Dispatchers.IO) {
         tracer.debug("Updating document with ID: $documentId.")
-        val updatedCount: Int = documentRepository.update(documentId = documentId, request = request)
-        return@withContext if (updatedCount > 0) findById(documentId = documentId) else null
+        return@withContext documentRepository.update(documentId = documentId, request = request)
     }
 
     /**

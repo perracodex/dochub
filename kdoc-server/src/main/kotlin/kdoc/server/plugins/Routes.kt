@@ -7,13 +7,13 @@ package kdoc.server.plugins
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.access.rbac.routing.rbacRoutes
-import kdoc.access.token.routing.accessTokenRoutes
+import kdoc.access.rbac.api.rbacRoutes
+import kdoc.access.token.api.accessTokenRoutes
 import kdoc.base.env.SessionContext
-import kdoc.base.env.health.routing.healthCheckRoute
+import kdoc.base.env.health.healthCheckRoute
 import kdoc.base.events.sseRoute
 import kdoc.base.security.snowflake.snowflakeRoute
-import kdoc.document.routing.documentRoutes
+import kdoc.document.api.documentRoutes
 
 /**
  * Initializes and sets up routing for the application.

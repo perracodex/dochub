@@ -6,7 +6,6 @@ package kdoc.document.repository
 
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
-import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest
@@ -24,15 +23,6 @@ internal interface IDocumentRepository {
      * @return The resolved [Document] if found, null otherwise.
      */
     fun findById(documentId: Uuid): Document?
-
-    /**
-     * Retrieves a document by its ID or throws an exception if not found.
-     *
-     * @param documentId The ID of the document to be retrieved.
-     * @return The resolved [Document].
-     * @throws DocumentError.DocumentNotFound if the document doesn't exist.
-     */
-    fun findByIdOrThrow(documentId: Uuid): Document
 
     /**
      * Retrieves all document entries.
@@ -73,26 +63,18 @@ internal interface IDocumentRepository {
      * Creates a new document.
      *
      * @param request The document to be created.
-     * @return The ID of the created document.
-     */
-    fun create(request: DocumentRequest): Uuid
-
-    /**
-     * Creates a new document and retrieves it.
-     *
-     * @param request The document to be created.
      * @return The newly created [Document].
      */
-    fun createAndGet(request: DocumentRequest): Document
+    fun create(request: DocumentRequest): Document
 
     /**
      * Updates a document details.
      *
      * @param documentId The ID of the document to be updated.
      * @param request The new details for the document.
-     * @return The number of updated records.
+     * @return The updated [Document], or null if not found.
      */
-    fun update(documentId: Uuid, request: DocumentRequest): Int
+    fun update(documentId: Uuid, request: DocumentRequest): Document?
 
     /**
      * Sets the cipher state of a document.
