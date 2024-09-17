@@ -6,6 +6,19 @@ info:
 servers:
   - url: "http://127.0.0.1:8080"
   - url: "https://127.0.0.1:8443"
+tags:
+  - name: "Token"
+    description: " <br> "
+  - name: "System"
+    description: " <br> "
+  - name: "RBAC"
+    description: " <br> "
+  - name: "Document - Delete"
+    description: " <br> "
+  - name: "Document - Find"
+    description: " <br> "
+  - name: "Document - Operate"
+    description: " <br> "
 paths:
   /:
     get:
@@ -41,7 +54,9 @@ paths:
                 $ref: "#/components/schemas/Page_? extends Document"
   /auth/token/create:
     post:
-      description: "Creates a new token and responds with it."
+      tags:
+        - "Token"
+      description: "Creates a new token; requires Basic Authentication credentials."
       responses:
         "400":
           description: "Bad Request"
@@ -52,12 +67,6 @@ paths:
               examples:
                 Example#1:
                   value: "Invalid session context. Use either admin/admin or guest/guest."
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Function1_? super String"
         "500":
           description: "Internal Server Error"
           content:
@@ -67,19 +76,28 @@ paths:
               examples:
                 Example#1:
                   value: "Failed to generate token."
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
   /auth/token/refresh:
     post:
-      description: "Endpoint for token refresh. <br> No Basic Authentication is required\
-        \ here, but an existing token's validity will be checked. <br> For example,\
-        \ in Postman set the endpoint and in the Headers add an Authorization key\
-        \ <br> with a 'Bearer' holding a previous valid token."
+      tags:
+        - "Token"
+      description: "Refreshes an existing token; requires Basic Authentication credentials.\
+        \ <br> No Basic Authentication is required here, but an existing token's validity\
+        \ will be checked. <br> For example, in Postman set the endpoint and in the\
+        \ Headers add an Authorization key <br> with a 'Bearer' holding a previous\
+        \ valid token."
       responses:
         "200":
           description: "OK"
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Function1_? super String"
+                type: "string"
         "400":
           description: "Bad Request"
           content:
@@ -110,6 +128,8 @@ paths:
                   value: "Invalid token."
   /events:
     get:
+      tags:
+        - "System"
       description: "Server-Sent Events (SSE) endpoint."
       responses:
         "500":
@@ -120,6 +140,8 @@ paths:
                 type: "string"
   /health:
     get:
+      tags:
+        - "System"
       description: "Healthcheck providing the current operational status."
       responses:
         "200":
@@ -130,7 +152,10 @@ paths:
                 $ref: "#/components/schemas/HealthCheck"
   /rbac/dashboard:
     get:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Opens the RBAC dashboard. Redirects to the login screen if the\
+        \ session context is invalid."
       parameters:
         - name: "role"
           in: "query"
@@ -159,7 +184,10 @@ paths:
                   description: "HTML document"
                   value: ""
     post:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Processes updates to RBAC settings based on actor submissions\
+        \ from the dashboard form."
       parameters:
         - name: "role"
           in: "query"
@@ -198,7 +226,9 @@ paths:
                   value: ""
   /rbac/login:
     get:
-      description: "Redirects actors to the dashboard if they have an existing session\
+      tags:
+        - "RBAC"
+      description: "Redirects actors to the dashboard if they have an existing session,\
         \ <br> or to the login page if no valid session is found."
       responses:
         "302":
@@ -222,7 +252,9 @@ paths:
                   description: "HTML document"
                   value: ""
     post:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Redirects actors to the dashboard after successful authentication."
       responses:
         "302":
           description: "Found <br> Redirect"
@@ -236,6 +268,8 @@ paths:
                   value: "/rbac/dashboard"
   /rbac/logout:
     post:
+      tags:
+        - "RBAC"
       description: "Clears the session and redirects to the login page."
       responses:
         "302":
@@ -250,6 +284,8 @@ paths:
                   value: "/rbac/login"
   /snowflake/{id}:
     get:
+      tags:
+        - "System"
       description: "Snowflake parser to read back the components of a snowflake ID."
       parameters:
         - name: "id"
@@ -266,6 +302,8 @@ paths:
                 $ref: "#/components/schemas/SnowflakeData"
   /v1/document:
     delete:
+      tags:
+        - "Document - Delete"
       description: "Delete all document entries."
       responses:
         "200":
@@ -276,6 +314,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Document - Find"
       description: "Find all existing documents."
       parameters:
         - name: "sort"
@@ -294,6 +334,8 @@ paths:
                 $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/{document_id}:
     delete:
+      tags:
+        - "Document - Delete"
       description: "Delete a document by ID."
       parameters:
         - name: "document_id"
@@ -316,6 +358,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Document - Find"
       description: "Find a document by ID."
       parameters:
         - name: "document_id"
@@ -338,6 +382,8 @@ paths:
                 $ref: "#/components/schemas/Document"
   /v1/document/{owner_id}/{group_id}/{type}/{cipher}:
     post:
+      tags:
+        - "Document - Operate"
       description: "Upload a new document."
       parameters:
         - name: "owner_id"
@@ -386,6 +432,8 @@ paths:
                   $ref: "#/components/schemas/Document"
   /v1/document/backup:
     get:
+      tags:
+        - "Document - Operate"
       description: "Downloads a backup file containing all the documents."
       responses:
         "204":
@@ -399,6 +447,8 @@ paths:
                   value: "No documents found."
   /v1/document/cipher/{cipher}:
     put:
+      tags:
+        - "Document - Operate"
       description: "Change the cipher state of all documents."
       parameters:
         - name: "cipher"
@@ -416,6 +466,8 @@ paths:
                 format: "int32"
   /v1/document/download/{token}/{signature}:
     get:
+      tags:
+        - "Document - Operate"
       description: "Serve a document file to download."
       parameters:
         - name: "token"
@@ -449,6 +501,8 @@ paths:
                   value: "Unable to initiate download."
   /v1/document/group/{group_id}:
     delete:
+      tags:
+        - "Document - Delete"
       description: "Delete all documents by group."
       parameters:
         - name: "group_id"
@@ -471,6 +525,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Document - Find"
       description: "Find all documents by group."
       parameters:
         - name: "group_id"
@@ -500,6 +556,8 @@ paths:
                 $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/owner/{owner_id}:
     get:
+      tags:
+        - "Document - Find"
       description: "Find all documents by owner."
       parameters:
         - name: "owner_id"
@@ -529,6 +587,8 @@ paths:
                 $ref: "#/components/schemas/Page_? extends Document"
   /v1/document/url/{document_id}/{group_id}:
     get:
+      tags:
+        - "Document - Operate"
       description: "Generate the signed URL for a document download."
       parameters:
         - name: "document_id"
@@ -574,7 +634,7 @@ components:
       required:
         - "field"
         - "direction"
-    Page:
+    Details:
       type: "object"
       properties:
         totalPages:
@@ -602,47 +662,25 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/Sort"
+    Page:
+      type: "object"
+      properties:
+        details:
+          $ref: "#/components/schemas/Details"
         content:
           type: "array"
       required:
+        - "details"
         - "content"
     Page_? extends Document:
       type: "object"
       properties:
-        totalPages:
-          type: "integer"
-          format: "int32"
-        pageIndex:
-          type: "integer"
-          format: "int32"
-        totalElements:
-          type: "integer"
-          format: "int32"
-        elementsPerPage:
-          type: "integer"
-          format: "int32"
-        elementsInPage:
-          type: "integer"
-          format: "int32"
-        hasNext:
-          type: "boolean"
-        hasPrevious:
-          type: "boolean"
-        overflow:
-          type: "boolean"
-        sort:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Sort"
+        details:
+          $ref: "#/components/schemas/Details"
         content:
           type: "array"
           items:
             type: "object"
-    Function1:
-      type: "object"
-      properties: { }
-    Function1_? super String:
-      type: "object"
     ApplicationCheck:
       type: "object"
       properties:
@@ -942,17 +980,14 @@ components:
         - "snowflake"
         - "database"
         - "endpoints"
+    Function1:
+      type: "object"
+      properties: { }
     Function1_? super HTML:
       type: "object"
     Uuid:
-      type: "object"
-      properties:
-        mostSignificantBits:
-          type: "integer"
-          format: "int64"
-        leastSignificantBits:
-          type: "integer"
-          format: "int64"
+      type: "string"
+      format: "uuid"
     Detail:
       type: "object"
       properties:
