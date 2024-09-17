@@ -102,40 +102,42 @@ internal class DocumentRepository(
     override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all records.
-            val query: Query = DocumentTable.selectAll()
+            val query: Query = DocumentTable.selectAll().apply {
 
-            // Apply filters dynamically based on the presence of criteria in filterSet.
-            // Using lowerCase() to make the search case-insensitive.
-            // This could be removed if the database is configured to use a case-insensitive collation.
-            filterSet.id?.let { documentId ->
-                query.andWhere {
-                    DocumentTable.id eq documentId
+                // Apply filters dynamically based on the presence of criteria in filterSet.
+                // Using lowerCase() to make the search case-insensitive.
+                // This could be removed if the database is configured to use a case-insensitive collation.
+
+                filterSet.id?.let { documentId ->
+                    andWhere {
+                        DocumentTable.id eq documentId
+                    }
                 }
-            }
-            filterSet.ownerId?.let { ownerId ->
-                query.andWhere {
-                    DocumentTable.ownerId eq ownerId
+                filterSet.ownerId?.let { ownerId ->
+                    andWhere {
+                        DocumentTable.ownerId eq ownerId
+                    }
                 }
-            }
-            filterSet.groupId?.let { groupId ->
-                query.andWhere {
-                    DocumentTable.groupId eq groupId
+                filterSet.groupId?.let { groupId ->
+                    andWhere {
+                        DocumentTable.groupId eq groupId
+                    }
                 }
-            }
-            filterSet.name?.let { name ->
-                query.andWhere {
-                    DocumentTable.originalName.lowerCase() like "%${name.trim().lowercase()}%"
+                filterSet.name?.let { name ->
+                    andWhere {
+                        DocumentTable.originalName.lowerCase() like "%${name.trim().lowercase()}%"
+                    }
                 }
-            }
-            filterSet.description?.let { description ->
-                query.andWhere {
-                    DocumentTable.description.lowerCase() like "%${description.trim().lowercase()}%"
+                filterSet.description?.let { description ->
+                    andWhere {
+                        DocumentTable.description.lowerCase() like "%${description.trim().lowercase()}%"
+                    }
                 }
-            }
-            filterSet.type?.let { typeList ->
-                if (typeList.isNotEmpty()) {
-                    query.andWhere {
-                        DocumentTable.type inList typeList
+                filterSet.type?.let { typeList ->
+                    if (typeList.isNotEmpty()) {
+                        andWhere {
+                            DocumentTable.type inList typeList
+                        }
                     }
                 }
             }
