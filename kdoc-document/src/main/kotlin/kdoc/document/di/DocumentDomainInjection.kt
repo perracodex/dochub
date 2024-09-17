@@ -4,7 +4,6 @@
 
 package kdoc.document.di
 
-import kdoc.base.env.SessionContext
 import kdoc.document.repository.DocumentAuditRepository
 import kdoc.document.repository.DocumentRepository
 import kdoc.document.repository.IDocumentAuditRepository
@@ -14,6 +13,9 @@ import kdoc.document.service.DocumentService
 import kdoc.document.service.managers.CipherStateHandler
 import kdoc.document.service.managers.upload.UploadManager
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 import org.koin.ktor.plugin.RequestScope
 
@@ -33,89 +35,36 @@ public object DocumentDomainInjection {
             // which should only be accessed by services, do not receive it directly.
 
             scope<RequestScope> {
-
-                scoped<IDocumentAuditRepository> {
-                    DocumentAuditRepository(
-                        sessionContext = get<SessionContext>()
-                    )
+                scopedOf(::DocumentAuditRepository) {
+                    bind<IDocumentAuditRepository>()
                 }
 
-                scoped<DocumentAuditService> { parameters ->
-                    DocumentAuditService(
-                        sessionContext = parameters.get<SessionContext>(),
-                        documentAuditRepository = get<IDocumentAuditRepository>()
-                    )
+                scopedOf(::DocumentAuditService)
+
+                scopedOf(::DocumentRepository) {
+                    bind<IDocumentRepository>()
                 }
 
-                scoped<IDocumentRepository> {
-                    DocumentRepository(
-                        sessionContext = get<SessionContext>()
-                    )
-                }
-
-                scoped<DocumentService> { parameters ->
-                    DocumentService(
-                        sessionContext = parameters.get<SessionContext>(),
-                        documentRepository = get<IDocumentRepository>()
-                    )
-                }
-
-                scoped<UploadManager> { parameters ->
-                    UploadManager(
-                        sessionContext = parameters.get<SessionContext>(),
-                        documentRepository = get<IDocumentRepository>()
-                    )
-                }
-
-                scoped<CipherStateHandler> { parameters ->
-                    CipherStateHandler(
-                        sessionContext = parameters.get<SessionContext>(),
-                        documentRepository = get<IDocumentRepository>()
-                    )
-                }
+                scopedOf(::DocumentService)
+                scopedOf(::UploadManager)
+                scopedOf(::CipherStateHandler)
             }
 
             // Definitions for non-scoped (global) access.
 
-            factory<IDocumentAuditRepository> {
-                DocumentAuditRepository(
-                    sessionContext = get<SessionContext>()
-                )
+            factoryOf(::DocumentAuditRepository) {
+                bind<IDocumentAuditRepository>()
             }
 
-            factory<DocumentAuditService> { parameters ->
-                DocumentAuditService(
-                    sessionContext = parameters.get<SessionContext>(),
-                    documentAuditRepository = get<IDocumentAuditRepository>()
-                )
+            factoryOf(::DocumentAuditService)
+
+            factoryOf(::DocumentRepository) {
+                bind<IDocumentRepository>()
             }
 
-            factory<IDocumentRepository> {
-                DocumentRepository(
-                    sessionContext = get<SessionContext>()
-                )
-            }
-
-            factory<DocumentService> { parameters ->
-                DocumentService(
-                    sessionContext = parameters.get<SessionContext>(),
-                    documentRepository = get<IDocumentRepository>()
-                )
-            }
-
-            factory<UploadManager> { parameters ->
-                UploadManager(
-                    sessionContext = parameters.get<SessionContext>(),
-                    documentRepository = get<IDocumentRepository>()
-                )
-            }
-
-            factory<CipherStateHandler> { parameters ->
-                CipherStateHandler(
-                    sessionContext = parameters.get<SessionContext>(),
-                    documentRepository = get<IDocumentRepository>()
-                )
-            }
+            factoryOf(::DocumentService)
+            factoryOf(::DocumentAuditService)
+            factoryOf(::CipherStateHandler)
         }
     }
 }
