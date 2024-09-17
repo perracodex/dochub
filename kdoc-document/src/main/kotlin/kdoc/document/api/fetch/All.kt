@@ -2,41 +2,38 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.document.api.get
+package kdoc.document.api.fetch
 
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.util.*
 import kdoc.base.env.SessionContext
-import kdoc.base.persistence.utils.toUuid
+import kdoc.base.persistence.pagination.Page
+import kdoc.base.persistence.pagination.Pageable
+import kdoc.base.persistence.pagination.getPageable
 import kdoc.document.api.DocumentRouteAPI
-import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
-import kotlin.uuid.Uuid
 
 @DocumentRouteAPI
-internal fun Route.findDocumentByIdRoute() {
+internal fun Route.findAllDocumentsRoute() {
     /**
-     * Find a document by ID.
+     * Find all existing documents.
      * @OpenAPITag Document - Find
      */
-    get("v1/document/{document_id}/") {
-        val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
+    get("v1/document/") {
+        val pageable: Pageable? = call.getPageable()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
-            .audit(operation = "find by document id", documentId = documentId)
+            .audit(operation = "find all", log = pageable?.toString())
 
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
-        val document: Document = service.findById(documentId = documentId)
-            ?: throw DocumentError.DocumentNotFound(documentId = documentId)
-
-        call.respond(status = HttpStatusCode.OK, message = document)
+        val documents: Page<Document> = service.findAll(pageable = pageable)
+        call.respond(status = HttpStatusCode.OK, message = documents)
     }
 }

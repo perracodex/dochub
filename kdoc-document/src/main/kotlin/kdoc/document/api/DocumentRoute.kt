@@ -12,7 +12,7 @@ import kdoc.base.settings.AppSettings
 import kdoc.document.api.delete.deleteAllDocumentsRoute
 import kdoc.document.api.delete.deleteDocumentByIdRoute
 import kdoc.document.api.delete.deleteDocumentsByGroupRoute
-import kdoc.document.api.get.*
+import kdoc.document.api.fetch.*
 import kdoc.document.api.operate.*
 
 /**
