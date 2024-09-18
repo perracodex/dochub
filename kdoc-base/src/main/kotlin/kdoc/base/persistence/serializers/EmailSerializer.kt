@@ -4,8 +4,7 @@
 
 package kdoc.base.persistence.serializers
 
-import kdoc.base.persistence.validators.IValidator
-import kdoc.base.persistence.validators.impl.EmailValidator
+import kdoc.base.persistence.validators.EmailValidator
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -18,23 +17,23 @@ import kotlinx.serialization.encoding.Encoder
 /**
  * Serializer for Email strings.
  */
-internal object EmailStringSerializer : KSerializer<String> {
+internal object EmailSerializer : KSerializer<String> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
         serialName = "EmailString",
         kind = PrimitiveKind.STRING
     )
 
     override fun serialize(encoder: Encoder, value: String) {
-        if (EmailValidator.validate(value = value) is IValidator.Result.Failure) {
-            throw SerializationException(EmailValidator.message(text = value))
+        EmailValidator.validate(value = value).onFailure {
+            throw SerializationException("Invalid email: $value")
         }
         encoder.encodeString(value = value)
     }
 
     override fun deserialize(decoder: Decoder): String {
         val string: String = decoder.decodeString()
-        if (EmailValidator.validate(value = string) is IValidator.Result.Failure) {
-            throw SerializationException(EmailValidator.message(text = string))
+        EmailValidator.validate(value = string).onFailure {
+            throw SerializationException("Invalid email: $string")
         }
         return string
     }
@@ -45,6 +44,6 @@ internal object EmailStringSerializer : KSerializer<String> {
  *
  * @property EmailString The type representing the serializable Email.
  *
- * @see EmailStringSerializer
+ * @see EmailSerializer
  */
-public typealias EmailString = @Serializable(with = EmailStringSerializer::class) String
+public typealias EmailString = @Serializable(with = EmailSerializer::class) String

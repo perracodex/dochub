@@ -5,7 +5,6 @@
 package kdoc.base.database.schema.admin.actor
 
 import kdoc.base.database.columns.autoGenerate
-import kdoc.base.database.columns.encryptedValidVarChar
 import kdoc.base.database.columns.kotlinUuid
 import kdoc.base.database.columns.references
 import kdoc.base.database.schema.admin.rbac.RbacRoleTable
@@ -21,10 +20,6 @@ import kotlin.uuid.Uuid
 /**
  * Database table definition holding Actors.
  * An Actor is a user with a role and access to scopes.
- *
- * The password is encrypted with the [encryptedVarchar] exposed extension function.
- * It could be improved further by using our custom [encryptedValidVarChar] to add
- * some minimal validation constraints for all passwords.
  */
 public object ActorTable : TimestampedTable(name = "actor") {
     private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
