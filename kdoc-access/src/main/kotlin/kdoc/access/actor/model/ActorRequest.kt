@@ -4,7 +4,7 @@
 
 package kdoc.access.actor.model
 
-import kdoc.base.persistence.serializers.SUuid
+import kdoc.base.persistence.serializers.Uuid
 import kotlinx.serialization.Serializable
 
 /**
@@ -30,7 +30,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class ActorRequest(
-    val roleId: SUuid,
+    val roleId: Uuid,
     val username: String,
     val password: String,
     val isLocked: Boolean

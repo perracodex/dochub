@@ -10,7 +10,7 @@ import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
 import kdoc.base.persistence.model.Meta
-import kdoc.base.persistence.serializers.SUuid
+import kdoc.base.persistence.serializers.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -30,8 +30,8 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class RbacScopeRule(
-    val id: SUuid,
-    val roleId: SUuid,
+    val id: Uuid,
+    val roleId: Uuid,
     val scope: RbacScope,
     val accessLevel: RbacAccessLevel,
     val fieldRules: List<RbacFieldRule>?,

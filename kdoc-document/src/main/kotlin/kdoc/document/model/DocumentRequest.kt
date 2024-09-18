@@ -5,7 +5,7 @@
 package kdoc.document.model
 
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.persistence.serializers.SUuid
+import kdoc.base.persistence.serializers.Uuid
 import kotlinx.serialization.Serializable
 
 /**
@@ -23,8 +23,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class DocumentRequest(
-    val ownerId: SUuid,
-    val groupId: SUuid,
+    val ownerId: Uuid,
+    val groupId: Uuid,
     val type: DocumentType,
     val description: String?,
     val originalName: String,

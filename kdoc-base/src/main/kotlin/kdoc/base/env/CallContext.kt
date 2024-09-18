@@ -8,7 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
-import kdoc.base.persistence.serializers.SUuid
+import kdoc.base.persistence.serializers.Uuid
 import kdoc.base.persistence.utils.toUuid
 import kdoc.base.settings.AppSettings
 import kotlinx.serialization.Serializable
@@ -31,9 +31,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class CallContext(
-    val actorId: SUuid,
+    val actorId: Uuid,
     val username: String,
-    val roleId: SUuid,
+    val roleId: Uuid,
     val schema: String? = null
 ) : Principal {
     public companion object {
@@ -59,7 +59,7 @@ public data class CallContext(
          * or the actor is not authenticated.
          */
         private val emptyCallContext: CallContext by lazy {
-            val uuid: SUuid = "00000000-0000-0000-0000-000000000000".toUuid()
+            val uuid: Uuid = "00000000-0000-0000-0000-000000000000".toUuid()
             CallContext(
                 actorId = uuid,
                 username = "no-actor",

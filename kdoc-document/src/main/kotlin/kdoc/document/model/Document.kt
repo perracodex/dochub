@@ -7,7 +7,7 @@ package kdoc.document.model
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.persistence.model.Meta
-import kdoc.base.persistence.serializers.SUuid
+import kdoc.base.persistence.serializers.Uuid
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -26,9 +26,9 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class Document(
-    val id: SUuid,
-    val ownerId: SUuid,
-    val groupId: SUuid,
+    val id: Uuid,
+    val ownerId: Uuid,
+    val groupId: Uuid,
     @Transient val detail: Detail = Detail(),
     val meta: Meta
 ) {
