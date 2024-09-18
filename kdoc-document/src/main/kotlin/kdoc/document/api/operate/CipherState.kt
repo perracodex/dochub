@@ -24,7 +24,7 @@ internal fun Route.changeDocumentsCipherStateRoute() {
      * @OpenAPITag Document - Operate
      */
     put("v1/document/cipher/{cipher}") {
-        val cipher: Boolean = call.parameters.getOrFail(name = "cipher").toBoolean()
+        val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
         val callContext: CallContext? = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(callContext) }
