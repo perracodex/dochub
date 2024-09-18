@@ -2,13 +2,16 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.system
+package kdoc.access.context
 
+import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import kdoc.access.actor.model.Actor
 import kdoc.access.actor.service.ActorService
 import kdoc.access.credential.CredentialService
+import kdoc.access.plugins.configureBasicAuthentication
+import kdoc.access.plugins.configureJwtAuthentication
 import kdoc.base.env.CallContext
 import kdoc.base.env.Tracer
 import kdoc.base.settings.AppSettings
@@ -17,7 +20,16 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Factory class for creating [CallContext] instances.
+ * Provides factory methods for constructing [CallContext] instances from various authentication credential flows.
+ * This object is primarily utilized by authentication mechanisms like JWT and OAuth to validate credentials
+ * and generate [CallContext] instances. These instances are crucial for populating the [ApplicationCall]
+ * with session details and actor-specific information throughout the lifecycle of an API call.
+ *
+ * Using this factory ensures that all authentication methods adhere to a consistent approach in
+ * constructing call contexts, which is vital for security and traceability within the application.
+ *
+ * @see configureJwtAuthentication
+ * @see configureBasicAuthentication
  */
 internal object CallContextFactory : KoinComponent {
     private val tracer = Tracer<CallContextFactory>()

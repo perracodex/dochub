@@ -12,7 +12,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import kdoc.access.system.CallContextFactory
+import kdoc.access.context.CallContextFactory
 import kdoc.base.env.CallContext
 import kdoc.base.env.CallContext.Companion.setContext
 import kdoc.base.settings.AppSettings
