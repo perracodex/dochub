@@ -7,8 +7,9 @@ package kdoc.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.sessions.*
-import kdoc.access.system.SessionContextFactory
-import kdoc.base.env.SessionContext
+import kdoc.access.system.CallContextFactory
+import kdoc.base.env.CallContext
+import kdoc.base.env.CallContext.Companion.setContext
 import kdoc.base.settings.AppSettings
 
 /**
@@ -26,12 +27,12 @@ public fun Application.configureBasicAuthentication() {
             realm = AppSettings.security.basicAuth.realm
 
             validate { credential ->
-                SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
-                    return@validate sessionContext
+                CallContextFactory.from(credential = credential)?.let { callContext ->
+                    this.setContext(callContext = callContext)
+                    return@validate callContext
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.sessions.clear(name = CallContext.SESSION_NAME)
                 return@validate null
             }
         }

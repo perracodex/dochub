@@ -12,7 +12,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
+import kdoc.base.env.CallContext.Companion.getContext
 import kdoc.base.persistence.utils.toUuid
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.settings.AppSettings
@@ -41,12 +42,12 @@ internal fun Route.uploadDocumentsRoute() {
         val multipart: MultiPartData = call.receiveMultipart()
 
         // Audit the document upload operation.
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        val callContext: CallContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
             .audit(operation = "upload", ownerId = ownerId, groupId = groupId, log = "type=$type | cipher=$cipher")
 
         // Upload the document to the storage.
-        val uploadManager: UploadManager = call.scope.get<UploadManager> { parametersOf(sessionContext) }
+        val uploadManager: UploadManager = call.scope.get<UploadManager> { parametersOf(callContext) }
         val createdDocuments: List<Document> = uploadManager.upload(
             ownerId = ownerId,
             groupId = groupId,

@@ -4,7 +4,7 @@
 
 package kdoc.document.service
 
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
 import kdoc.document.model.DocumentAuditLogRequest
 import kdoc.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import kotlin.uuid.Uuid
  * Document audit service, where all the documents audit logic should be defined.
  */
 internal class DocumentAuditService(
-    private val sessionContext: SessionContext,
+    private val context: CallContext,
     private val documentAuditRepository: IDocumentAuditRepository
 ) {
     /**
@@ -36,7 +36,7 @@ internal class DocumentAuditService(
     ): Unit = withContext(Dispatchers.IO) {
         val request = DocumentAuditLogRequest(
             operation = operation,
-            actorId = sessionContext.actorId,
+            actorId = context.actorId,
             documentId = documentId,
             groupId = groupId,
             ownerId = ownerId,

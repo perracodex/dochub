@@ -6,7 +6,7 @@ package kdoc.document.repository
 
 import kdoc.base.database.schema.document.DocumentAuditTable
 import kdoc.base.database.service.transactionWithSchema
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
 import kdoc.document.model.DocumentAuditLogRequest
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -17,11 +17,11 @@ import kotlin.uuid.Uuid
  * Responsible for managing document audit data.
  */
 internal class DocumentAuditRepository(
-    private val sessionContext: SessionContext,
+    private val context: CallContext,
 ) : IDocumentAuditRepository {
 
     override fun create(request: DocumentAuditLogRequest): Uuid {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val newAuditId: Uuid = DocumentAuditTable.insert { documentRow ->
                 documentRow.mapDocumentRequest(request = request)
             } get DocumentAuditTable.id

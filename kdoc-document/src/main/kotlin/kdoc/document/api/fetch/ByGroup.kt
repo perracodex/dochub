@@ -9,7 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
+import kdoc.base.env.CallContext.Companion.getContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.getPageable
@@ -32,11 +33,11 @@ internal fun Route.findDocumentsByGroupRoute() {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        val callContext: CallContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
             .audit(operation = "find by group", groupId = groupId, log = pageable?.toString())
 
-        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
+        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
         val documents: Page<Document> = service.findByGroupId(groupId = groupId, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
     }

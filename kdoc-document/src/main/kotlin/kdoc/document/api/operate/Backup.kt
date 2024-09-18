@@ -8,7 +8,8 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
+import kdoc.base.env.CallContext.Companion.getContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
@@ -26,12 +27,12 @@ internal fun Route.backupDocumentsRoute() {
      */
     get("v1/document/backup") {
         // Audit the backup action.
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        val callContext: CallContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
             .audit(operation = "backup")
 
         // Get all documents.
-        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
+        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
         val documents: Page<Document> = documentService.findAll()
         if (documents.content.isEmpty()) {
             call.respond(status = HttpStatusCode.NoContent, message = "No documents found.")

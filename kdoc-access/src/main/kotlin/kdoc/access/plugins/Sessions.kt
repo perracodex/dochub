@@ -6,7 +6,7 @@ package kdoc.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
 import kdoc.base.security.utils.EncryptionUtils.toByteKey
 import kdoc.base.settings.AppSettings
 import kdoc.base.settings.config.sections.security.sections.EncryptionSettings
@@ -30,7 +30,7 @@ public fun Application.configureSessions() {
     val signKey: ByteArray = spec.sign.toByteKey(length = 32)
 
     install(plugin = Sessions) {
-        cookie<SessionContext>(name = SessionContext.SESSION_NAME) {
+        cookie<CallContext>(name = CallContext.SESSION_NAME) {
             val session = SessionTransportTransformerEncrypt(
                 encryptionKey = encryptionKey,
                 signKey = signKey,

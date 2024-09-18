@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext.Companion.getContext
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings
@@ -33,8 +33,7 @@ internal fun Route.getDocumentSignedUrlRoute() {
             return@get
         }
 
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        call.scope.get<DocumentAuditService> { parametersOf(call.getContext()) }
             .audit(operation = "generate signed URL", documentId = documentId)
 
         val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"

@@ -13,7 +13,7 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacService
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
 import org.koin.ktor.ext.inject
 
 /**
@@ -29,17 +29,16 @@ internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScoped
     createConfiguration = ::RbacPluginConfig
 ) {
     on(hook = AuthenticationChecked) { call ->
+        val callContext: CallContext? = call.principal<CallContext>()
+            ?: call.sessions.get(name = CallContext.SESSION_NAME) as CallContext?
 
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
-            ?: call.sessions.get(name = SessionContext.SESSION_NAME) as SessionContext?
-
-        sessionContext?.let {
+        callContext?.let {
             val rbacService: RbacService by call.application.inject()
             val rbacScope: RbacScope = pluginConfig.scope
             val rbacAccessLevel: RbacAccessLevel = pluginConfig.accessLevel
 
             val hasPermission: Boolean = rbacService.hasPermission(
-                sessionContext = it,
+                callContext = callContext,
                 scope = rbacScope,
                 accessLevel = rbacAccessLevel
             )

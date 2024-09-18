@@ -8,7 +8,8 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
+import kdoc.base.env.CallContext.Companion.getContext
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -22,11 +23,11 @@ internal fun Route.deleteAllDocumentsRoute() {
      * @OpenAPITag Document - Delete
      */
     delete("v1/document/") {
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
+        val callContext: CallContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
             .audit(operation = "delete all")
 
-        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
+        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
         val deletedCount: Int = service.deleteAll()
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }

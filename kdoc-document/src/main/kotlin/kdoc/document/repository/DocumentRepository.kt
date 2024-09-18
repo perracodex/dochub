@@ -6,7 +6,7 @@ package kdoc.document.repository
 
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.service.transactionWithSchema
-import kdoc.base.env.SessionContext
+import kdoc.base.env.CallContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.pagination.paginate
@@ -23,11 +23,11 @@ import kotlin.uuid.Uuid
  * Responsible for managing document data.
  */
 internal class DocumentRepository(
-    private val sessionContext: SessionContext
+    private val context: CallContext
 ) : IDocumentRepository {
 
     override fun findById(documentId: Uuid): Document? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.selectAll().where {
                 DocumentTable.id eq documentId
             }.singleOrNull()?.let { resultRow ->
@@ -57,7 +57,7 @@ internal class DocumentRepository(
         condition: SqlExpressionBuilder.() -> Op<Boolean>,
         pageable: Pageable?
     ): Page<Document> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val query: Query = DocumentTable.selectAll()
                 .andWhere(condition)
 
@@ -79,7 +79,7 @@ internal class DocumentRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Document> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val query: Query = DocumentTable.selectAll()
 
             // Determine the total records involved in the query before applying pagination.
@@ -100,7 +100,7 @@ internal class DocumentRepository(
     }
 
     override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<Document> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             // Start with a base query selecting all records.
             val query: Query = DocumentTable.selectAll().apply {
 
@@ -160,7 +160,7 @@ internal class DocumentRepository(
     }
 
     override fun create(request: DocumentRequest): Document {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val documentId: Uuid = DocumentTable.insert { documentRow ->
                 documentRow.mapDocumentRequest(request = request)
             } get DocumentTable.id
@@ -171,7 +171,7 @@ internal class DocumentRepository(
     }
 
     override fun update(documentId: Uuid, request: DocumentRequest): Document? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val updateCount: Int = DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
@@ -189,7 +189,7 @@ internal class DocumentRepository(
     }
 
     override fun setCipherState(documentId: Uuid, isCiphered: Boolean, storageName: String): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
@@ -202,7 +202,7 @@ internal class DocumentRepository(
     }
 
     override fun delete(documentId: Uuid): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.deleteWhere {
                 id eq documentId
             }
@@ -210,7 +210,7 @@ internal class DocumentRepository(
     }
 
     override fun deleteByGroup(groupId: Uuid): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.deleteWhere {
                 DocumentTable.groupId eq groupId
             }
@@ -218,13 +218,13 @@ internal class DocumentRepository(
     }
 
     override fun deleteAll(): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.deleteAll()
         }
     }
 
     override fun count(): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             DocumentTable.selectAll().count().toInt()
         }
     }
