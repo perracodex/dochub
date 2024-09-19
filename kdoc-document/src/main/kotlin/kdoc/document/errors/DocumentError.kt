@@ -29,7 +29,7 @@ internal sealed class DocumentError(
     context = "DOCUMENT",
     description = description,
     reason = reason,
-    cause = cause
+    error = cause
 ) {
     /**
      * Error for when a document is not found.
