@@ -18,7 +18,7 @@ import kotlin.uuid.Uuid
 /**
  * Handles the uploading and processing of document files into the storage.
  *
- * @see [MultipartFileHandler]
+ * @see MultipartFileHandler
  */
 internal class UploadManager(
     @Suppress("unused") private val context: CallContext,

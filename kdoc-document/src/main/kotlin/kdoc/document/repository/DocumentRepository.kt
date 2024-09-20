@@ -5,7 +5,7 @@
 package kdoc.document.repository
 
 import kdoc.base.database.schema.document.DocumentTable
-import kdoc.base.database.service.transactionWithSchema
+import kdoc.base.database.utils.transactionWithSchema
 import kdoc.base.env.CallContext
 import kdoc.base.persistence.pagination.Page
 import kdoc.base.persistence.pagination.Pageable
@@ -58,52 +58,21 @@ internal class DocumentRepository(
         pageable: Pageable?
     ): Page<Document> {
         return transactionWithSchema(schema = context.schema) {
-            val query: Query = DocumentTable.selectAll()
+            DocumentTable.selectAll()
                 .andWhere(condition)
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Document> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Document.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+                .paginate(pageable = pageable, mapper = Document)
         }
     }
 
     override fun findAll(pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = context.schema) {
-            val query: Query = DocumentTable.selectAll()
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Document> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Document.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+            DocumentTable.selectAll().paginate(pageable = pageable, mapper = Document)
         }
     }
 
     override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = context.schema) {
-            // Start with a base query selecting all records.
-            val query: Query = DocumentTable.selectAll().apply {
-
+            DocumentTable.selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
                 // This could be removed if the database is configured to use a case-insensitive collation.
@@ -140,50 +109,31 @@ internal class DocumentRepository(
                         }
                     }
                 }
-            }
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Document> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Document.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+            }.paginate(pageable = pageable, mapper = Document)
         }
     }
 
     override fun create(request: DocumentRequest): Document {
         return transactionWithSchema(schema = context.schema) {
-            val documentId: Uuid = DocumentTable.insert { documentRow ->
-                documentRow.mapDocumentRequest(request = request)
-            } get DocumentTable.id
-
-            findById(documentId = documentId)
-                ?: throw IllegalStateException("Failed to create document.")
+            DocumentTable.insert { statement ->
+                statement.toStatement(request = request)
+            }[DocumentTable.id].let { documentId ->
+                findById(documentId = documentId)
+                    ?: throw IllegalStateException("Failed to create document.")
+            }
         }
     }
 
     override fun update(documentId: Uuid, request: DocumentRequest): Document? {
         return transactionWithSchema(schema = context.schema) {
-            val updateCount: Int = DocumentTable.update(
+            DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
                 }
-            ) { documentRow ->
-                documentRow.mapDocumentRequest(request = request)
-            }
-
-            if (updateCount > 0) {
+            ) { statement ->
+                statement.toStatement(request = request)
+            }.takeIf { it > 0 }?.let {
                 findById(documentId = documentId)
-            } else {
-                null
             }
         }
     }
@@ -194,9 +144,9 @@ internal class DocumentRepository(
                 where = {
                     DocumentTable.id eq documentId
                 }
-            ) {
-                it[DocumentTable.isCiphered] = isCiphered
-                it[DocumentTable.storageName] = storageName
+            ) { statement ->
+                statement[DocumentTable.isCiphered] = isCiphered
+                statement[DocumentTable.storageName] = storageName
             }
         }
     }
@@ -233,7 +183,7 @@ internal class DocumentRepository(
      * Populates an SQL [UpdateBuilder] with data from an [DocumentRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapDocumentRequest(request: DocumentRequest) {
+    private fun UpdateBuilder<Int>.toStatement(request: DocumentRequest) {
         this[DocumentTable.ownerId] = request.ownerId
         this[DocumentTable.groupId] = request.groupId
         this[DocumentTable.type] = request.type

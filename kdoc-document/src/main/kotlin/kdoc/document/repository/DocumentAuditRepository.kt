@@ -5,7 +5,7 @@
 package kdoc.document.repository
 
 import kdoc.base.database.schema.document.DocumentAuditTable
-import kdoc.base.database.service.transactionWithSchema
+import kdoc.base.database.utils.transactionWithSchema
 import kdoc.base.env.CallContext
 import kdoc.document.model.DocumentAuditLogRequest
 import org.jetbrains.exposed.sql.insert
@@ -22,8 +22,8 @@ internal class DocumentAuditRepository(
 
     override fun create(request: DocumentAuditLogRequest): Uuid {
         return transactionWithSchema(schema = context.schema) {
-            val newAuditId: Uuid = DocumentAuditTable.insert { documentRow ->
-                documentRow.mapDocumentRequest(request = request)
+            val newAuditId: Uuid = DocumentAuditTable.insert { statement ->
+                statement.toStatement(request = request)
             } get DocumentAuditTable.id
 
             newAuditId
@@ -34,7 +34,7 @@ internal class DocumentAuditRepository(
      * Populates an SQL [UpdateBuilder] with data from an [DocumentAuditLogRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapDocumentRequest(request: DocumentAuditLogRequest) {
+    private fun UpdateBuilder<Int>.toStatement(request: DocumentAuditLogRequest) {
         this[DocumentAuditTable.operation] = request.operation.trim()
         this[DocumentAuditTable.actorId] = request.actorId
         this[DocumentAuditTable.documentId] = request.documentId

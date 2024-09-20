@@ -7,6 +7,7 @@ package kdoc.document.model
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.persistence.model.Meta
+import kdoc.base.persistence.pagination.IEntityMapper
 import kdoc.base.persistence.serializers.Uuid
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
@@ -55,14 +56,8 @@ public data class Document(
         val size: Long = 0L
     )
 
-    internal companion object {
-        /**
-         * Maps a [ResultRow] to a [Document] instance.
-         *
-         * @param row The [ResultRow] to map.
-         * @return The mapped [Document] instance.
-         */
-        fun from(row: ResultRow): Document {
+    internal companion object : IEntityMapper<Document> {
+        override fun from(row: ResultRow): Document {
             return Document(
                 id = row[DocumentTable.id],
                 ownerId = row[DocumentTable.ownerId],
