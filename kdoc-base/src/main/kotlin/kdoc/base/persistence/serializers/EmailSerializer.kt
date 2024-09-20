@@ -4,7 +4,7 @@
 
 package kdoc.base.persistence.serializers
 
-import kdoc.base.persistence.validators.EmailValidator
+import kdoc.base.errors.validators.EmailValidator
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
