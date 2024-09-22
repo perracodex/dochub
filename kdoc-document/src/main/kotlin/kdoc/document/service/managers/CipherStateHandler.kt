@@ -4,9 +4,9 @@
 
 package kdoc.document.service.managers
 
+import io.perracodex.exposed.pagination.Page
 import kdoc.base.env.CallContext
 import kdoc.base.env.Tracer
-import kdoc.base.persistence.pagination.Page
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.settings.AppSettings

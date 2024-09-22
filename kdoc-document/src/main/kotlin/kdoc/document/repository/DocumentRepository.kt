@@ -4,12 +4,12 @@
 
 package kdoc.document.repository
 
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
+import io.perracodex.exposed.pagination.paginate
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.utils.transactionWithSchema
 import kdoc.base.env.CallContext
-import kdoc.base.persistence.pagination.Page
-import kdoc.base.persistence.pagination.Pageable
-import kdoc.base.persistence.pagination.paginate
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest

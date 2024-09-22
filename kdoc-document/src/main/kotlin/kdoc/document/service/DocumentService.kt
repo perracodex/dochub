@@ -4,10 +4,10 @@
 
 package kdoc.document.service
 
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kdoc.base.env.CallContext
 import kdoc.base.env.Tracer
-import kdoc.base.persistence.pagination.Page
-import kdoc.base.persistence.pagination.Pageable
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
 import kdoc.base.settings.AppSettings

@@ -8,9 +8,9 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.perracodex.exposed.pagination.Page
 import kdoc.base.env.CallContext
 import kdoc.base.env.CallContext.Companion.getContext
-import kdoc.base.persistence.pagination.Page
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService

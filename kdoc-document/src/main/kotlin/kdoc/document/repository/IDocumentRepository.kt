@@ -4,8 +4,8 @@
 
 package kdoc.document.repository
 
-import kdoc.base.persistence.pagination.Page
-import kdoc.base.persistence.pagination.Pageable
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest

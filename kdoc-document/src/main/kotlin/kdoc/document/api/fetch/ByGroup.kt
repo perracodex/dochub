@@ -9,11 +9,11 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
+import io.perracodex.exposed.pagination.getPageable
 import kdoc.base.env.CallContext
 import kdoc.base.env.CallContext.Companion.getContext
-import kdoc.base.persistence.pagination.Page
-import kdoc.base.persistence.pagination.Pageable
-import kdoc.base.persistence.pagination.getPageable
 import kdoc.base.persistence.utils.toUuid
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
