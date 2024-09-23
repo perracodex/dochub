@@ -60,13 +60,13 @@ internal class DocumentRepository(
         return transactionWithSchema(schema = context.schema) {
             DocumentTable.selectAll()
                 .andWhere(condition)
-                .paginate(pageable = pageable, mapper = Document)
+                .paginate(pageable = pageable, transform = Document)
         }
     }
 
     override fun findAll(pageable: Pageable?): Page<Document> {
         return transactionWithSchema(schema = context.schema) {
-            DocumentTable.selectAll().paginate(pageable = pageable, mapper = Document)
+            DocumentTable.selectAll().paginate(pageable = pageable, transform = Document)
         }
     }
 
@@ -109,7 +109,7 @@ internal class DocumentRepository(
                         }
                     }
                 }
-            }.paginate(pageable = pageable, mapper = Document)
+            }.paginate(pageable = pageable, transform = Document)
         }
     }
 

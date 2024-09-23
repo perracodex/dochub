@@ -4,7 +4,7 @@
 
 package kdoc.document.model
 
-import io.perracodex.exposed.pagination.IEntityMapper
+import io.perracodex.exposed.pagination.IModelTransform
 import kdoc.base.database.schema.document.DocumentTable
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.persistence.model.Meta
@@ -56,7 +56,7 @@ public data class Document(
         val size: Long = 0L
     )
 
-    internal companion object : IEntityMapper<Document> {
+    internal companion object : IModelTransform<Document> {
         override fun from(row: ResultRow): Document {
             return Document(
                 id = row[DocumentTable.id],
