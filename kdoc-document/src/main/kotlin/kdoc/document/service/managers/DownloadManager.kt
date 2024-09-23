@@ -10,6 +10,7 @@ import kdoc.base.env.MetricsRegistry
 import kdoc.base.env.Tracer
 import kdoc.base.security.utils.SecureIO
 import kdoc.base.utils.DateTimeUtils
+import kdoc.base.utils.DateTimeUtils.format
 import kdoc.base.utils.KLocalDateTime
 import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
@@ -256,8 +257,8 @@ internal object DownloadManager {
      * @return A uniquely time-stamped archive filename.
      */
     private fun newArchiveFilename(suffix: String): String {
-        val currentDate: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
-        val formattedDate: String = DateTimeUtils.format(date = currentDate, pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
+        val currentDateTime: KLocalDateTime = DateTimeUtils.currentDateTime()
+        val formattedDate: String = currentDateTime.format(pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
         return "$suffix ($formattedDate).zip"
     }
 

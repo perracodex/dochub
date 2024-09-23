@@ -4,11 +4,9 @@
 
 package kdoc.base.utils
 
-import kdoc.base.persistence.serializers.OffsetTimestamp
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.Serializable
-import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -74,38 +72,21 @@ public object DateTimeUtils {
     }
 
     /**
-     * Calculates the age based on the date of birth.
-     *
-     * @param dob The date of birth to calculate the age from.
+     * Calculates an integer age considering the date.
      */
-    public fun age(dob: KLocalDate): Int {
+    public fun KLocalDate.age(): Int {
 
         // Get today's date based on the system clock and timezone.
-        val currentDate: KLocalDate = currentUTCDate()
+        val currentDate: KLocalDate = currentDate()
 
         // Calculate the difference in years.
-        val age: Int = currentDate.year - dob.year
+        val age: Int = currentDate.year - this.year
 
-        val birthdayAlreadyPassed: Boolean = (dob.monthNumber < currentDate.monthNumber) ||
-                (dob.monthNumber == currentDate.monthNumber && dob.dayOfMonth <= currentDate.dayOfMonth)
+        val birthdayAlreadyPassed: Boolean = (this.monthNumber < currentDate.monthNumber) ||
+                (this.monthNumber == currentDate.monthNumber && this.dayOfMonth <= currentDate.dayOfMonth)
 
         // Adjust the age if the birthday hasn't occurred this year yet.
         return age.takeIf { birthdayAlreadyPassed } ?: (age - 1)
-    }
-
-    /**
-     * Returns the current date-time in UTC.
-     */
-    public fun currentUTCDateTime(): KLocalDateTime = Clock.System.now().toLocalDateTime(timeZone = timezone())
-
-    /**
-     * Returns the current date-time with the specified or default time zone.
-     *
-     * @param zoneId The time zone ID, defaulting to the system's default time zone.
-     * @return An [OffsetTimestamp] representing the current moment in the specified time zone.
-     */
-    public fun currentZonedTimestamp(zoneId: ZoneId = ZoneId.systemDefault()): OffsetTimestamp {
-        return OffsetDateTime.now(zoneId)
     }
 
     /**
@@ -117,29 +98,34 @@ public object DateTimeUtils {
     }
 
     /**
-     * Returns the current date in UTC.
+     * Returns the current date-time in the system's default time zone.
      */
-    public fun currentUTCDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
+    public fun currentDateTime(): KLocalDateTime {
+        return Clock.System.now().toLocalDateTime(timeZone = timezone())
+    }
 
     /**
-     * Converts a UTC time to the local time zone.
+     * Returns the current date in the system's default time zone.
      */
-    public fun utcToLocal(utc: KLocalDateTime): KLocalDateTime {
-        return utc.toInstant(timeZone = TimeZone.UTC).toLocalDateTime(timeZone = timezone())
-    }
+    public fun currentDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
+
+    /**
+     * Returns the current date-time in UTC.
+     */
+    public fun utcDateTime(): Instant = Clock.System.now()
 
     /**
      * Formats a date using the given [Format] pattern.
      */
-    public fun format(date: KLocalDate, pattern: Format): String {
-        return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDate())
+    public fun KLocalDate.format(pattern: Format): String {
+        return DateTimeFormatter.ofPattern(pattern.pattern).format(this.toJavaLocalDate())
     }
 
     /**
      * Formats a date-time using the given [Format] pattern.
      */
-    public fun format(date: KLocalDateTime, pattern: Format): String {
-        return DateTimeFormatter.ofPattern(pattern.pattern).format(date.toJavaLocalDateTime())
+    public fun KLocalDateTime.format(pattern: Format): String {
+        return DateTimeFormatter.ofPattern(pattern.pattern).format(this.toJavaLocalDateTime())
     }
 
     /**
@@ -152,27 +138,24 @@ public object DateTimeUtils {
     }
 
     /**
+     * Converts a Java [Date] to a Kotlin [LocalDateTime].
+     *
+     * @param zoneId The java time zone to apply during the conversion. Defaults to the system's default time zone.
+     */
+    public fun Date.toKotlinLocalDateTime(zoneId: ZoneId = ZoneId.systemDefault()): LocalDateTime {
+        return this.toInstant()
+            .atZone(zoneId)
+            .toLocalDateTime()
+            .toKotlinLocalDateTime()
+    }
+
+    /**
      * Converts a Kotlin [Duration] to a Java [Instant].
      */
     public fun Duration.toJavaInstant(): JavaInstant {
         return JavaInstant.ofEpochMilli(
             System.currentTimeMillis() + this.toLong(unit = DurationUnit.MILLISECONDS)
         )
-    }
-
-    /**
-     * Converts a Java [Date] to a Kotlin [LocalDateTime] in the specified time zone.
-     *
-     * @param datetime The [Date] to be converted.
-     * @param zoneId The time zone to apply during the conversion. Defaults to the system's default time zone.
-     * @return A [KLocalDateTime] representing the same moment in time as the input [Date], adjusted to the specified time zone.
-     */
-    public fun javaDateToLocalDateTime(datetime: Date, zoneId: ZoneId = ZoneId.systemDefault()): KLocalDateTime {
-        val localDateTime: java.time.LocalDateTime = datetime.toInstant()
-            .atZone(zoneId)
-            .toLocalDateTime()
-
-        return localDateTime.toKotlinLocalDateTime()
     }
 
     /**

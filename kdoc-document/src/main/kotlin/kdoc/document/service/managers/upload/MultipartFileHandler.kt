@@ -172,7 +172,7 @@ internal class MultipartFileHandler(
         cipherName: Boolean,
         streamProvider: () -> InputStream
     ): Response {
-        val currentDate: KLocalDate = DateTimeUtils.currentUTCDate()
+        val currentDate: KLocalDate = DateTimeUtils.currentDate()
         val datePath: String = "${currentDate.year}$PATH_SEPARATOR" +
                 "${currentDate.monthNumber}$PATH_SEPARATOR" +
                 "${currentDate.dayOfMonth}"

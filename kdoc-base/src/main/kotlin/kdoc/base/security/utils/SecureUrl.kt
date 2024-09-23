@@ -70,7 +70,7 @@ public object SecureUrl {
      * @return A string representing the complete URL with the encrypted token as a query parameter.
      */
     public fun generate(basePath: String, data: String): String {
-        val currentTime: Long = DateTimeUtils.currentUTCDateTime().toEpochSeconds()
+        val currentTime: Long = DateTimeUtils.currentDateTime().toEpochSeconds()
         val expiresAt: Long = currentTime + AppSettings.security.encryption.atTransitExpiration
         val plainToken = "$data$SEPARATOR$expiresAt"
         val encryptedToken: String = encryptToken(data = plainToken)
@@ -101,7 +101,7 @@ public object SecureUrl {
         val expiration: Long = tokenParts.getOrNull(EXPIRATION_PART_INDEX)?.toLongOrNull() ?: return null
 
         // Return the original data if the token has not expired, otherwise null.
-        return if (DateTimeUtils.currentUTCDateTime().toEpochSeconds() <= expiration) {
+        return if (DateTimeUtils.currentDateTime().toEpochSeconds() <= expiration) {
             tokenParts.getOrNull(TOKEN_PART_INDEX)
         } else {
             null
