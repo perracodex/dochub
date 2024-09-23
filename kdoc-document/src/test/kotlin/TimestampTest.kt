@@ -7,12 +7,12 @@ import io.mockk.every
 import io.mockk.mockk
 import kdoc.base.database.schema.document.types.DocumentType
 import kdoc.base.env.CallContext
-import kdoc.base.persistence.serializers.OffsetTimestamp
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentRequest
 import kdoc.document.repository.IDocumentRepository
+import kotlinx.datetime.Instant
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -63,8 +63,8 @@ class TimestampTest : KoinComponent {
             actual = document.meta.updatedAt
         )
 
-        val createdAt: OffsetTimestamp = document.meta.createdAt
-        val updatedAt: OffsetTimestamp = document.meta.updatedAt
+        val createdAt: Instant = document.meta.createdAt
+        val updatedAt: Instant = document.meta.updatedAt
         val updatedDocument: Document? = documentRepository.update(
             documentId = document.id,
             request = documentRequest
