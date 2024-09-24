@@ -22,7 +22,8 @@ import kdoc.core.env.SessionContext.Companion.setContext
  * principal are not propagated across different requests, so we
  * must use sessions to store the actor information.
  *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
+ * #### References
+ * - [Basic Authentication](https://ktor.io/docs/server-basic-auth.html)
  */
 @OptIn(RbacAPI::class)
 public fun Application.configureRbac() {

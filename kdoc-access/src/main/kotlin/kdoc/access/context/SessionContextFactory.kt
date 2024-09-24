@@ -28,8 +28,8 @@ import org.koin.core.component.inject
  * Using this factory ensures that all authentication methods adhere to a consistent approach in
  * constructing [SessionContext] instances, which is vital for security and traceability within the application.
  *
- * @see configureJwtAuthentication
- * @see configureBasicAuthentication
+ * @see [configureJwtAuthentication]
+ * @see [configureBasicAuthentication]
  */
 internal object SessionContextFactory : KoinComponent {
     private val tracer = Tracer<SessionContextFactory>()
