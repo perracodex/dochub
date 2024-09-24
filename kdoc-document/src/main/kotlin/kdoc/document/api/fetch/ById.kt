@@ -30,7 +30,7 @@ internal fun Route.findDocumentByIdRoute() {
     get("v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by document id", documentId = documentId)
 

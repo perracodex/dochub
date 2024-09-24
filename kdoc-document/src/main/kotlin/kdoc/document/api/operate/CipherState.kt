@@ -26,7 +26,7 @@ internal fun Route.changeDocumentsCipherStateRoute() {
     put("v1/document/cipher/{cipher}") {
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())
 

@@ -27,7 +27,7 @@ internal fun Route.backupDocumentsRoute() {
      */
     get("v1/document/backup") {
         // Audit the backup action.
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "backup")
 

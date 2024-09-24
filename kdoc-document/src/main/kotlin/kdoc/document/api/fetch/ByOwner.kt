@@ -33,7 +33,7 @@ internal fun Route.findDocumentsByOwnerRoute() {
         val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by owner", ownerId = ownerId, log = pageable?.toString())
 

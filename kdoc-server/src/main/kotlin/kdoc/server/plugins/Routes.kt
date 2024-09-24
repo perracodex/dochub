@@ -9,7 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.api.rbacRoutes
 import kdoc.access.token.api.accessTokenRoutes
-import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.env.SessionContext.Companion.getContextOrNull
 import kdoc.core.env.health.healthCheckRoute
 import kdoc.core.events.sseRoute
 import kdoc.core.security.snowflake.snowflakeRoute
@@ -40,7 +40,7 @@ internal fun Application.configureRoutes() {
 
         // Server root endpoint.
         get("/") {
-            call.getContext()?.let {
+            call.getContextOrNull()?.let {
                 call.respondText(text = "Hello World. Welcome ${it.username}!")
             } ?: call.respondText(text = "Hello World.")
         }

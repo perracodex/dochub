@@ -30,7 +30,7 @@ internal fun Route.searchDocumentsRoute() {
     post<DocumentFilterSet>("v1/document/search") { request ->
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "search", log = "$request | ${pageable?.toString()}")
 

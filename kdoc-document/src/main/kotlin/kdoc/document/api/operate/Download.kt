@@ -30,7 +30,7 @@ internal fun Route.downloadDocumentRoute() {
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 
         // Audit the download attempt.
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
         auditService.audit(operation = "download", log = "token=$token | signature=$signature")
 

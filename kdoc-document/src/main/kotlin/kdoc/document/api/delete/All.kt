@@ -23,7 +23,7 @@ internal fun Route.deleteAllDocumentsRoute() {
      * @OpenAPITag Document - Delete
      */
     delete("v1/document/") {
-        val sessionContext: SessionContext? = call.getContext()
+        val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete all")
 
