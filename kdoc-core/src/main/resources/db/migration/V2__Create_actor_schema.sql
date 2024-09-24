@@ -27,4 +27,4 @@ ALTER TABLE actor ADD CONSTRAINT uq_actor__username UNIQUE (username);
 CREATE TRIGGER IF NOT EXISTS tg_actor__updated_at
 BEFORE UPDATE ON actor
 FOR EACH ROW
-CALL 'UpdateTimestampTrigger';
+CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';

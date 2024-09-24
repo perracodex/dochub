@@ -27,4 +27,4 @@ CREATE TABLE IF NOT EXISTS document (
 CREATE TRIGGER IF NOT EXISTS tg_document__updated_at
 BEFORE UPDATE ON document
 FOR EACH ROW
-CALL 'UpdateTimestampTrigger';
+CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';
