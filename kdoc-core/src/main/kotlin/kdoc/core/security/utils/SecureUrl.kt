@@ -19,7 +19,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  * This utility is essential for obscuring actual resources and ensuring that URLs expire
  * after a predefined duration, thereby enhancing security by preventing unauthorized access.
  *
- * The URL is composed of a core path, a securely encrypted token that encapsulates the original
+ * The URL is composed of a base path, a securely encrypted token that encapsulates the original
  * data and an expiration time, and a signature to verify the integrity of the URL.
  *
  * URL Composition:
@@ -65,7 +65,7 @@ public object SecureUrl {
     /**
      * Generates a secure (encrypted + signed + expiring) URL.
      *
-     * @param basePath The core path for the URL.
+     * @param basePath The base path for the URL.
      * @param data The original string data to be encrypted within the token.
      * @return A string representing the complete URL with the encrypted token as a query parameter.
      */
@@ -81,7 +81,7 @@ public object SecureUrl {
     /**
      * Verifies if a given token is valid based on its signature, decryption and expiration.
      *
-     * @param basePath The core path for the URL.
+     * @param basePath The base path for the URL.
      * @param token The encrypted and Base64 encoded token to verify.
      * @param signature The signature to verify the integrity of the token.
      * @return A boolean indicating whether the token is valid (true) or not (false).

@@ -5,7 +5,7 @@
 package kdoc.access
 
 /**
- * Main function for the access module.
+ * Main function for the Access module.
  * This module is not executable. Execute the application server module instead.
  */
 public fun main() {

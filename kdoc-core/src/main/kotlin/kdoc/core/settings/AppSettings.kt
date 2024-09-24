@@ -96,7 +96,7 @@ public object AppSettings {
     /**
      * Provides access to the storage configuration settings.
      * These settings manage the storage of uploaded files,
-     * including the root path for uploads, the core URL for downloads,
+     * including the root path for uploads, the base URL for downloads,
      */
     public val storage: StorageSettings get() = configuration.storage
 
