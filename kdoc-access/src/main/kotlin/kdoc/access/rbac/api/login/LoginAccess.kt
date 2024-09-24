@@ -14,7 +14,7 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 
 /**
  * Manages access to the RBAC login page. If a valid session is already exists, the actor
@@ -29,10 +29,10 @@ internal fun Route.rbacLoginAccessRoute() {
      * @OpenAPITag RBAC
      */
     get("rbac/login") {
-        RbacDashboardManager.getCallContext(call = call)?.let {
+        RbacDashboardManager.getSessionContext(call = call)?.let {
             call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
         } ?: run {
-            call.sessions.clear(name = CallContext.SESSION_NAME)
+            call.sessions.clear(name = SessionContext.SESSION_NAME)
             call.respondHtml(status = HttpStatusCode.OK) {
                 RbacLoginView.build(html = this)
             }

@@ -12,8 +12,8 @@ import io.ktor.server.util.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.getPageable
-import kdoc.base.env.CallContext
-import kdoc.base.env.CallContext.Companion.getContext
+import kdoc.base.env.SessionContext
+import kdoc.base.env.SessionContext.Companion.getContext
 import kdoc.base.persistence.utils.toUuid
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
@@ -33,11 +33,11 @@ internal fun Route.findDocumentsByOwnerRoute() {
         val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
-        val callContext: CallContext? = call.getContext()
-        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
+        val sessionContext: SessionContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by owner", ownerId = ownerId, log = pageable?.toString())
 
-        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
+        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
     }

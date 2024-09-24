@@ -11,8 +11,8 @@ import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.getPageable
-import kdoc.base.env.CallContext
-import kdoc.base.env.CallContext.Companion.getContext
+import kdoc.base.env.SessionContext
+import kdoc.base.env.SessionContext.Companion.getContext
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
@@ -29,11 +29,11 @@ internal fun Route.findAllDocumentsRoute() {
     get("v1/document/") {
         val pageable: Pageable? = call.getPageable()
 
-        val callContext: CallContext? = call.getContext()
-        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
+        val sessionContext: SessionContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find all", log = pageable?.toString())
 
-        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
+        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findAll(pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
     }

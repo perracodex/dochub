@@ -16,13 +16,13 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
 /**
  * Processes updates to RBAC settings based on actor submissions from the dashboard form.
- * Validates [CallContext] and authorizes modifications, redirecting to the login screen if unauthorized.
+ * Validates [SessionContext] and authorizes modifications, redirecting to the login screen if unauthorized.
  */
 @RbacAPI
 internal fun Route.rbacDashboardUpdateRoute() {
@@ -31,10 +31,10 @@ internal fun Route.rbacDashboardUpdateRoute() {
      * @OpenAPITag RBAC
      */
     post("rbac/dashboard") {
-        // Retrieve the CallContext or redirect to the login screen if it's missing.
-        val callContext: CallContext = RbacDashboardManager.getCallContext(call = call)
+        // Retrieve the SessionContext or redirect to the login screen if it's missing.
+        val sessionContext: SessionContext = RbacDashboardManager.getSessionContext(call = call)
             ?: return@post call.run {
-                call.sessions.clear(name = CallContext.SESSION_NAME)
+                call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
@@ -45,7 +45,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
         // Fetch the role-specific scope rules for the current role,
         // and update the rules based on the submitted parameters.
         RbacDashboardManager.processUpdate(
-            callContext = callContext,
+            sessionContext = sessionContext,
             roleId = currentRoleId,
             updates = parameters.entries().associate { it.key to it.value.first() }
         ).let { result ->
@@ -61,7 +61,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
 
                 // If the update was unauthorized, clear the session and redirect to the login screen.
                 is RbacDashboardManager.UpdateResult.Unauthorized -> call.run {
-                    sessions.clear(name = CallContext.SESSION_NAME)
+                    sessions.clear(name = SessionContext.SESSION_NAME)
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }

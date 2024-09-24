@@ -6,7 +6,7 @@ package kdoc.document.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.persistence.utils.toUuidOrNull
 import kdoc.base.security.utils.SecureUrl
@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
  * Document service, where all the documents business logic should be defined.
  */
 internal class DocumentService(
-    @Suppress("unused") private val context: CallContext,
+    @Suppress("unused") private val sessionContext: SessionContext,
     private val documentRepository: IDocumentRepository
 ) {
     private val tracer = Tracer<DocumentService>()

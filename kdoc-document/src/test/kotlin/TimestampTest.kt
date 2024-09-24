@@ -6,7 +6,7 @@ import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.model.Document
@@ -36,11 +36,11 @@ class TimestampTest : KoinComponent {
 
     @Test
     fun testTimestamp(): Unit = testSuspend {
-        val callContext: CallContext = mockk<CallContext>()
-        every { callContext.schema } returns null
+        val sessionContext: SessionContext = mockk<SessionContext>()
+        every { sessionContext.schema } returns null
 
         val documentRepository: IDocumentRepository by inject(
-            parameters = { parametersOf(callContext) }
+            parameters = { parametersOf(sessionContext) }
         )
 
         val documentRequest = DocumentRequest(

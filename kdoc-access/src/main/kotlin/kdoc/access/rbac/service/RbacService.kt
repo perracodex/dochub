@@ -13,7 +13,7 @@ import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -142,24 +142,24 @@ internal class RbacService(
     }
 
     /**
-     * Checks if the given [CallContext] has the given [RbacAccessLevel] for the given [RbacScope].
+     * Checks if the given [SessionContext] has the given [RbacAccessLevel] for the given [RbacScope].
      *
-     * @param callContext The current request [CallContext].
+     * @param sessionContext The current request [SessionContext].
      * @param scope The [RbacScope] to check.
      * @param accessLevel The [RbacAccessLevel] to check. Expected to have minimal this access level.
-     * @return True if the [CallContext] has permission, false otherwise.
+     * @return True if the [SessionContext] has permission, false otherwise.
      */
     suspend fun hasPermission(
-        callContext: CallContext,
+        sessionContext: SessionContext,
         scope: RbacScope,
         accessLevel: RbacAccessLevel
     ): Boolean {
         if (isCacheEmpty())
             return false
 
-        return cache[callContext.actorId]?.let { actorRole ->
+        return cache[sessionContext.actorId]?.let { actorRole ->
             !actorRole.isLocked && actorRole.role.scopeRules.any { scopeRule ->
-                (scopeRule.roleId == callContext.roleId) &&
+                (scopeRule.roleId == sessionContext.roleId) &&
                         (scopeRule.scope == scope) &&
                         scopeRule.accessLevel.hasSufficientPrivileges(requiredAccessLevel = accessLevel)
             }
@@ -167,23 +167,23 @@ internal class RbacService(
     }
 
     /**
-     * Retrieves the [RbacAccessLevel] for the given [CallContext] and [RbacScope].
+     * Retrieves the [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      *
-     * @param callContext The [CallContext] to check.
+     * @param sessionContext The [SessionContext] to check.
      * @param scope The [RbacScope] to check.
-     * @return The [RbacAccessLevel] for the given [CallContext] and [RbacScope].
+     * @return The [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      */
-    suspend fun getPermissionLevel(callContext: CallContext, scope: RbacScope): RbacAccessLevel {
+    suspend fun getPermissionLevel(sessionContext: SessionContext, scope: RbacScope): RbacAccessLevel {
         if (isCacheEmpty()) {
             return RbacAccessLevel.NONE
         }
 
-        return cache[callContext.actorId]?.let { role ->
+        return cache[sessionContext.actorId]?.let { role ->
             if (role.isLocked) {
                 RbacAccessLevel.NONE
             } else {
                 role.role.scopeRules.find { scopeRule ->
-                    scopeRule.roleId == callContext.roleId && scopeRule.scope == scope
+                    scopeRule.roleId == sessionContext.roleId && scopeRule.scope == scope
                 }?.accessLevel ?: RbacAccessLevel.NONE
             }
         } ?: RbacAccessLevel.NONE

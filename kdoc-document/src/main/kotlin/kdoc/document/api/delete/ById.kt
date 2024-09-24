@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.base.env.CallContext
-import kdoc.base.env.CallContext.Companion.getContext
+import kdoc.base.env.SessionContext
+import kdoc.base.env.SessionContext.Companion.getContext
 import kdoc.base.persistence.utils.toUuid
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
@@ -28,11 +28,11 @@ internal fun Route.deleteDocumentByIdRoute() {
     delete("v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
-        val callContext: CallContext? = call.getContext()
-        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
+        val sessionContext: SessionContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete by id", documentId = documentId)
 
-        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
+        val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val deletedCount: Int = service.delete(documentId = documentId)
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }

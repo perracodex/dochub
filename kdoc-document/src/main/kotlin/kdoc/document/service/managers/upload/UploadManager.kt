@@ -6,7 +6,7 @@ package kdoc.document.service.managers.upload
 
 import io.ktor.http.content.*
 import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
  * @see MultipartFileHandler
  */
 internal class UploadManager(
-    @Suppress("unused") private val context: CallContext,
+    @Suppress("unused") private val sessionContext: SessionContext,
     private val documentRepository: IDocumentRepository
 ) {
     private val tracer = Tracer<UploadManager>()

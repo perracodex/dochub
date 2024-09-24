@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.base.env.CallContext
-import kdoc.base.env.CallContext.Companion.getContext
+import kdoc.base.env.SessionContext
+import kdoc.base.env.SessionContext.Companion.getContext
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.managers.CipherStateHandler
@@ -26,11 +26,11 @@ internal fun Route.changeDocumentsCipherStateRoute() {
     put("v1/document/cipher/{cipher}") {
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
-        val callContext: CallContext? = call.getContext()
-        call.scope.get<DocumentAuditService> { parametersOf(callContext) }
+        val sessionContext: SessionContext? = call.getContext()
+        call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())
 
-        val cipherStateHandler: CipherStateHandler = call.scope.get<CipherStateHandler> { parametersOf(callContext) }
+        val cipherStateHandler: CipherStateHandler = call.scope.get<CipherStateHandler> { parametersOf(sessionContext) }
         val count: Int = cipherStateHandler.changeState(cipher = cipher)
         call.respond(status = HttpStatusCode.OK, message = count)
     }

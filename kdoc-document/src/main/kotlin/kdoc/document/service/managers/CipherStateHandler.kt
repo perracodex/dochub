@@ -5,7 +5,7 @@
 package kdoc.document.service.managers
 
 import io.perracodex.exposed.pagination.Page
-import kdoc.base.env.CallContext
+import kdoc.base.env.SessionContext
 import kdoc.base.env.Tracer
 import kdoc.base.security.utils.EncryptionUtils
 import kdoc.base.security.utils.SecureIO
@@ -22,7 +22,7 @@ import kotlin.uuid.Uuid
  * Handles the ciphering and de-ciphering of document files in the storage.
  */
 internal class CipherStateHandler(
-    @Suppress("unused") private val context: CallContext,
+    @Suppress("unused") private val sessionContext: SessionContext,
     private val documentRepository: IDocumentRepository
 ) {
     private val tracer = Tracer<CipherStateHandler>()

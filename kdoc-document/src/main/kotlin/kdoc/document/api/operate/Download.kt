@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.base.env.CallContext
-import kdoc.base.env.CallContext.Companion.getContext
+import kdoc.base.env.SessionContext
+import kdoc.base.env.SessionContext.Companion.getContext
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
@@ -30,8 +30,8 @@ internal fun Route.downloadDocumentRoute() {
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 
         // Audit the download attempt.
-        val callContext: CallContext? = call.getContext()
-        val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(callContext) }
+        val sessionContext: SessionContext? = call.getContext()
+        val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
         auditService.audit(operation = "download", log = "token=$token | signature=$signature")
 
         // If the token or signature is missing, return a bad request response.
@@ -41,7 +41,7 @@ internal fun Route.downloadDocumentRoute() {
         }
 
         // Get all document files for the given token and signature.
-        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(callContext) }
+        val documentService: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: List<Document>? = documentService.findBySignature(token = token, signature = signature)
         if (documents.isNullOrEmpty()) {
             auditService.audit(operation = "download verification failed", log = "token=$token | signature=$signature")
