@@ -8,7 +8,7 @@ import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import kdoc.base.database.schema.document.DocumentTable
-import kdoc.base.database.utils.transactionWithContext
+import kdoc.base.database.utils.transaction
 import kdoc.base.env.SessionContext
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
@@ -27,7 +27,7 @@ internal class DocumentRepository(
 ) : IDocumentRepository {
 
     override fun findById(documentId: Uuid): Document? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll().where {
                 DocumentTable.id eq documentId
             }.singleOrNull()?.let { resultRow ->
@@ -57,7 +57,7 @@ internal class DocumentRepository(
         condition: SqlExpressionBuilder.() -> Op<Boolean>,
         pageable: Pageable?
     ): Page<Document> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll()
                 .andWhere(condition)
                 .paginate(pageable = pageable, transform = Document)
@@ -65,13 +65,13 @@ internal class DocumentRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Document> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll().paginate(pageable = pageable, transform = Document)
         }
     }
 
     override fun search(filterSet: DocumentFilterSet, pageable: Pageable?): Page<Document> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
@@ -114,7 +114,7 @@ internal class DocumentRepository(
     }
 
     override fun create(request: DocumentRequest): Document {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.insert { statement ->
                 statement.toStatement(request = request)
             }[DocumentTable.id].let { documentId ->
@@ -125,7 +125,7 @@ internal class DocumentRepository(
     }
 
     override fun update(documentId: Uuid, request: DocumentRequest): Document? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
@@ -139,7 +139,7 @@ internal class DocumentRepository(
     }
 
     override fun setCipherState(documentId: Uuid, isCiphered: Boolean, storageName: String): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.update(
                 where = {
                     DocumentTable.id eq documentId
@@ -152,7 +152,7 @@ internal class DocumentRepository(
     }
 
     override fun delete(documentId: Uuid): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.deleteWhere {
                 id eq documentId
             }
@@ -160,7 +160,7 @@ internal class DocumentRepository(
     }
 
     override fun deleteByGroup(groupId: Uuid): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.deleteWhere {
                 DocumentTable.groupId eq groupId
             }
@@ -168,13 +168,13 @@ internal class DocumentRepository(
     }
 
     override fun deleteAll(): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.deleteAll()
         }
     }
 
     override fun count(): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll().count().toInt()
         }
     }

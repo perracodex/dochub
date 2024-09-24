@@ -5,7 +5,7 @@
 package kdoc.document.repository
 
 import kdoc.base.database.schema.document.DocumentAuditTable
-import kdoc.base.database.utils.transactionWithContext
+import kdoc.base.database.utils.transaction
 import kdoc.base.env.SessionContext
 import kdoc.document.model.DocumentAuditLogRequest
 import org.jetbrains.exposed.sql.insert
@@ -21,7 +21,7 @@ internal class DocumentAuditRepository(
 ) : IDocumentAuditRepository {
 
     override fun create(request: DocumentAuditLogRequest): Uuid {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             val newAuditId: Uuid = DocumentAuditTable.insert { statement ->
                 statement.toStatement(request = request)
             } get DocumentAuditTable.id
