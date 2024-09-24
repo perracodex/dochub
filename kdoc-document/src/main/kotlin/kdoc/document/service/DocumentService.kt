@@ -6,12 +6,12 @@ package kdoc.document.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kdoc.base.env.SessionContext
-import kdoc.base.env.Tracer
-import kdoc.base.persistence.utils.toUuidOrNull
-import kdoc.base.security.utils.SecureUrl
-import kdoc.base.settings.AppSettings
-import kdoc.base.utils.NetworkUtils
+import kdoc.core.env.SessionContext
+import kdoc.core.env.Tracer
+import kdoc.core.persistence.utils.toUuidOrNull
+import kdoc.core.security.utils.SecureUrl
+import kdoc.core.settings.AppSettings
+import kdoc.core.utils.NetworkUtils
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest

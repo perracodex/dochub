@@ -6,12 +6,12 @@ package kdoc.document.service.managers
 
 import io.ktor.http.*
 import io.micrometer.core.instrument.Counter
-import kdoc.base.env.MetricsRegistry
-import kdoc.base.env.Tracer
-import kdoc.base.security.utils.SecureIO
-import kdoc.base.utils.DateTimeUtils
-import kdoc.base.utils.DateTimeUtils.format
-import kdoc.base.utils.KLocalDateTime
+import kdoc.core.env.MetricsRegistry
+import kdoc.core.env.Tracer
+import kdoc.core.security.utils.SecureIO
+import kdoc.core.utils.DateTimeUtils
+import kdoc.core.utils.DateTimeUtils.format
+import kdoc.core.utils.KLocalDateTime
 import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kotlinx.coroutines.CompletableDeferred

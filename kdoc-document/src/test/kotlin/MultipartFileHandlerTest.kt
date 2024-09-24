@@ -17,8 +17,8 @@ import io.ktor.server.testing.*
 import junit.framework.TestCase.assertTrue
 import kdoc.access.actor.di.ActorDomainInjection
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.utils.TestUtils
+import kdoc.core.database.schema.document.types.DocumentType
+import kdoc.core.utils.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.service.managers.upload.MultipartFileHandler
 import kdoc.document.service.managers.upload.annotation.UploadAPI

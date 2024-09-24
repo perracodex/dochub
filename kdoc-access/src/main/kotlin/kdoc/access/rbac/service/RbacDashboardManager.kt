@@ -10,9 +10,9 @@ import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.view.RbacDashboardView
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.env.SessionContext
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.env.SessionContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

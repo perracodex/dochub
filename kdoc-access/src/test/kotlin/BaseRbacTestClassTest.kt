@@ -4,9 +4,9 @@
 
 import kdoc.access.rbac.model.base.BaseRbac
 import kdoc.access.rbac.service.RbacFieldAnonymization
-import kdoc.base.utils.KLocalDate
-import kdoc.base.utils.KLocalDateTime
-import kdoc.base.utils.KLocalTime
+import kdoc.core.utils.KLocalDate
+import kdoc.core.utils.KLocalDateTime
+import kdoc.core.utils.KLocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

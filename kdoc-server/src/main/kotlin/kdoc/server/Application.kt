@@ -10,8 +10,8 @@ import kdoc.access.plugins.configureBasicAuthentication
 import kdoc.access.plugins.configureJwtAuthentication
 import kdoc.access.plugins.configureRbac
 import kdoc.access.plugins.configureSessions
-import kdoc.base.plugins.*
-import kdoc.base.settings.AppSettings
+import kdoc.core.plugins.*
+import kdoc.core.settings.AppSettings
 import kdoc.server.plugins.configureKoin
 import kdoc.server.plugins.configureRoutes
 import kdoc.server.utils.ApplicationsUtils

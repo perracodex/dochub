@@ -12,9 +12,9 @@ import kdoc.access.actor.service.ActorService
 import kdoc.access.credential.CredentialService
 import kdoc.access.plugins.configureBasicAuthentication
 import kdoc.access.plugins.configureJwtAuthentication
-import kdoc.base.env.SessionContext
-import kdoc.base.env.Tracer
-import kdoc.base.settings.AppSettings
+import kdoc.core.env.SessionContext
+import kdoc.core.env.Tracer
+import kdoc.core.settings.AppSettings
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

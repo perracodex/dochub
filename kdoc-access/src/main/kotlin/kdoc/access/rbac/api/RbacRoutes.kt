@@ -14,9 +14,9 @@ import kdoc.access.rbac.api.login.rbacLoginSubmissionRoute
 import kdoc.access.rbac.api.login.rbacLogoutRoute
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.plugin.withRbac
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.plugins.RateLimitScope
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.plugins.RateLimitScope
 
 /**
  * Contains the RBAC endpoints.

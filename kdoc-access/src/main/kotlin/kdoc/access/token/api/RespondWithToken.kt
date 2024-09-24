@@ -10,9 +10,9 @@ import io.ktor.server.response.*
 import kdoc.access.credential.CredentialService
 import kdoc.access.token.annotation.TokenAPI
 import kdoc.access.token.service.AuthenticationTokenService
-import kdoc.base.env.SessionContext
-import kdoc.base.env.SessionContext.Companion.getContext
-import kdoc.base.env.Tracer
+import kdoc.core.env.SessionContext
+import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.env.Tracer
 
 /**
  * Application call extension function for responding with a JWT token.

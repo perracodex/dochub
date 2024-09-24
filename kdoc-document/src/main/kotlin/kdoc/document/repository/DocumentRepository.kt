@@ -7,9 +7,9 @@ package kdoc.document.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import kdoc.base.database.schema.document.DocumentTable
-import kdoc.base.database.utils.transaction
-import kdoc.base.env.SessionContext
+import kdoc.core.database.schema.document.DocumentTable
+import kdoc.core.database.utils.transaction
+import kdoc.core.env.SessionContext
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest

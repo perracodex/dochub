@@ -6,9 +6,9 @@ package kdoc.access.actor.model
 
 import kdoc.access.credential.CredentialService
 import kdoc.access.rbac.model.role.RbacRole
-import kdoc.base.database.schema.admin.actor.ActorTable
-import kdoc.base.env.SessionContext
-import kdoc.base.persistence.model.Meta
+import kdoc.core.database.schema.admin.actor.ActorTable
+import kdoc.core.env.SessionContext
+import kdoc.core.persistence.model.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
 

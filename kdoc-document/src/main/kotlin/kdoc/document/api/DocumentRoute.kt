@@ -7,8 +7,8 @@ package kdoc.document.api
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
-import kdoc.base.plugins.RateLimitScope
-import kdoc.base.settings.AppSettings
+import kdoc.core.plugins.RateLimitScope
+import kdoc.core.settings.AppSettings
 import kdoc.document.api.delete.deleteAllDocumentsRoute
 import kdoc.document.api.delete.deleteDocumentByIdRoute
 import kdoc.document.api.delete.deleteDocumentsByGroupRoute

@@ -7,10 +7,10 @@ package kdoc.access.rbac.repository.role
 import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.role.RbacRoleRequest
 import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
-import kdoc.base.database.schema.admin.actor.ActorTable
-import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kdoc.base.database.schema.admin.rbac.RbacRoleTable
-import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
+import kdoc.core.database.schema.admin.actor.ActorTable
+import kdoc.core.database.schema.admin.rbac.RbacFieldRuleTable
+import kdoc.core.database.schema.admin.rbac.RbacRoleTable
+import kdoc.core.database.schema.admin.rbac.RbacScopeRuleTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll

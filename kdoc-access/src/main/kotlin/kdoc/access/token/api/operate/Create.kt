@@ -10,8 +10,8 @@ import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 import kdoc.access.token.annotation.TokenAPI
 import kdoc.access.token.api.respondWithToken
-import kdoc.base.plugins.RateLimitScope
-import kdoc.base.settings.AppSettings
+import kdoc.core.plugins.RateLimitScope
+import kdoc.core.settings.AppSettings
 
 /**
  * Generates a new JWT token using Basic Authentication.

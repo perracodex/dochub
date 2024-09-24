@@ -4,7 +4,7 @@
 
 package kdoc.access.rbac.model.field
 
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kotlinx.serialization.Serializable
 
 /**

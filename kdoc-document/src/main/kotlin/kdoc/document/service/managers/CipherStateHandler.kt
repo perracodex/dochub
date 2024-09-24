@@ -5,11 +5,11 @@
 package kdoc.document.service.managers
 
 import io.perracodex.exposed.pagination.Page
-import kdoc.base.env.SessionContext
-import kdoc.base.env.Tracer
-import kdoc.base.security.utils.EncryptionUtils
-import kdoc.base.security.utils.SecureIO
-import kdoc.base.settings.AppSettings
+import kdoc.core.env.SessionContext
+import kdoc.core.env.Tracer
+import kdoc.core.security.utils.EncryptionUtils
+import kdoc.core.security.utils.SecureIO
+import kdoc.core.settings.AppSettings
 import kdoc.document.model.Document
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR

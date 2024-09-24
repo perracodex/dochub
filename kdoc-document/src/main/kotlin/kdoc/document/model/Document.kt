@@ -5,10 +5,10 @@
 package kdoc.document.model
 
 import io.perracodex.exposed.pagination.IModelTransform
-import kdoc.base.database.schema.document.DocumentTable
-import kdoc.base.database.schema.document.types.DocumentType
-import kdoc.base.persistence.model.Meta
-import kdoc.base.persistence.serializers.Uuid
+import kdoc.core.database.schema.document.DocumentTable
+import kdoc.core.database.schema.document.types.DocumentType
+import kdoc.core.persistence.model.Meta
+import kdoc.core.persistence.serializers.Uuid
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

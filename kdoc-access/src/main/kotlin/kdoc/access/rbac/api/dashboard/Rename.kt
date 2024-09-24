@@ -16,8 +16,8 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.base.env.SessionContext
-import kdoc.base.persistence.utils.toUuid
+import kdoc.core.env.SessionContext
+import kdoc.core.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
 /**

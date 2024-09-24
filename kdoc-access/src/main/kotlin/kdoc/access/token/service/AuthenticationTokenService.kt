@@ -12,10 +12,10 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import kdoc.access.token.annotation.TokenAPI
-import kdoc.base.env.SessionContext
-import kdoc.base.env.Tracer
-import kdoc.base.settings.AppSettings
-import kdoc.base.settings.config.sections.security.sections.auth.JwtAuthSettings
+import kdoc.core.env.SessionContext
+import kdoc.core.env.Tracer
+import kdoc.core.settings.AppSettings
+import kdoc.core.settings.config.sections.security.sections.auth.JwtAuthSettings
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*

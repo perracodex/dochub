@@ -6,10 +6,10 @@ package kdoc.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kdoc.base.env.SessionContext
-import kdoc.base.security.utils.EncryptionUtils.toByteKey
-import kdoc.base.settings.AppSettings
-import kdoc.base.settings.config.sections.security.sections.EncryptionSettings
+import kdoc.core.env.SessionContext
+import kdoc.core.security.utils.EncryptionUtils.toByteKey
+import kdoc.core.settings.AppSettings
+import kdoc.core.settings.config.sections.security.sections.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

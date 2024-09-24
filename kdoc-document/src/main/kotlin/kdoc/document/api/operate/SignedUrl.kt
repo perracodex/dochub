@@ -8,11 +8,11 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.base.env.SessionContext.Companion.getContext
-import kdoc.base.persistence.utils.toUuidOrNull
-import kdoc.base.security.utils.SecureUrl
-import kdoc.base.settings.AppSettings
-import kdoc.base.utils.NetworkUtils
+import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.persistence.utils.toUuidOrNull
+import kdoc.core.security.utils.SecureUrl
+import kdoc.core.settings.AppSettings
+import kdoc.core.utils.NetworkUtils
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.service.DocumentAuditService
 import org.koin.core.parameter.parametersOf

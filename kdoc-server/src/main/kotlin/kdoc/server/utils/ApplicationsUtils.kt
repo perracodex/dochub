@@ -5,10 +5,10 @@
 package kdoc.server.utils
 
 import io.ktor.server.application.*
-import kdoc.base.env.Tracer
-import kdoc.base.security.snowflake.SnowflakeFactory
-import kdoc.base.settings.AppSettings
-import kdoc.base.utils.NetworkUtils
+import kdoc.core.env.Tracer
+import kdoc.core.security.snowflake.SnowflakeFactory
+import kdoc.core.settings.AppSettings
+import kdoc.core.utils.NetworkUtils
 
 /**
  * Utility functions for the application server.

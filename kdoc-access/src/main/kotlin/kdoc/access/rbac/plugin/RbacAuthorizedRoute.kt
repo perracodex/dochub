@@ -7,8 +7,8 @@ package kdoc.access.rbac.plugin
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
 
 /**
  * Creates an RBAC-authorized route within the Ktor routing structure. This function is a key part

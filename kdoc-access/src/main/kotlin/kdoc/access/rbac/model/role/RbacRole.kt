@@ -6,11 +6,11 @@ package kdoc.access.rbac.model.role
 
 import kdoc.access.rbac.model.field.RbacFieldRule
 import kdoc.access.rbac.model.scope.RbacScopeRule
-import kdoc.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kdoc.base.database.schema.admin.rbac.RbacRoleTable
-import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
-import kdoc.base.persistence.model.Meta
-import kdoc.base.persistence.serializers.Uuid
+import kdoc.core.database.schema.admin.rbac.RbacFieldRuleTable
+import kdoc.core.database.schema.admin.rbac.RbacRoleTable
+import kdoc.core.database.schema.admin.rbac.RbacScopeRuleTable
+import kdoc.core.persistence.model.Meta
+import kdoc.core.persistence.serializers.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 

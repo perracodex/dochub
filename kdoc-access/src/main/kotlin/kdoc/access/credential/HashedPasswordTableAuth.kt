@@ -6,8 +6,8 @@ package kdoc.access.credential
 
 import io.ktor.server.auth.*
 import io.ktor.util.*
-import kdoc.base.security.hash.SecureHash
-import kdoc.base.security.hash.SecureSalt
+import kdoc.core.security.hash.SecureHash
+import kdoc.core.security.hash.SecureSalt
 
 /**
  * Provides authentication functionality by storing and validating hashed passwords with salts.

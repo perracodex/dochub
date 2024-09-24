@@ -7,7 +7,7 @@ version = "1.0.0"
 
 dependencies {
 
-    implementation(project(":kdoc-base"))
+    implementation(project(":kdoc-core"))
     implementation(project(":kdoc-access"))
 
     implementation(libs.kotlinx.datetime)

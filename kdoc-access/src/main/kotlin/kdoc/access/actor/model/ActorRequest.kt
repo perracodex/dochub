@@ -4,7 +4,7 @@
 
 package kdoc.access.actor.model
 
-import kdoc.base.persistence.serializers.Uuid
+import kdoc.core.persistence.serializers.Uuid
 import kotlinx.serialization.Serializable
 
 /**

@@ -5,7 +5,7 @@
 package kdoc.access.errors
 
 import io.ktor.http.*
-import kdoc.base.errors.AppException
+import kdoc.core.errors.AppException
 import kotlin.uuid.Uuid
 
 /**

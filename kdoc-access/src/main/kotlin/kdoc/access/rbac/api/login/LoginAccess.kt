@@ -14,7 +14,7 @@ import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.base.env.SessionContext
+import kdoc.core.env.SessionContext
 
 /**
  * Manages access to the RBAC login page. If a valid session is already exists, the actor

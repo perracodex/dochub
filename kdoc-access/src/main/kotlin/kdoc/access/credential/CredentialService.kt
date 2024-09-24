@@ -7,9 +7,9 @@ package kdoc.access.credential
 import io.ktor.server.auth.*
 import kdoc.access.actor.model.Actor
 import kdoc.access.actor.service.ActorService
-import kdoc.base.env.Tracer
-import kdoc.base.security.hash.SecureHash
-import kdoc.base.security.hash.SecureSalt
+import kdoc.core.env.Tracer
+import kdoc.core.security.hash.SecureHash
+import kdoc.core.security.hash.SecureSalt
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.koin.core.component.KoinComponent

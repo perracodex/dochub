@@ -13,9 +13,9 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.base.env.SessionContext
-import kdoc.base.env.SessionContext.Companion.setContext
-import kdoc.base.settings.AppSettings
+import kdoc.core.env.SessionContext
+import kdoc.core.env.SessionContext.Companion.setContext
+import kdoc.core.settings.AppSettings
 
 /**
  * Configures JWT-based authentication.

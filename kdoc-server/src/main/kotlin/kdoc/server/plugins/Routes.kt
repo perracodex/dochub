@@ -9,10 +9,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.api.rbacRoutes
 import kdoc.access.token.api.accessTokenRoutes
-import kdoc.base.env.SessionContext.Companion.getContext
-import kdoc.base.env.health.healthCheckRoute
-import kdoc.base.events.sseRoute
-import kdoc.base.security.snowflake.snowflakeRoute
+import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.env.health.healthCheckRoute
+import kdoc.core.events.sseRoute
+import kdoc.core.security.snowflake.snowflakeRoute
 import kdoc.document.api.documentRoutes
 
 /**

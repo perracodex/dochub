@@ -6,9 +6,9 @@ package kdoc.access.rbac.plugin
 
 import io.ktor.server.routing.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.settings.AppSettings
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.settings.AppSettings
 
 /**
  * Extension function designed to apply RBAC authorizations to Ktor routes.

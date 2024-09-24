@@ -6,8 +6,8 @@ package kdoc.access.rbac.repository.scope
 
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.field.IRbacFieldRuleRepository
-import kdoc.base.database.schema.admin.rbac.RbacScopeRuleTable
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.RbacScopeRuleTable
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert

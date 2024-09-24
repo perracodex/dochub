@@ -8,7 +8,7 @@ import kdoc.access.actor.model.Actor
 import kdoc.access.actor.model.ActorRequest
 import kdoc.access.errors.RbacError
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
-import kdoc.base.database.schema.admin.actor.ActorTable
+import kdoc.core.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.selectAll

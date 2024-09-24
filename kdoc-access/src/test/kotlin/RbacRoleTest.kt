@@ -9,9 +9,9 @@ import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.role.RbacRoleRequest
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
-import kdoc.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.base.database.schema.admin.rbac.types.RbacScope
-import kdoc.base.utils.TestUtils
+import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

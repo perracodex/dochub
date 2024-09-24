@@ -5,9 +5,9 @@
 package kdoc.access.rbac.service
 
 import kdoc.access.rbac.model.base.BaseRbac
-import kdoc.base.utils.KLocalDate
-import kdoc.base.utils.KLocalDateTime
-import kdoc.base.utils.KLocalTime
+import kdoc.core.utils.KLocalDate
+import kdoc.core.utils.KLocalDateTime
+import kdoc.core.utils.KLocalTime
 
 /**
  * Utility class to anonymize fields based on their type.

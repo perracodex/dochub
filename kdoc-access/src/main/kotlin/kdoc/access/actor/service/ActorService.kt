@@ -10,7 +10,7 @@ import kdoc.access.actor.repository.IActorRepository
 import kdoc.access.credential.CredentialService
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.service.RbacService
-import kdoc.base.env.Tracer
+import kdoc.core.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
