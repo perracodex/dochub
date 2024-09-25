@@ -7,14 +7,11 @@ package kdoc.access.rbac.api.login
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
-import kdoc.access.rbac.service.RbacDashboardManager
-import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.core.env.SessionContext
+import kdoc.core.context.SessionContext
+import kdoc.core.context.clearContext
 
 /**
  * Manages access to the RBAC login page. If a valid session is already exists, the actor
@@ -24,18 +21,14 @@ import kdoc.core.env.SessionContext
 @RbacAPI
 internal fun Route.rbacLoginAccessRoute() {
     /**
-     * Redirects actors to the dashboard if they have an existing session,
-     * or to the login page if no valid session is found.
+     * Opens the RBAC login page. If a valid [SessionContext] is present,
+     * it gets cleared and the actor is redirected to the login screen.
      * @OpenAPITag RBAC
      */
     get("rbac/login") {
-        RbacDashboardManager.getSessionContext(call = call)?.let {
-            call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
-        } ?: run {
-            call.sessions.clear(name = SessionContext.SESSION_NAME)
-            call.respondHtml(status = HttpStatusCode.OK) {
-                RbacLoginView.build(html = this)
-            }
+        call.clearContext()
+        call.respondHtml(status = HttpStatusCode.OK) {
+            RbacLoginView.build(html = this)
         }
     }
 }

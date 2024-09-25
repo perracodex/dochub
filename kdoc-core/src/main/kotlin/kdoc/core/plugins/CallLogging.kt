@@ -10,8 +10,8 @@ import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.request.*
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.getContextOrNull
+import kdoc.core.context.SessionContext
+import kdoc.core.context.getContextOrNull
 import kdoc.core.security.snowflake.SnowflakeFactory
 import kdoc.core.settings.AppSettings
 import org.slf4j.event.Level

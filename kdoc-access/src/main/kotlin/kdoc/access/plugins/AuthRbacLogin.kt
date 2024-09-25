@@ -7,13 +7,12 @@ package kdoc.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 import kdoc.access.actor.service.DefaultActorFactory
 import kdoc.access.context.SessionContextFactory
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.setContext
+import kdoc.core.context.clearContext
+import kdoc.core.context.setContext
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
@@ -38,17 +37,16 @@ public fun Application.configureRbac() {
             passwordParamName = RbacLoginView.KEY_PASSWORD
 
             challenge {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.clearContext()
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.setContext(sessionContext = sessionContext)
-                    return@validate sessionContext
+                    return@validate this.setContext(sessionContext = sessionContext)
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.clearContext()
                 return@validate null
             }
         }

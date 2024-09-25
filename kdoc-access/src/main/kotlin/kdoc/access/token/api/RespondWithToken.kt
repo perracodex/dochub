@@ -9,9 +9,9 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import kdoc.access.credential.CredentialService
 import kdoc.access.token.annotation.TokenAPI
-import kdoc.access.token.service.AuthenticationTokenService
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.access.token.service.TokenService
+import kdoc.core.context.SessionContext
+import kdoc.core.context.getContext
 import kdoc.core.env.Tracer
 import kdoc.core.errors.UnauthorizedException
 
@@ -29,7 +29,7 @@ import kdoc.core.errors.UnauthorizedException
 internal suspend fun ApplicationCall.respondWithToken() {
     val result: Result<String> = runCatching {
         this.getContext().let { sessionContext ->
-            return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
+            return@runCatching TokenService.generate(sessionContext = sessionContext)
         }
     }
 

@@ -5,15 +5,16 @@
 package kdoc.access.rbac.service
 
 import kdoc.access.actor.model.Actor
+import kdoc.access.actor.model.BasicActor
 import kdoc.access.actor.repository.IActorRepository
 import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.role.RbacRoleRequest
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
+import kdoc.core.context.SessionContext
 import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.core.database.schema.admin.rbac.types.RbacScope
-import kdoc.core.env.SessionContext
 import kdoc.core.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -50,7 +51,12 @@ internal class RbacService(
     private val cache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
 
     /** Data class holding role attributes and the actor's locked status. */
-    private data class ActorRole(val isLocked: Boolean, val role: RbacRole)
+    private data class ActorRole(
+        val isLocked: Boolean,
+        val actorId: Uuid,
+        val actorUsername: String,
+        val role: RbacRole
+    )
 
     /** Lock to ensure thread-safe access and updates to the service cache. */
     private val lock: Mutex = Mutex()
@@ -99,7 +105,12 @@ internal class RbacService(
         }
 
         // Set the new ActorRole entry in the cache.
-        val actorRole = ActorRole(isLocked = actor.isLocked, role = actor.role)
+        val actorRole = ActorRole(
+            isLocked = actor.isLocked,
+            actorId = actorId,
+            actorUsername = actor.username,
+            role = actor.role
+        )
         lock.withLock {
             cache[actorId] = actorRole
         }
@@ -124,7 +135,12 @@ internal class RbacService(
         }.filter { actor ->
             actor.role.scopeRules.isNotEmpty()
         }.associateTo(ConcurrentHashMap()) { actor ->
-            actor.id to ActorRole(isLocked = actor.isLocked, role = actor.role)
+            actor.id to ActorRole(
+                isLocked = actor.isLocked,
+                actorId = actor.id,
+                actorUsername = actor.username,
+                role = actor.role
+            )
         }.also { actors ->
             if (actors.isEmpty()) {
                 tracer.warning("No actors found with scope rules. RBAC cache is empty.")
@@ -216,6 +232,61 @@ internal class RbacService(
      */
     suspend fun findRoleByActorId(actorId: Uuid): RbacRole? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findByActorId(actorId = actorId)
+    }
+
+    /**
+     * Retrieves a cached [BasicActor] for the given [actorId].
+     *
+     * No database queries are performed, unless the cache is empty,
+     * in which case it will be refreshed before attempting to find the actor.
+     *
+     * @param actorId The Actor ID to find.
+     * @return The [BasicActor] for the given [actorId], or null if it doesn't exist.
+     */
+    suspend fun findActor(actorId: Uuid): BasicActor? {
+        if (isCacheEmpty()) {
+            return null
+        }
+        return cache.values.find { actorRole ->
+            actorRole.actorId == actorId
+        }?.let { actorRole ->
+            buildBasicActor(actorRole = actorRole)
+        }
+    }
+
+    /**
+     * Retrieves the cached [BasicActor] for the given [username].
+     *
+     * No database queries are performed, unless the cache is empty,
+     * in which case it will be refreshed before attempting to find the actor.
+     *
+     * @param username The username of the actor to find.
+     * @return The [BasicActor] for the given [username], or null if it doesn't exist.
+     */
+    suspend fun findActor(username: String): BasicActor? {
+        if (isCacheEmpty()) {
+            return null
+        }
+        return cache.values.find { actorRole ->
+            actorRole.actorUsername.equals(other = username, ignoreCase = true)
+        }?.let { actorRole ->
+            buildBasicActor(actorRole = actorRole)
+        }
+    }
+
+    /**
+     * Constructs a [BasicActor] from the given [actorRole].
+     *
+     * @param actorRole The [ActorRole] to build the [BasicActor] from.
+     * @return The [BasicActor] built from the [ActorRole].
+     */
+    private fun buildBasicActor(actorRole: ActorRole): BasicActor {
+        return BasicActor(
+            id = actorRole.actorId,
+            username = actorRole.actorUsername,
+            roleId = actorRole.role.id,
+            isLocked = actorRole.isLocked
+        )
     }
 
     /**

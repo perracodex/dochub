@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.context.getContext
 import kdoc.core.persistence.utils.toUuidOrNull
 import kdoc.core.security.utils.SecureUrl
 import kdoc.core.settings.AppSettings

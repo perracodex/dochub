@@ -4,7 +4,7 @@
 
 package kdoc.core.database.utils
 
-import kdoc.core.env.SessionContext
+import kdoc.core.context.SessionContext
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.StatementInterceptor

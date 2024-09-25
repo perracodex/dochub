@@ -10,13 +10,14 @@ import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.core.env.SessionContext
+import kdoc.core.context.SessionContext
+import kdoc.core.context.clearContext
+import kdoc.core.context.getContext
 import kdoc.core.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
@@ -31,12 +32,13 @@ internal fun Route.rbacDashboardUpdateRoute() {
      * @OpenAPITag RBAC
      */
     post("rbac/dashboard") {
-        // Retrieve the SessionContext or redirect to the login screen if it's missing.
-        val sessionContext: SessionContext = RbacDashboardManager.getSessionContext(call = call)
-            ?: return@post call.run {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
-                call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
-            }
+        // Retrieve SessionContext or redirect to the login screen if it's missing.
+        val sessionContext: SessionContext = call.getContext()
+        if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
+            call.clearContext()
+            call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
+            return@post
+        }
 
         // Receive and process form parameters.
         val parameters: Parameters = call.receiveParameters()
@@ -61,7 +63,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
 
                 // If the update was unauthorized, clear the session and redirect to the login screen.
                 is RbacDashboardManager.UpdateResult.Unauthorized -> call.run {
-                    sessions.clear(name = SessionContext.SESSION_NAME)
+                    call.clearContext()
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }

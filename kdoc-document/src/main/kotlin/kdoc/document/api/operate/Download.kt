@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.getContext
+import kdoc.core.context.SessionContext
+import kdoc.core.context.getContext
 import kdoc.document.api.DocumentRouteAPI
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService

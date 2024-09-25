@@ -11,9 +11,9 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import kdoc.core.context.SessionContext
+import kdoc.core.context.getContext
 import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.getContext
 import kdoc.core.persistence.utils.toUuid
 import kdoc.core.persistence.utils.toUuidOrNull
 import kdoc.core.settings.AppSettings

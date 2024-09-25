@@ -5,7 +5,7 @@
 package kdoc.document.service.managers
 
 import io.perracodex.exposed.pagination.Page
-import kdoc.core.env.SessionContext
+import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
 import kdoc.core.security.utils.EncryptionUtils
 import kdoc.core.security.utils.SecureIO

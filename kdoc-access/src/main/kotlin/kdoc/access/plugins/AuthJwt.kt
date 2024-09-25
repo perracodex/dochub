@@ -11,10 +11,10 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.setContext
+import kdoc.access.token.annotation.TokenAPI
+import kdoc.core.context.clearContext
+import kdoc.core.context.setContext
 import kdoc.core.settings.AppSettings
 
 /**
@@ -31,6 +31,7 @@ import kdoc.core.settings.AppSettings
  * #### References
  * - [Ktor JWT Authentication](https://ktor.io/docs/server-jwt.html)
  */
+@OptIn(TokenAPI::class)
 public fun Application.configureJwtAuthentication() {
 
     authentication {
@@ -52,16 +53,15 @@ public fun Application.configureJwtAuthentication() {
             // This ensures that the token was not tampered with and was signed with the correct secret key.
             validate { credential ->
                 SessionContextFactory.from(jwtCredential = credential)?.let { sessionContext ->
-                    this.setContext(sessionContext = sessionContext)
-                    return@validate sessionContext
+                    return@validate this.setContext(sessionContext = sessionContext)
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.clearContext()
                 return@validate null
             }
 
             challenge { _, _ ->
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.clearContext()
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
         }

@@ -9,12 +9,13 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 import kdoc.access.rbac.plugin.annotation.RbacAPI
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
-import kdoc.core.env.SessionContext
+import kdoc.core.context.SessionContext
+import kdoc.core.context.clearContext
+import kdoc.core.context.getContext
 import kdoc.core.persistence.utils.toUuidOrNull
 
 /**
@@ -30,11 +31,12 @@ internal fun Route.rbacDashboardLoadRoute() {
      */
     get("rbac/dashboard") {
         // Attempt to retrieve the SessionContext for RBAC dashboard access. Redirect to the login screen if null.
-        val sessionContext: SessionContext = RbacDashboardManager.getSessionContext(call = call)
-            ?: return@get call.run {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
-                call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
-            }
+        val sessionContext: SessionContext = call.getContext()
+        if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
+            call.clearContext()
+            call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
+            return@get
+        }
 
         // Resolve the RBAC access details for the current SessionContext.
         RbacDashboardManager.determineAccessDetails(

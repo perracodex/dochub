@@ -6,10 +6,9 @@ package kdoc.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.sessions.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.core.env.SessionContext
-import kdoc.core.env.SessionContext.Companion.setContext
+import kdoc.core.context.clearContext
+import kdoc.core.context.setContext
 import kdoc.core.settings.AppSettings
 
 /**
@@ -29,11 +28,10 @@ public fun Application.configureBasicAuthentication() {
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.setContext(sessionContext = sessionContext)
-                    return@validate sessionContext
+                    return@validate this.setContext(sessionContext = sessionContext)
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.clearContext()
                 return@validate null
             }
         }
