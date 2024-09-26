@@ -92,21 +92,19 @@ internal class DocumentRepository(
                         DocumentTable.groupId eq groupId
                     }
                 }
-                filterSet.name?.let { name ->
+                if (!filterSet.name.isNullOrBlank()) {
                     andWhere {
-                        DocumentTable.originalName.lowerCase() like "%${name.trim().lowercase()}%"
+                        DocumentTable.originalName.lowerCase() like "%${filterSet.name.trim().lowercase()}%"
                     }
                 }
-                filterSet.description?.let { description ->
+                if (!filterSet.description.isNullOrBlank()) {
                     andWhere {
-                        DocumentTable.description.lowerCase() like "%${description.trim().lowercase()}%"
+                        DocumentTable.description.lowerCase() like "%${filterSet.description.trim().lowercase()}%"
                     }
                 }
-                filterSet.type?.let { typeList ->
-                    if (typeList.isNotEmpty()) {
-                        andWhere {
-                            DocumentTable.type inList typeList
-                        }
+                if (!filterSet.type.isNullOrEmpty()) {
+                    andWhere {
+                        DocumentTable.type inList filterSet.type
                     }
                 }
             }.paginate(pageable = pageable, transform = Document)
