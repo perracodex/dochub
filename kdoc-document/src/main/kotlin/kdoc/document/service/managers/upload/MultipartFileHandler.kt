@@ -8,7 +8,7 @@ import io.ktor.http.content.*
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Timer
 import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.env.MetricsRegistry
+import kdoc.core.env.Telemetry
 import kdoc.core.env.Tracer
 import kdoc.core.security.snowflake.SnowflakeFactory
 import kdoc.core.security.utils.EncryptionUtils
@@ -247,13 +247,13 @@ internal class MultipartFileHandler(
 
     companion object {
         /** Metrics for tracking document uploads. */
-        private val uploadsCountMetric: Counter = MetricsRegistry.registerCounter(
+        private val uploadsCountMetric: Counter = Telemetry.registerCounter(
             name = "kdoc_document_uploads_total",
             description = "Total number of uploaded files"
         )
 
         /** Timer for tracking the duration of document uploads. */
-        private val uploadDurationMetric: Timer = MetricsRegistry.registerTimer(
+        private val uploadDurationMetric: Timer = Telemetry.registerTimer(
             name = "kdoc_document_uploads_duration",
             description = "Duration of document upload execution"
         )
