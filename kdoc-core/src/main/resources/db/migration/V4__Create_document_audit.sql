@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS document_audit (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_audit_id PRIMARY KEY (audit_id)
+    CONSTRAINT pk_audit_id
+        PRIMARY KEY (audit_id)
 );
 
 CREATE TRIGGER IF NOT EXISTS tg_document_audit__updated_at
-BEFORE UPDATE ON document_audit
-FOR EACH ROW
-CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON document_audit
+    FOR EACH ROW CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';

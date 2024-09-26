@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS document (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_document_id PRIMARY KEY (document_id)
+    CONSTRAINT pk_document_id
+        PRIMARY KEY (document_id)
 );
 
 CREATE TRIGGER IF NOT EXISTS tg_document__updated_at
-BEFORE UPDATE ON document
-FOR EACH ROW
-CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON document
+    FOR EACH ROW CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';
