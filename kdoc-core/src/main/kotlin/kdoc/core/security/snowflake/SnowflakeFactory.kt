@@ -5,7 +5,7 @@
 package kdoc.core.security.snowflake
 
 import kdoc.core.env.Tracer
-import kdoc.core.utils.DateTimeUtils
+import kdoc.core.utils.DateTimeUtils.current
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -174,7 +174,7 @@ public object SnowflakeFactory {
         val utcTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.UTC)
 
         // Convert the timestamp to LocalDateTime using the system's default timezone.
-        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = DateTimeUtils.timezone())
+        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.current())
 
         // Extract the sequence number segment.
         val sequenceSegment: Long = normalizedId and MAX_SEQUENCE

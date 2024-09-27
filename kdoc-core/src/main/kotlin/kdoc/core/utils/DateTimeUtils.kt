@@ -37,30 +37,6 @@ public object DateTimeUtils {
     }
 
     /**
-     * Represents a time interval.
-     *
-     * @property days The number of days in the interval.
-     * @property hours The number of hours in the interval.
-     * @property minutes The number of minutes in the interval.
-     */
-    @Serializable
-    public data class Interval(val days: UInt = 0u, val hours: UInt = 0u, val minutes: UInt = 0u) {
-        /**
-         * Converts the overall interval into a total number of minutes.
-         */
-        public fun toTotalMinutes(): UInt {
-            return (days * 24u * 60u) + (hours * 60u) + minutes
-        }
-    }
-
-    /**
-     * Returns the system's default timezone.
-     */
-    public fun timezone(): TimeZone {
-        return TimeZone.currentSystemDefault()
-    }
-
-    /**
      * Calculates an integer age considering the date.
      */
     public fun LocalDate.age(): Int {
@@ -79,9 +55,35 @@ public object DateTimeUtils {
     }
 
     /**
+     * Represents a time interval.
+     *
+     * @property days The number of days in the interval.
+     * @property hours The number of hours in the interval.
+     * @property minutes The number of minutes in the interval.
+     */
+    @Serializable
+    public data class Interval(val days: UInt = 0u, val hours: UInt = 0u, val minutes: UInt = 0u) {
+        /**
+         * Converts the overall interval into a total number of minutes.
+         */
+        public fun toTotalMinutes(): UInt {
+            return (days * 24u * 60u) + (hours * 60u) + minutes
+        }
+    }
+
+    /**
+     * Returns the system's default timezone.
+     *
+     * Equivalent to [TimeZone.currentSystemDefault].
+     */
+    public fun TimeZone.Companion.current(): TimeZone {
+        return currentSystemDefault()
+    }
+
+    /**
      * Extension function to convert a [LocalDateTime] to epoch seconds.
      */
-    public fun LocalDateTime.toEpochSeconds(timeZone: TimeZone = timezone()): Long {
+    public fun LocalDateTime.toEpochSeconds(timeZone: TimeZone = TimeZone.current()): Long {
         val instant: Instant = this.toInstant(timeZone)
         return instant.epochSeconds
     }
@@ -90,14 +92,14 @@ public object DateTimeUtils {
      * Returns the current date-time in the system's default time zone.
      */
     public fun LocalDateTime.Companion.current(): LocalDateTime {
-        return Clock.System.now().toLocalDateTime(timeZone = timezone())
+        return Clock.System.now().toLocalDateTime(timeZone = TimeZone.current())
     }
 
     /**
      * Returns the current date in the system's default time zone.
      */
     public fun LocalDate.Companion.current(): LocalDate {
-        return Clock.System.todayIn(timeZone = timezone())
+        return Clock.System.todayIn(timeZone = TimeZone.current())
     }
 
     /**
@@ -123,7 +125,7 @@ public object DateTimeUtils {
      * Converts a Kotlin [LocalDateTime] to a Java [Date].
      */
     public fun LocalDateTime.toJavaDate(): Date {
-        this.toInstant(timeZone = timezone()).toJavaInstant().let { instant ->
+        this.toInstant(timeZone = TimeZone.current()).toJavaInstant().let { instant ->
             return Date.from(instant)
         }
     }
