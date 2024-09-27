@@ -140,7 +140,8 @@ public object NetworkUtils {
      * @return A map where each key represents a connector type and the value is a list of its configuration details.
      */
     internal fun getConnectors(
-        environment: ApplicationEnvironment, errors: MutableList<String>
+        environment: ApplicationEnvironment,
+        errors: MutableList<String>
     ): MutableMap<String, List<String>> {
         val connectors: MutableMap<String, List<String>> = mutableMapOf()
 
