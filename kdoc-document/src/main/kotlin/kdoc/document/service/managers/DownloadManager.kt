@@ -10,14 +10,15 @@ import kdoc.core.env.Telemetry
 import kdoc.core.env.Tracer
 import kdoc.core.security.utils.SecureIO
 import kdoc.core.utils.DateTimeUtils
+import kdoc.core.utils.DateTimeUtils.current
 import kdoc.core.utils.DateTimeUtils.format
-import kdoc.core.utils.KLocalDateTime
 import kdoc.document.errors.DocumentError
 import kdoc.document.model.Document
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDateTime
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -257,8 +258,7 @@ internal object DownloadManager {
      * @return A uniquely time-stamped archive filename.
      */
     private fun newArchiveFilename(suffix: String): String {
-        val currentDateTime: KLocalDateTime = DateTimeUtils.currentDateTime()
-        val formattedDate: String = currentDateTime.format(pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
+        val formattedDate: String = LocalDateTime.current().format(pattern = DateTimeUtils.Format.YYYY_MM_DD_T_HH_MM_SS)
         return "$suffix ($formattedDate).zip"
     }
 

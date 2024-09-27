@@ -6,8 +6,9 @@ package kdoc.core.security.utils
 
 import kdoc.core.settings.AppSettings
 import kdoc.core.settings.config.sections.security.sections.EncryptionSettings
-import kdoc.core.utils.DateTimeUtils
+import kdoc.core.utils.DateTimeUtils.current
 import kdoc.core.utils.DateTimeUtils.toEpochSeconds
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.exposed.crypt.Encryptor
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -70,7 +71,7 @@ public object SecureUrl {
      * @return A string representing the complete URL with the encrypted token as a query parameter.
      */
     public fun generate(basePath: String, data: String): String {
-        val currentTime: Long = DateTimeUtils.currentDateTime().toEpochSeconds()
+        val currentTime: Long = LocalDateTime.current().toEpochSeconds()
         val expiresAt: Long = currentTime + AppSettings.security.encryption.atTransitExpiration
         val plainToken = "$data$SEPARATOR$expiresAt"
         val encryptedToken: String = encryptToken(data = plainToken)
@@ -101,7 +102,7 @@ public object SecureUrl {
         val expiration: Long = tokenParts.getOrNull(EXPIRATION_PART_INDEX)?.toLongOrNull() ?: return null
 
         // Return the original data if the token has not expired, otherwise null.
-        return if (DateTimeUtils.currentDateTime().toEpochSeconds() <= expiration) {
+        return if (LocalDateTime.current().toEpochSeconds() <= expiration) {
             tokenParts.getOrNull(TOKEN_PART_INDEX)
         } else {
             null

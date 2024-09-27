@@ -4,9 +4,9 @@
 
 import kdoc.access.rbac.model.base.BaseRbac
 import kdoc.access.rbac.service.RbacFieldAnonymization
-import kdoc.core.utils.KLocalDate
-import kdoc.core.utils.KLocalDateTime
-import kdoc.core.utils.KLocalTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -97,18 +97,18 @@ class BaseRbacTestClassTest {
     fun testDates() {
         data class TestClass(
             val id: Int,
-            val date: KLocalDate,
-            val time: KLocalTime,
-            val dateTime: KLocalDateTime
+            val date: LocalDate,
+            val time: LocalTime,
+            val dateTime: LocalDateTime
         ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,
-            date = KLocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1),
-            time = KLocalTime(hour = 12, minute = 0, second = 0, nanosecond = 0),
-            dateTime = KLocalDateTime(
-                date = KLocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1),
-                time = KLocalTime(hour = 12, minute = 0, second = 0, nanosecond = 0)
+            date = LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1),
+            time = LocalTime(hour = 12, minute = 0, second = 0, nanosecond = 0),
+            dateTime = LocalDateTime(
+                date = LocalDate(year = 2021, monthNumber = 1, dayOfMonth = 1),
+                time = LocalTime(hour = 12, minute = 0, second = 0, nanosecond = 0)
             )
         )
 

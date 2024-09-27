@@ -13,12 +13,12 @@ import kdoc.core.env.Tracer
 import kdoc.core.security.snowflake.SnowflakeFactory
 import kdoc.core.security.utils.EncryptionUtils
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.DateTimeUtils
-import kdoc.core.utils.KLocalDate
+import kdoc.core.utils.DateTimeUtils.current
 import kdoc.document.errors.DocumentError
 import kdoc.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kdoc.document.service.managers.upload.annotation.UploadAPI
 import kotlinx.coroutines.*
+import kotlinx.datetime.LocalDate
 import java.io.File
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -172,7 +172,7 @@ internal class MultipartFileHandler(
         cipherName: Boolean,
         streamProvider: () -> InputStream
     ): Response {
-        val currentDate: KLocalDate = DateTimeUtils.currentDate()
+        val currentDate: LocalDate = LocalDate.current()
         val datePath: String = "${currentDate.year}$PATH_SEPARATOR" +
                 "${currentDate.monthNumber}$PATH_SEPARATOR" +
                 "${currentDate.dayOfMonth}"
