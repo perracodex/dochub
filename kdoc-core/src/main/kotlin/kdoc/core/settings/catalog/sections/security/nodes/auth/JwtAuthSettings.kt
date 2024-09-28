@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.catalog.sections.security.sections.auth
+package kdoc.core.settings.catalog.sections.security.nodes.auth
 
 import kdoc.core.settings.catalog.sections.security.SecuritySettings
 import kdoc.core.settings.parser.IConfigCatalogSection

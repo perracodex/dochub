@@ -10,7 +10,7 @@ import kdoc.core.context.SessionContext
 import kdoc.core.persistence.serializers.Uuid
 import kdoc.core.security.utils.EncryptionUtils.toByteKey
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kdoc.core.settings.catalog.sections.security.nodes.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

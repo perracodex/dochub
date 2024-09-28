@@ -5,7 +5,7 @@
 package kdoc.core.security.utils
 
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kdoc.core.settings.catalog.sections.security.nodes.EncryptionSettings
 import kdoc.core.utils.DateTimeUtils.current
 import kdoc.core.utils.DateTimeUtils.toEpochSeconds
 import kotlinx.datetime.LocalDateTime

@@ -4,11 +4,11 @@
 
 package kdoc.core.settings.catalog.sections.security
 
-import kdoc.core.settings.catalog.sections.security.sections.ConstraintsSettings
-import kdoc.core.settings.catalog.sections.security.sections.EncryptionSettings
-import kdoc.core.settings.catalog.sections.security.sections.RbacSettings
-import kdoc.core.settings.catalog.sections.security.sections.auth.BasicAuthSettings
-import kdoc.core.settings.catalog.sections.security.sections.auth.JwtAuthSettings
+import kdoc.core.settings.catalog.sections.security.nodes.ConstraintsSettings
+import kdoc.core.settings.catalog.sections.security.nodes.EncryptionSettings
+import kdoc.core.settings.catalog.sections.security.nodes.RbacSettings
+import kdoc.core.settings.catalog.sections.security.nodes.auth.BasicAuthSettings
+import kdoc.core.settings.catalog.sections.security.nodes.auth.JwtAuthSettings
 import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
