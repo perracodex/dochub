@@ -145,6 +145,7 @@ public object AppSettings {
             runBlocking {
                 configuration = ConfigurationParser.parse(
                     configuration = applicationConfig,
+                    catalogClass = ConfigurationCatalog::class,
                     configMappings = configMappings
                 )
             }

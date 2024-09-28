@@ -35,4 +35,5 @@ internal data class ConfigurationCatalog(
     val runtime: RuntimeSettings,
     val security: SecuritySettings,
     val storage: StorageSettings
-)
+) : IConfigurationCatalog
+
