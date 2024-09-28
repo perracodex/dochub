@@ -14,26 +14,26 @@ import kotlinx.serialization.Serializable
 /**
  * Data class representing the overall health check for the system.
  *
- * @property application The [ApplicationCheck] health check.
- * @property deployment The [DeploymentCheck] health check.
  * @property health List of errors found during any of the health checks.
- * @property runtime The [RuntimeCheck] health check.
- * @property security The [SecurityCheck] health check.
- * @property snowflake The [SnowflakeCheck] health check.
- * @property database The [DatabaseCheck] health check.
- * @property endpoints The list of endpoints detected by the application.
+ * @property application The [ApplicationHealth] check.
+ * @property deployment The [DeploymentHealth] check.
+ * @property runtime The [RuntimeHealth] check.
+ * @property security The [SecurityHealth] check.
+ * @property snowflake The [SnowflakeHealth] check.
+ * @property database The [DatabaseHealth] check.
+ * @property endpoints The list of endpoints registered by the application.
  */
 @OptIn(HealthCheckAPI::class)
 @Serializable
 @ConsistentCopyVisibility
 public data class HealthCheck internal constructor(
     val health: MutableList<String>,
-    val application: ApplicationCheck,
-    val deployment: DeploymentCheck,
-    val runtime: RuntimeCheck,
-    val security: SecurityCheck,
-    val snowflake: SnowflakeCheck,
-    val database: DatabaseCheck,
+    val application: ApplicationHealth,
+    val deployment: DeploymentHealth,
+    val runtime: RuntimeHealth,
+    val security: SecurityHealth,
+    val snowflake: SnowflakeHealth,
+    val database: DatabaseHealth,
     val endpoints: List<String>
 ) {
     init {
@@ -59,11 +59,11 @@ public data class HealthCheck internal constructor(
         fun create(call: ApplicationCall): HealthCheck {
             return HealthCheck(
                 health = mutableListOf(),
-                application = ApplicationCheck(),
-                deployment = DeploymentCheck(call = call),
-                runtime = RuntimeCheck(call = call),
-                security = SecurityCheck(),
-                snowflake = SnowflakeCheck(),
+                application = ApplicationHealth(),
+                deployment = DeploymentHealth(call = call),
+                runtime = RuntimeHealth(call = call),
+                security = SecurityHealth(),
+                snowflake = SnowflakeHealth(),
                 database = DatabaseService.getHealthCheck(),
                 endpoints = call.application.collectRoutes(),
             )

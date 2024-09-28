@@ -8,8 +8,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kdoc.core.env.EnvironmentType
 import kdoc.core.env.health.annotation.HealthCheckAPI
-import kdoc.core.env.health.checks.DeploymentCheck.Configured
-import kdoc.core.env.health.checks.DeploymentCheck.ServerSpec
+import kdoc.core.env.health.checks.DeploymentHealth.Configured
+import kdoc.core.env.health.checks.DeploymentHealth.ServerSpec
 import kdoc.core.settings.AppSettings
 import kdoc.core.utils.NetworkUtils
 import kotlinx.serialization.Serializable
@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class DeploymentCheck(
+public data class DeploymentHealth(
     val errors: MutableList<String>,
     val configured: Configured,
     val serverSpec: ServerSpec,
