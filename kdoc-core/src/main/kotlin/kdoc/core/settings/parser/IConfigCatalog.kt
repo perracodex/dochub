@@ -10,3 +10,10 @@ package kdoc.core.settings.parser
  * @see IConfigCatalogSection
  */
 internal interface IConfigCatalog
+
+/**
+ * Interface for configuration sections within the [IConfigCatalog].
+ *
+ * @see IConfigCatalog
+ */
+internal interface IConfigCatalogSection
