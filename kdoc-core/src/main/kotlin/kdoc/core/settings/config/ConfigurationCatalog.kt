@@ -4,6 +4,7 @@
 
 package kdoc.core.settings.config
 
+import kdoc.core.settings.config.parser.IConfigCatalog
 import kdoc.core.settings.config.sections.*
 import kdoc.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
@@ -35,5 +36,4 @@ internal data class ConfigurationCatalog(
     val runtime: RuntimeSettings,
     val security: SecuritySettings,
     val storage: StorageSettings
-) : IConfigurationCatalog
-
+) : IConfigCatalog
