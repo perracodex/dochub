@@ -15,7 +15,7 @@ import kdoc.access.token.annotation.TokenAPI
 import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.config.sections.security.sections.auth.JwtAuthSettings
+import kdoc.core.settings.config.catalog.sections.security.sections.auth.JwtAuthSettings
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 

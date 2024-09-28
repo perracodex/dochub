@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.sections.security.sections
+package kdoc.core.settings.config.catalog.sections.security.sections
 
+import kdoc.core.settings.config.catalog.sections.security.SecuritySettings
 import kdoc.core.settings.config.parser.IConfigSection
-import kdoc.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
 /**

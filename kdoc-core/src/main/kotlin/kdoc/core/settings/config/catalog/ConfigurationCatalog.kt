@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config
+package kdoc.core.settings.config.catalog
 
+import kdoc.core.settings.config.catalog.sections.*
+import kdoc.core.settings.config.catalog.sections.security.SecuritySettings
 import kdoc.core.settings.config.parser.IConfigCatalog
-import kdoc.core.settings.config.sections.*
-import kdoc.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
 /**

@@ -8,12 +8,12 @@ import io.ktor.server.config.*
 import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings.load
 import kdoc.core.settings.annotation.ConfigurationAPI
-import kdoc.core.settings.config.ConfigurationCatalog
+import kdoc.core.settings.config.catalog.ConfigurationCatalog
+import kdoc.core.settings.config.catalog.sections.*
+import kdoc.core.settings.config.catalog.sections.security.SecuritySettings
 import kdoc.core.settings.config.parser.ConfigClassMap
 import kdoc.core.settings.config.parser.ConfigurationParser
 import kdoc.core.settings.config.parser.IConfigSection
-import kdoc.core.settings.config.sections.*
-import kdoc.core.settings.config.sections.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

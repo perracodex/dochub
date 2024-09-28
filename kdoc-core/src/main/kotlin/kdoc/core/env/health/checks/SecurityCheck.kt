@@ -6,7 +6,7 @@ package kdoc.core.env.health.checks
 
 import kdoc.core.env.health.annotation.HealthCheckAPI
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.config.sections.security.sections.ConstraintsSettings.LimitSpec
+import kdoc.core.settings.config.catalog.sections.security.sections.ConstraintsSettings.LimitSpec
 import kotlinx.serialization.Serializable
 
 /**

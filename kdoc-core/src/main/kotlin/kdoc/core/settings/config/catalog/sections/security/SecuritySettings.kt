@@ -2,14 +2,14 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.sections.security
+package kdoc.core.settings.config.catalog.sections.security
 
+import kdoc.core.settings.config.catalog.sections.security.sections.ConstraintsSettings
+import kdoc.core.settings.config.catalog.sections.security.sections.EncryptionSettings
+import kdoc.core.settings.config.catalog.sections.security.sections.RbacSettings
+import kdoc.core.settings.config.catalog.sections.security.sections.auth.BasicAuthSettings
+import kdoc.core.settings.config.catalog.sections.security.sections.auth.JwtAuthSettings
 import kdoc.core.settings.config.parser.IConfigSection
-import kdoc.core.settings.config.sections.security.sections.ConstraintsSettings
-import kdoc.core.settings.config.sections.security.sections.EncryptionSettings
-import kdoc.core.settings.config.sections.security.sections.RbacSettings
-import kdoc.core.settings.config.sections.security.sections.auth.BasicAuthSettings
-import kdoc.core.settings.config.sections.security.sections.auth.JwtAuthSettings
 import kotlinx.serialization.Serializable
 
 /**

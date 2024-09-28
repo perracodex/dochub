@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
 import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.config.sections.CorsSettings
+import kdoc.core.settings.config.catalog.sections.CorsSettings
 
 /**
  * Configures [CORS] plugin by setting allowed HTTP methods and headers, permitting credentials,
