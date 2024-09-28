@@ -5,6 +5,7 @@
 package kdoc.access.actor.repository
 
 import kdoc.access.actor.model.Actor
+import kdoc.access.actor.model.ActorCredentials
 import kdoc.access.actor.model.ActorRequest
 import kdoc.access.errors.RbacError
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
@@ -21,7 +22,21 @@ import kotlin.uuid.Uuid
  * Implementation of [IActorRepository].
  * Responsible for managing [Actor] data.
  */
-internal class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
+internal class ActorRepository(
+    private val roleRepository: IRbacRoleRepository
+) : IActorRepository {
+
+    override suspend fun findById(actorId: Uuid): Actor? {
+        return transaction {
+            ActorTable.selectAll().where {
+                ActorTable.id eq actorId
+            }.singleOrNull()?.let { resultRow ->
+                roleRepository.findByActorId(actorId = actorId)?.let { role ->
+                    Actor.from(row = resultRow, role = role)
+                }
+            }
+        }
+    }
 
     override suspend fun findByUsername(username: String): Actor? {
         return transaction {
@@ -47,14 +62,20 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         }
     }
 
-    override suspend fun findById(actorId: Uuid): Actor? {
+    override suspend fun findCredentials(actorId: Uuid): ActorCredentials? {
         return transaction {
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                roleRepository.findByActorId(actorId = actorId)?.let { role ->
-                    Actor.from(row = resultRow, role = role)
-                } ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
+                ActorCredentials.from(row = resultRow)
+            }
+        }
+    }
+
+    override suspend fun findAllCredentials(): List<ActorCredentials> {
+        return transaction {
+            ActorTable.selectAll().map { resultRow ->
+                ActorCredentials.from(row = resultRow)
             }
         }
     }
