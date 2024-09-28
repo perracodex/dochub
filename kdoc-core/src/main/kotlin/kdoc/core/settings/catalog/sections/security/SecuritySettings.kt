@@ -2,14 +2,14 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections.security
+package kdoc.core.settings.catalog.sections.security
 
-import kdoc.core.settings.config.catalog.sections.security.sections.ConstraintsSettings
-import kdoc.core.settings.config.catalog.sections.security.sections.EncryptionSettings
-import kdoc.core.settings.config.catalog.sections.security.sections.RbacSettings
-import kdoc.core.settings.config.catalog.sections.security.sections.auth.BasicAuthSettings
-import kdoc.core.settings.config.catalog.sections.security.sections.auth.JwtAuthSettings
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.catalog.sections.security.sections.ConstraintsSettings
+import kdoc.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kdoc.core.settings.catalog.sections.security.sections.RbacSettings
+import kdoc.core.settings.catalog.sections.security.sections.auth.BasicAuthSettings
+import kdoc.core.settings.catalog.sections.security.sections.auth.JwtAuthSettings
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -32,7 +32,7 @@ public data class SecuritySettings(
     val basicAuth: BasicAuthSettings,
     val jwtAuth: JwtAuthSettings,
     val rbac: RbacSettings
-) : IConfigSection {
+) : IConfigCatalogSection {
     public companion object {
         /** The minimum length for a security key, such as encryption and secret keys. */
         public const val MIN_KEY_LENGTH: Int = 12

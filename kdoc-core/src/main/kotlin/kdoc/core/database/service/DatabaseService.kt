@@ -11,7 +11,7 @@ import kdoc.core.env.Tracer
 import kdoc.core.env.health.annotation.HealthCheckAPI
 import kdoc.core.env.health.checks.DatabaseCheck
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.config.catalog.sections.DatabaseSettings
+import kdoc.core.settings.catalog.sections.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig

@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections
+package kdoc.core.settings.catalog.sections
 
 import kdoc.core.env.EnvironmentType
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -26,4 +26,4 @@ public data class ApiSchemaSettings(
     val openApiEndpoint: String,
     val swaggerEndpoint: String,
     val redocEndpoint: String
-) : IConfigSection
+) : IConfigCatalogSection

@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections
+package kdoc.core.settings.catalog.sections
 
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,7 +25,7 @@ public data class StorageSettings(
     val cipherAlgorithm: String,
     val cipherTransformation: String,
     val cipherKey: String
-) : IConfigSection {
+) : IConfigCatalogSection {
     init {
         require(uploadsRootPath.isNotBlank()) { "Uploads root path must not be blank." }
         require(downloadsBasePath.isNotBlank()) { "Downloads base URL must not be blank." }

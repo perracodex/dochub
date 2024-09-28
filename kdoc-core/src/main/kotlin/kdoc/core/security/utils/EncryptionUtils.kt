@@ -5,7 +5,7 @@
 package kdoc.core.security.utils
 
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.config.catalog.sections.security.sections.EncryptionSettings
+import kdoc.core.settings.catalog.sections.security.sections.EncryptionSettings
 import org.jetbrains.exposed.crypt.Algorithms
 import org.jetbrains.exposed.crypt.Encryptor
 import java.security.SecureRandom

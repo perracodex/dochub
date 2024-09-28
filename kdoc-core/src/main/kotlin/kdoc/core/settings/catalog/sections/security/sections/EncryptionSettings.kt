@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections.security.sections
+package kdoc.core.settings.catalog.sections.security.sections
 
-import kdoc.core.settings.config.catalog.sections.security.SecuritySettings
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.catalog.sections.security.SecuritySettings
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -22,7 +22,7 @@ public data class EncryptionSettings(
     val atTransit: Spec,
     val atTransitExpiration: Long,
     val hmac: Hmac
-) : IConfigSection {
+) : IConfigCatalogSection {
 
     /**
      * Configuration settings for a specific encryption.
@@ -38,7 +38,7 @@ public data class EncryptionSettings(
         val salt: String,
         val key: String,
         val sign: String
-    ) : IConfigSection {
+    ) : IConfigCatalogSection {
         init {
             require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
             require(salt.isNotBlank()) { "Missing encryption salt." }
@@ -61,7 +61,7 @@ public data class EncryptionSettings(
     public data class Hmac(
         val algorithm: String,
         val key: String
-    ) : IConfigSection {
+    ) : IConfigCatalogSection {
         init {
             require(algorithm.isNotBlank()) { "Missing HMAC algorithm." }
             require(key.isNotBlank() && (key.length >= SecuritySettings.MIN_KEY_LENGTH)) {

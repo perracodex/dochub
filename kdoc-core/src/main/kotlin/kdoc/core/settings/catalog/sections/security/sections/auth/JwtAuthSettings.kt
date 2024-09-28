@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections.security.sections.auth
+package kdoc.core.settings.catalog.sections.security.sections.auth
 
-import kdoc.core.settings.config.catalog.sections.security.SecuritySettings
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.catalog.sections.security.SecuritySettings
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -26,7 +26,7 @@ public data class JwtAuthSettings(
     val issuer: String,
     val realm: String,
     val secretKey: String
-) : IConfigSection {
+) : IConfigCatalogSection {
     init {
         require(providerName.isNotBlank()) { "Missing JWT provider name." }
         require(tokenLifetimeSec > 0L) { "Invalid JWT token lifetime. Must be > 0." }

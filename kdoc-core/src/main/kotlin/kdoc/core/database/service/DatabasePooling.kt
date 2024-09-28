@@ -8,7 +8,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kdoc.core.database.annotation.DatabaseAPI
-import kdoc.core.settings.config.catalog.sections.DatabaseSettings
+import kdoc.core.settings.catalog.sections.DatabaseSettings
 
 @DatabaseAPI
 internal object DatabasePooling {

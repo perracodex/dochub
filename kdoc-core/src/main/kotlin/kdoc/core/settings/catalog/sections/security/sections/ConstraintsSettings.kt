@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.settings.config.catalog.sections.security.sections
+package kdoc.core.settings.catalog.sections.security.sections
 
-import kdoc.core.settings.config.parser.IConfigSection
+import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,7 +19,7 @@ public data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val privateApi: LimitSpec,
     val newToken: LimitSpec
-) : IConfigSection {
+) : IConfigCatalogSection {
 
     /**
      * Rate limit specification.
