@@ -11,7 +11,7 @@ import kdoc.core.settings.annotation.ConfigurationAPI
 import kdoc.core.settings.catalog.ConfigurationCatalog
 import kdoc.core.settings.catalog.sections.*
 import kdoc.core.settings.catalog.sections.security.SecuritySettings
-import kdoc.core.settings.parser.ConfigClassMap
+import kdoc.core.settings.parser.ConfigCatalogMap
 import kdoc.core.settings.parser.ConfigurationParser
 import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.coroutines.runBlocking
@@ -129,14 +129,14 @@ public object AppSettings {
             // 1. keyPath: The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
             // 2. catalogProperty: The property name in the [IConfigCatalog] implementation.
             // 3. propertyClass: The catalogProperty class to instantiate.
-            val configMappings: List<ConfigClassMap<out IConfigCatalogSection>> = listOf(
-                ConfigClassMap(keyPath = "apiSchema", catalogProperty = "apiSchema", propertyClass = ApiSchemaSettings::class),
-                ConfigClassMap(keyPath = "cors", catalogProperty = "cors", propertyClass = CorsSettings::class),
-                ConfigClassMap(keyPath = "database", catalogProperty = "database", propertyClass = DatabaseSettings::class),
-                ConfigClassMap(keyPath = "ktor.deployment", catalogProperty = "deployment", propertyClass = DeploymentSettings::class),
-                ConfigClassMap(keyPath = "runtime", catalogProperty = "runtime", propertyClass = RuntimeSettings::class),
-                ConfigClassMap(keyPath = "security", catalogProperty = "security", propertyClass = SecuritySettings::class),
-                ConfigClassMap(keyPath = "storage", catalogProperty = "storage", propertyClass = StorageSettings::class)
+            val catalogMappings: List<ConfigCatalogMap<out IConfigCatalogSection>> = listOf(
+                ConfigCatalogMap(keyPath = "apiSchema", catalogProperty = "apiSchema", propertyClass = ApiSchemaSettings::class),
+                ConfigCatalogMap(keyPath = "cors", catalogProperty = "cors", propertyClass = CorsSettings::class),
+                ConfigCatalogMap(keyPath = "database", catalogProperty = "database", propertyClass = DatabaseSettings::class),
+                ConfigCatalogMap(keyPath = "ktor.deployment", catalogProperty = "deployment", propertyClass = DeploymentSettings::class),
+                ConfigCatalogMap(keyPath = "runtime", catalogProperty = "runtime", propertyClass = RuntimeSettings::class),
+                ConfigCatalogMap(keyPath = "security", catalogProperty = "security", propertyClass = SecuritySettings::class),
+                ConfigCatalogMap(keyPath = "storage", catalogProperty = "storage", propertyClass = StorageSettings::class)
             )
 
             // Since the configuration is loaded only once, it is safe to use runBlocking here,
@@ -146,7 +146,7 @@ public object AppSettings {
                 configuration = ConfigurationParser.parse(
                     configuration = applicationConfig,
                     catalogClass = ConfigurationCatalog::class,
-                    configMappings = configMappings
+                    catalogMappings = catalogMappings
                 )
             }
         }
