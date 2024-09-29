@@ -4,12 +4,12 @@
 
 package kdoc.core.settings.catalog.sections.security
 
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.settings.catalog.sections.security.nodes.ConstraintsSettings
 import kdoc.core.settings.catalog.sections.security.nodes.EncryptionSettings
 import kdoc.core.settings.catalog.sections.security.nodes.RbacSettings
 import kdoc.core.settings.catalog.sections.security.nodes.auth.BasicAuthSettings
 import kdoc.core.settings.catalog.sections.security.nodes.auth.JwtAuthSettings
-import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**

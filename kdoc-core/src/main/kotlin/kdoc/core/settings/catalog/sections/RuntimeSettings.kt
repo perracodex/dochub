@@ -4,8 +4,8 @@
 
 package kdoc.core.settings.catalog.sections
 
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.env.EnvironmentType
-import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**

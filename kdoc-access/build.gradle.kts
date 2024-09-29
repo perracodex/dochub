@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.ktor.server.sessions)
     implementation(libs.ktor.server.tests)
 
+    implementation(libs.ktor.config)
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
 

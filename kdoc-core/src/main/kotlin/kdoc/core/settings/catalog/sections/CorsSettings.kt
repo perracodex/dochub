@@ -4,7 +4,7 @@
 
 package kdoc.core.settings.catalog.sections
 
-import kdoc.core.settings.parser.IConfigCatalogSection
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**

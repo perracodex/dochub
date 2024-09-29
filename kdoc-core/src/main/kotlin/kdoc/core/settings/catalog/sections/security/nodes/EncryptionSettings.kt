@@ -4,8 +4,8 @@
 
 package kdoc.core.settings.catalog.sections.security.nodes
 
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.settings.catalog.sections.security.SecuritySettings
-import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**

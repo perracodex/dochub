@@ -4,16 +4,15 @@
 
 package kdoc.core.settings
 
+import io.github.perracodex.ktor.config.ConfigCatalogMap
+import io.github.perracodex.ktor.config.ConfigurationParser
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import io.ktor.server.config.*
 import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings.load
-import kdoc.core.settings.annotation.ConfigurationAPI
 import kdoc.core.settings.catalog.ConfigurationCatalog
 import kdoc.core.settings.catalog.sections.*
 import kdoc.core.settings.catalog.sections.security.SecuritySettings
-import kdoc.core.settings.parser.ConfigCatalogMap
-import kdoc.core.settings.parser.ConfigurationParser
-import kdoc.core.settings.parser.IConfigCatalogSection
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -115,7 +114,6 @@ public object AppSettings {
      *
      * @param applicationConfig The [ApplicationConfig] instance from which the settings are loaded.
      */
-    @OptIn(ConfigurationAPI::class)
     public fun load(applicationConfig: ApplicationConfig) {
         if (AppSettings::configuration.isInitialized) {
             return

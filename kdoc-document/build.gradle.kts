@@ -20,6 +20,8 @@ dependencies {
     implementation(libs.ktor.server.tests)
     implementation(libs.ktor.server.thymeleaf)
 
+    implementation(libs.ktor.config)
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
     implementation(libs.exposed.pagination)
