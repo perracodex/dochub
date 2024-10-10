@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import kdoc.core.database.service.DatabaseService
 import kdoc.core.env.health.annotation.HealthCheckAPI
 import kdoc.core.env.health.checks.*
+import kdoc.core.utils.RouteInfo
 import kdoc.core.utils.collectRoutes
 import kotlinx.serialization.Serializable
 
@@ -34,7 +35,7 @@ public data class HealthCheck internal constructor(
     val security: SecurityHealth,
     val snowflake: SnowflakeHealth,
     val database: DatabaseHealth,
-    val endpoints: List<String>
+    val endpoints: List<RouteInfo>
 ) {
     init {
         health.addAll(application.errors)
@@ -56,11 +57,11 @@ public data class HealthCheck internal constructor(
         /**
          * Creates a new [HealthCheck] instance.
          */
-        fun create(call: ApplicationCall): HealthCheck {
+        suspend fun create(call: ApplicationCall): HealthCheck {
             return HealthCheck(
                 health = mutableListOf(),
                 application = ApplicationHealth(),
-                deployment = DeploymentHealth(call = call),
+                deployment = DeploymentHealth.create(call = call),
                 runtime = RuntimeHealth(call = call),
                 security = SecurityHealth(),
                 snowflake = SnowflakeHealth(),

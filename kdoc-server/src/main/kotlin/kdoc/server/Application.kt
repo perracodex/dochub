@@ -84,5 +84,5 @@ internal fun Application.kdocModule() {
 
     configureThymeleaf()
 
-    ApplicationsUtils.watchServer(environment = this.environment)
+    ApplicationsUtils.watchServer(application = this)
 }

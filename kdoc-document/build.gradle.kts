@@ -14,9 +14,11 @@ dependencies {
     implementation(libs.kotlinx.serialization)
 
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.html.builder)
+    implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.tests)
     implementation(libs.ktor.server.thymeleaf)
 
