@@ -4,7 +4,6 @@
 
 package kdoc.core.context
 
-import io.ktor.server.auth.*
 import kdoc.core.persistence.serializers.Uuid
 import org.jetbrains.exposed.sql.Database
 
@@ -39,7 +38,7 @@ public data class SessionContext(
     val roleId: Uuid,
     val schema: String? = null,
     val db: Database? = null
-) : Principal {
+) {
     public companion object {
         /**
          * Specifies the cookie name used for session tracking. This name is used to reference
