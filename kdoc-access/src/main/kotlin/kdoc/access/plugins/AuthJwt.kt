@@ -15,6 +15,7 @@ import kdoc.access.context.SessionContextFactory
 import kdoc.access.token.annotation.TokenAPI
 import kdoc.core.context.clearContext
 import kdoc.core.context.setContext
+import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings
 
 /**
@@ -63,7 +64,10 @@ public fun Application.configureJwtAuthentication() {
                 return@validate null
             }
 
-            challenge { _, _ ->
+            challenge { defaultScheme, realm ->
+                Tracer(ref = Application::configureJwtAuthentication).error(
+                    "JWT authentication failed. Default scheme: $defaultScheme, realm: $realm"
+                )
                 call.clearContext()
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
