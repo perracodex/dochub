@@ -5,7 +5,6 @@
 package kdoc.access.token.api.operate
 
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.access.token.annotation.TokenAPI
@@ -38,7 +37,11 @@ internal fun Route.refreshTokenRoute() {
             when (result) {
                 is TokenService.TokenState.Valid -> {
                     // Token is still valid; return the same token to the client.
-                    call.respond(status = HttpStatusCode.OK, message = result.token)
+                    call.respondText(
+                        text = result.token,
+                        status = HttpStatusCode.OK,
+                        contentType = ContentType.Text.Plain
+                    )
                 }
 
                 is TokenService.TokenState.Expired -> {
