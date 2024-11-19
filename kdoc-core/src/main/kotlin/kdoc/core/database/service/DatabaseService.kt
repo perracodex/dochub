@@ -6,7 +6,7 @@ package kdoc.core.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kdoc.core.database.annotation.DatabaseAPI
+import kdoc.core.database.annotation.DatabaseApi
 import kdoc.core.env.Tracer
 import kdoc.core.env.health.annotation.HealthCheckAPI
 import kdoc.core.env.health.checks.DatabaseHealth
@@ -29,22 +29,22 @@ import java.nio.file.Paths
  * database-related configurations.
  *
  * #### References
- * - [Exposed](https://github.com/JetBrains/Exposed/wiki)
+ * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
-@OptIn(DatabaseAPI::class)
+@OptIn(DatabaseApi::class)
 internal object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
-    private var _database: Database? = null
-
     /** The database instance held by the service. */
-    val database: Database
-        get() = _database ?: error("Database not initialized.")
+    lateinit var database: Database
+        private set
 
     private var hikariDataSource: HikariDataSource? = null
 
     /**
      * Initializes the database connection based on the provided mode and database type.
+     *
+     * @receiver [SchemaBuilder] Optional lambda to setup the database schema.
      *
      * @param settings The [DatabaseSettings] to be used to configure the database.
      * @param isolationLevel The isolation level to use for the database transactions.
@@ -55,7 +55,7 @@ internal object DatabaseService {
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
-        schemaSetup: (SchemaBuilder.() -> Unit) = {}
+        schemaSetup: SchemaBuilder.() -> Unit = {}
     ) {
         buildDatabase(settings = settings)
 
@@ -85,7 +85,7 @@ internal object DatabaseService {
             )
         }
 
-        _database = databaseInstance
+        database = databaseInstance
 
         tracer.info("Database ready.")
     }
@@ -173,29 +173,32 @@ internal object DatabaseService {
      * @param settings The target [DatabaseSettings] to be used for the migration.
      */
     private fun runMigrations(settings: DatabaseSettings) {
-        Flyway.configure().dataSource(
+        val flyway: Flyway = Flyway.configure().dataSource(
             settings.jdbcUrl,
             settings.username,
             settings.password
-        ).load().apply {
-            info().pending().let { pending ->
-                if (pending.isEmpty()) {
-                    tracer.info("No migrations to apply.")
-                } else {
-                    val migrations: String = pending.joinToString(separator = "\n") { migration ->
-                        "Version: ${migration.version}. " +
-                                "Description: ${migration.description}. " +
-                                "Type: ${migration.type}. " +
-                                "State: ${migration.state}. " +
-                                "Script: ${migration.script}"
-                    }
+        ).load()
 
-                    tracer.info("Migrations being applied:\n$migrations")
+        // Repair the schema history to fix any inconsistencies.
+        flyway.repair()
+
+        flyway.info().pending().let { pending ->
+            if (pending.isEmpty()) {
+                tracer.info("No migrations to apply.")
+            } else {
+                val migrations: String = pending.joinToString(separator = "\n") { migration ->
+                    "Version: ${migration.version}. " +
+                            "Description: ${migration.description}. " +
+                            "Type: ${migration.type}. " +
+                            "State: ${migration.state}. " +
+                            "Script: ${migration.script}"
                 }
-            }
 
-            migrate()
+                tracer.info("Migrations being applied:\n$migrations")
+            }
         }
+
+        flyway.migrate()
     }
 
     /**
@@ -208,8 +211,8 @@ internal object DatabaseService {
                 exec(stmt = "SELECT 1;")
                 return@transaction true
             }
-        }.getOrElse { e ->
-            tracer.error(message = "Database is not alive.", cause = e)
+        }.getOrElse { error ->
+            tracer.error(message = "Database is not alive.", cause = error)
             return@getOrElse false
         }
     }
@@ -267,13 +270,13 @@ internal object DatabaseService {
      * Returns a list of all tables in the database.
      */
     private fun dumpTables(): List<String> {
-        try {
-            return transaction(db = database) {
+        return runCatching {
+            transaction(db = database) {
                 currentDialect.allTablesNames()
             }
-        } catch (e: Exception) {
-            tracer.error(message = "Failed to dump tables.", cause = e)
-            return emptyList()
+        }.getOrElse { error ->
+            tracer.error(message = "Failed to dump tables.", cause = error)
+            emptyList()
         }
     }
 
@@ -283,7 +286,7 @@ internal object DatabaseService {
      * Setting up the schema is optional, as it can be created also by migrations.
      */
     class SchemaBuilder {
-        private val tables = mutableListOf<Table>()
+        private val tables: MutableList<Table> = mutableListOf()
 
         /**
          * Adds a table to the schema. If the table already exists, it will be ignored.

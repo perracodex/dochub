@@ -7,10 +7,10 @@ package kdoc.core.database.service
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kdoc.core.database.annotation.DatabaseAPI
+import kdoc.core.database.annotation.DatabaseApi
 import kdoc.core.settings.catalog.sections.DatabaseSettings
 
-@DatabaseAPI
+@DatabaseApi
 internal object DatabasePooling {
     /**
      * Create a HikariDataSource to enable database connection pooling.
