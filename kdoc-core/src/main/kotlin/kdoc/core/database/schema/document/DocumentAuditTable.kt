@@ -8,7 +8,6 @@ import kdoc.core.database.columns.autoGenerate
 import kdoc.core.database.columns.kotlinUuid
 import kdoc.core.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -54,7 +53,7 @@ public object DocumentAuditTable : TimestampedTable(name = "document_audit") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_audit_id"
     )

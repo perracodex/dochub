@@ -8,8 +8,6 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kdoc.core.env.EnvironmentType
 import kdoc.core.env.health.annotation.HealthCheckAPI
-import kdoc.core.env.health.checks.DeploymentHealth.Configured
-import kdoc.core.env.health.checks.DeploymentHealth.ServerSpec
 import kdoc.core.settings.AppSettings
 import kdoc.core.utils.NetworkUtils
 import kotlinx.serialization.Serializable

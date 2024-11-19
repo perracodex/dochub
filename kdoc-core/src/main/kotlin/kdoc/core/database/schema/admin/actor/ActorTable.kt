@@ -6,7 +6,6 @@ package kdoc.core.database.schema.admin.actor
 
 import kdoc.core.database.columns.autoGenerate
 import kdoc.core.database.columns.kotlinUuid
-import kdoc.core.database.columns.references
 import kdoc.core.database.schema.admin.rbac.RbacRoleTable
 import kdoc.core.database.schema.base.TimestampedTable
 import kdoc.core.security.utils.EncryptionUtils
@@ -14,7 +13,6 @@ import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -69,7 +67,7 @@ public object ActorTable : TimestampedTable(name = "actor") {
         name = "is_locked"
     )
 
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_actor_id"
     )

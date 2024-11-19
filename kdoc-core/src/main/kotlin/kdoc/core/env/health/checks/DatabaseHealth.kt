@@ -6,7 +6,6 @@ package kdoc.core.env.health.checks
 
 import com.zaxxer.hikari.HikariDataSource
 import kdoc.core.env.health.annotation.HealthCheckAPI
-import kdoc.core.env.health.checks.DatabaseHealth.*
 import kdoc.core.settings.AppSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database

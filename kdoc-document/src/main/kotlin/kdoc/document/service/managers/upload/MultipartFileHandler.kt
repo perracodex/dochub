@@ -5,6 +5,8 @@
 package kdoc.document.service.managers.upload
 
 import io.ktor.http.content.*
+import io.ktor.utils.io.*
+import io.ktor.utils.io.jvm.javaio.*
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Timer
 import kdoc.core.database.schema.document.types.DocumentType
@@ -20,7 +22,6 @@ import kdoc.document.service.managers.upload.annotation.UploadAPI
 import kotlinx.coroutines.*
 import kotlinx.datetime.LocalDate
 import java.io.File
-import java.io.InputStream
 import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 import kotlin.uuid.Uuid
@@ -114,7 +115,7 @@ internal class MultipartFileHandler(
                                 filename = filename,
                                 description = part.name,
                                 cipherName = cipher,
-                                streamProvider = part.streamProvider
+                                streamProvider = part.provider
                             ).also { response ->
                                 responses.add(response)
                                 uploadsCountMetric.increment()
@@ -163,14 +164,14 @@ internal class MultipartFileHandler(
      * @param streamProvider The provider for the input stream.
      * @return A [Response] object containing the file details.
      */
-    private fun persistFile(
+    private suspend fun persistFile(
         ownerId: Uuid,
         groupId: Uuid?,
         type: DocumentType,
         filename: String,
         description: String?,
         cipherName: Boolean,
-        streamProvider: () -> InputStream
+        streamProvider: suspend () -> ByteReadChannel
     ): Response {
         val currentDate: LocalDate = LocalDate.current()
         val datePath: String = "${currentDate.year}$PATH_SEPARATOR" +
@@ -185,7 +186,7 @@ internal class MultipartFileHandler(
             cipherName = cipherName
         )
 
-        val fileDetails: StorageFileIO.FileDetails = streamProvider().use { rawInputStream ->
+        val fileDetails: StorageFileIO.FileDetails = streamProvider().toInputStream().use { rawInputStream ->
             StorageFileIO.save(
                 uploadsRoot = uploadsRoot,
                 path = datePath,

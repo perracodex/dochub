@@ -154,7 +154,7 @@ internal class RbacService(
                         (scopeRule.scope == scope) &&
                         scopeRule.accessLevel.hasSufficientPrivileges(requiredAccessLevel = accessLevel)
             }
-        } ?: false
+        } == true
     }
 
     /**

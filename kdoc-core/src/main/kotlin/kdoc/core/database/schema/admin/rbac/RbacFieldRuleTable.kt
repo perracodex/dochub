@@ -7,12 +7,10 @@ package kdoc.core.database.schema.admin.rbac
 import kdoc.core.database.columns.autoGenerate
 import kdoc.core.database.columns.enumerationById
 import kdoc.core.database.columns.kotlinUuid
-import kdoc.core.database.columns.references
 import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kdoc.core.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -58,7 +56,7 @@ public object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
         entries = RbacAccessLevel.entries
     )
 
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_field_rule_id"
     )
