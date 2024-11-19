@@ -7,8 +7,8 @@ database-h2 = "2.3.232"                 # https://github.com/h2database/h2databa
 dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
 exposed = "0.56.0"                      # https://github.com/JetBrains/Exposed/releases
 exposed-pagination = "1.0.2"            # https://github.com/perracodex/exposed-pagination/releases
-flyway = "10.20.1"                      # https://github.com/flyway/flyway/releases
-hikariCP = "6.0.0"                      # https://github.com/brettwooldridge/HikariCP/tags
+flyway = "10.21.0"                      # https://github.com/flyway/flyway/releases
+hikariCP = "6.2.1"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "4.0.0"                          # https://github.com/InsertKoinIO/koin/releases
 kotlin = "2.0.21"                       # https://github.com/JetBrains/kotlin/releases
 kotlinx-atomicfu = "0.26.0"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
@@ -17,10 +17,10 @@ kotlinx-serialization = "1.7.3"         # https://github.com/Kotlin/kotlinx.seri
 ktor = "3.0.1"                          # https://ktor.io/docs/releases.html#release-details
 ktor-config = "1.0.1"                   # https://github.com/perracodex/ktor-config/releases
 logback = "1.5.12"                      # https://github.com/qos-ch/logback/tags
-micrometer-prometheus = "1.13.6"        # https://github.com/micrometer-metrics/micrometer/releases
+micrometer-prometheus = "1.14.1"        # https://github.com/micrometer-metrics/micrometer/releases
 mockk = "1.13.13"                       # https://github.com/mockk/mockk/releases
 mockito-kotlin = "5.4.0"                # https://github.com/mockito/mockito-kotlin/releases
-swagger-generators = "1.0.53"           # https://github.com/swagger-api/swagger-codegen-generators/releases
+swagger-generators = "1.0.54"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
 
