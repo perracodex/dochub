@@ -33,11 +33,11 @@ internal suspend fun ApplicationCall.respondWithToken() {
         }
     }
 
-    result.onFailure { e ->
+    result.onFailure { error ->
         Tracer(ref = ApplicationCall::respondWithToken)
-            .error(message = "Failed to generate token.", cause = e)
+            .error(message = "Failed to generate token.", cause = error)
 
-        when (e) {
+        when (error) {
             is UnauthorizedException -> {
                 this.respond(
                     status = HttpStatusCode.Unauthorized,

@@ -24,10 +24,6 @@ import kdoc.core.settings.AppSettings
 internal fun Route.createTokenRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            /**
-             * Creates a new token; requires Basic Authentication credentials.
-             * @OpenAPITag Token
-             */
             post("auth/token/create") {
                 call.respondWithToken()
             }
