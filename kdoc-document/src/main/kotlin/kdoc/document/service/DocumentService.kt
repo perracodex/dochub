@@ -8,10 +8,10 @@ import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
-import kdoc.core.persistence.utils.toUuidOrNull
-import kdoc.core.security.utils.SecureUrl
+import kdoc.core.persistence.util.toUuidOrNull
+import kdoc.core.security.util.SecureUrl
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.NetworkUtils
+import kdoc.core.util.NetworkUtils
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest
@@ -28,7 +28,7 @@ internal class DocumentService(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val documentRepository: IDocumentRepository
 ) {
-    private val tracer = Tracer<DocumentService>()
+    private val tracer: Tracer = Tracer<DocumentService>()
 
     /**
      * Retrieves a document by its ID.

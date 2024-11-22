@@ -4,8 +4,8 @@
 
 package kdoc.core.database.schema.admin.rbac
 
-import kdoc.core.database.columns.autoGenerate
-import kdoc.core.database.columns.kotlinUuid
+import kdoc.core.database.column.autoGenerate
+import kdoc.core.database.column.kotlinUuid
 import kdoc.core.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import kotlin.uuid.Uuid

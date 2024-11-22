@@ -4,6 +4,8 @@
 
 package kdoc.document.api.fetch
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.pathParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,8 +15,8 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.getPageable
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.core.persistence.utils.toUuid
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.core.persistence.util.toUuid
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
@@ -22,12 +24,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.findDocumentsByOwnerRoute() {
-    /**
-     * Find all documents by owner.
-     * @OpenAPITag Document - Find
-     */
     get("v1/document/owner/{owner_id}") {
         val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()
@@ -39,5 +37,16 @@ internal fun Route.findDocumentsByOwnerRoute() {
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
+    } api {
+        tags = setOf("Document")
+        summary = "Find documents by owner."
+        description = "Find all document entries by owner."
+        operationId = "findDocumentsByOwner"
+        pathParameter<Uuid>(name = "owner_id") {
+            description = "The owner ID to find documents for."
+        }
+        response<Page<Document>>(status = HttpStatusCode.OK) {
+            description = "The list of documents."
+        }
     }
 }

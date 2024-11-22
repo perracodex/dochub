@@ -3,7 +3,7 @@
  */
 
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.TestUtils
+import kdoc.core.util.TestUtils
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -8,10 +8,10 @@ import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kdoc.core.database.annotation.DatabaseApi
 import kdoc.core.env.Tracer
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.env.health.checks.DatabaseHealth
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.DatabaseSettings
+import kdoc.core.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
@@ -33,7 +33,7 @@ import java.nio.file.Paths
  */
 @OptIn(DatabaseApi::class)
 internal object DatabaseService {
-    private val tracer = Tracer<DatabaseService>()
+    private val tracer: Tracer = Tracer<DatabaseService>()
 
     /** The database instance held by the service. */
     lateinit var database: Database
@@ -243,7 +243,7 @@ internal object DatabaseService {
     /**
      * Retrieves HikariCP health metrics.
      */
-    @OptIn(HealthCheckAPI::class)
+    @OptIn(HealthCheckApi::class)
     fun getHealthCheck(): DatabaseHealth {
         val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
 

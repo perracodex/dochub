@@ -12,10 +12,10 @@ import kdoc.access.rbac.api.dashboard.rbacDashboardUpdateRoute
 import kdoc.access.rbac.api.login.rbacLoginAccessRoute
 import kdoc.access.rbac.api.login.rbacLoginSubmissionRoute
 import kdoc.access.rbac.api.login.rbacLogoutRoute
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kdoc.access.rbac.plugin.withRbac
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kdoc.core.plugins.RateLimitScope
 
 /**
@@ -23,7 +23,7 @@ import kdoc.core.plugins.RateLimitScope
  *
  * These include the login and logout routes, as well as the dashboard routes.
  */
-@OptIn(RbacAPI::class)
+@OptIn(RbacApi::class)
 public fun Route.rbacRoutes() {
 
     // Configures the server to serve CSS files located in the 'rbac' resources folder,

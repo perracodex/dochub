@@ -10,8 +10,8 @@ import kdoc.document.repository.IDocumentAuditRepository
 import kdoc.document.repository.IDocumentRepository
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.managers.CipherStateHandler
-import kdoc.document.service.managers.upload.UploadManager
+import kdoc.document.service.manager.CipherStateHandler
+import kdoc.document.service.manager.upload.UploadManager
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf

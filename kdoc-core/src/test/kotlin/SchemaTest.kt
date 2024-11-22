@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kdoc.core.utils.TestUtils
+import kdoc.core.util.TestUtils
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.TransactionManager

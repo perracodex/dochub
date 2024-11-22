@@ -10,13 +10,13 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kdoc.access.rbac.service.RbacService
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContextOrNull
 import kdoc.core.context.setContext
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import org.koin.ktor.ext.inject
 
 /**
@@ -26,7 +26,7 @@ import org.koin.ktor.ext.inject
  * It ensures that only authorized Actors, as per the RBAC settings,
  * can access specific routes.
  */
-@RbacAPI
+@RbacApi
 internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScopedPlugin(
     name = "RbacPlugin",
     createConfiguration = ::RbacPluginConfig
@@ -66,7 +66,7 @@ internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScoped
  * Configuration for the RBAC plugin.
  * Holds the RBAC target scope and the required access level.
  */
-@RbacAPI
+@RbacApi
 internal class RbacPluginConfig {
     /** The RBAC scope associated with the route, defining the scope of access control. */
     lateinit var scope: RbacScope

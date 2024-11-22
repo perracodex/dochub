@@ -16,11 +16,11 @@ import io.ktor.server.testing.*
 import junit.framework.TestCase.assertTrue
 import kdoc.access.actor.di.ActorDomainInjection
 import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.utils.TestUtils
+import kdoc.core.database.schema.document.type.DocumentType
+import kdoc.core.util.TestUtils
 import kdoc.document.di.DocumentDomainInjection
-import kdoc.document.service.managers.upload.MultipartFileHandler
-import kdoc.document.service.managers.upload.annotation.UploadAPI
+import kdoc.document.service.manager.upload.MultipartFileHandler
+import kdoc.document.service.manager.upload.annotation.UploadApi
 import java.io.File
 import kotlin.io.path.createTempDirectory
 import kotlin.test.*
@@ -46,7 +46,7 @@ class MultipartFileHandlerTest {
         TestUtils.tearDown()
     }
 
-    @OptIn(UploadAPI::class)
+    @OptIn(UploadApi::class)
     @Test
     fun testUpload(): Unit = testApplication {
         val numberOfFiles = 10

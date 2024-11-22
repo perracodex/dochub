@@ -14,7 +14,7 @@ import kdoc.core.plugins.*
 import kdoc.core.settings.AppSettings
 import kdoc.server.plugins.configureKoin
 import kdoc.server.plugins.configureRoutes
-import kdoc.server.utils.ApplicationsUtils
+import kdoc.server.util.ApplicationsUtils
 
 /**
  * Application main entry point.

@@ -11,7 +11,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.perracodex.exposed.pagination.PaginationError
 import kdoc.core.env.Tracer
-import kdoc.core.errors.*
+import kdoc.core.error.*
 import kdoc.core.settings.AppSettings
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 

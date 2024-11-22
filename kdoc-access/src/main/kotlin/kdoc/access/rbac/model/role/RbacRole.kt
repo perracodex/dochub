@@ -10,7 +10,7 @@ import kdoc.core.database.schema.admin.rbac.RbacFieldRuleTable
 import kdoc.core.database.schema.admin.rbac.RbacRoleTable
 import kdoc.core.database.schema.admin.rbac.RbacScopeRuleTable
 import kdoc.core.persistence.model.Meta
-import kdoc.core.persistence.serializers.Uuid
+import kdoc.core.persistence.serializer.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 

@@ -5,7 +5,7 @@
 package kdoc.core.env.health.checks
 
 import com.zaxxer.hikari.HikariDataSource
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.settings.AppSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
@@ -24,7 +24,7 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  * @property configuration The database [Configuration].
  * @property tables The list of tables in the database.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class DatabaseHealth(
     val errors: MutableList<String>,

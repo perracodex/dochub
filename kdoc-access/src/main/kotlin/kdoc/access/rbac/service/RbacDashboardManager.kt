@@ -6,11 +6,11 @@ package kdoc.access.rbac.service
 
 import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
  * including permission checks, role-specific access level determination,
  * and processing of administrative updates.
  */
-@RbacAPI
+@RbacApi
 internal object RbacDashboardManager : KoinComponent {
 
     /**

@@ -4,6 +4,9 @@
 
 package kdoc.access.context
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.exceptions.JWTDecodeException
+import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -14,12 +17,12 @@ import kdoc.access.credential.CredentialService
 import kdoc.access.plugins.configureBasicAuthentication
 import kdoc.access.plugins.configureJwtAuthentication
 import kdoc.access.rbac.service.RbacService
-import kdoc.access.token.annotation.TokenAPI
+import kdoc.access.token.annotation.TokenApi
 import kdoc.access.token.service.TokenService
 import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
-import kdoc.core.persistence.serializers.Uuid
-import kdoc.core.persistence.utils.toUuid
+import kdoc.core.persistence.serializer.Uuid
+import kdoc.core.persistence.util.toUuid
 import kdoc.core.settings.AppSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -37,7 +40,32 @@ import org.koin.core.component.inject
  * @see [configureBasicAuthentication]
  */
 internal object SessionContextFactory : KoinComponent {
-    private val tracer = Tracer<SessionContextFactory>()
+    private val tracer: Tracer = Tracer<SessionContextFactory>()
+
+    /**
+     * Extracts the SessionContext from the token without verifying it.
+     *
+     * @param jwtToken The JWT token to extract the SessionContext from.
+     * @return A [SessionContext] instance if the token is valid; null otherwise.
+     */
+    @TokenApi
+    suspend fun from(jwtToken: String): SessionContext? {
+        return try {
+            val decodedToken: DecodedJWT = JWT.decode(jwtToken)
+            val payload: String? = decodedToken.getClaim(TokenService.SESSION_JWT_CLAIM_KEY)?.asString()
+
+            if (payload.isNullOrBlank()) {
+                tracer.error("Missing JWT payload.")
+                null
+            } else {
+                val actorId: Uuid = payload.toUuid()
+                return fromActor(actorId = actorId)
+            }
+        } catch (e: JWTDecodeException) {
+            tracer.error("Invalid JWT token. ${e.message}")
+            null
+        }
+    }
 
     /**
      * Creates a [SessionContext] instance from a JWT [JWTCredential].
@@ -46,7 +74,7 @@ internal object SessionContextFactory : KoinComponent {
      * @param jwtCredential The [JWTCredential] containing actor-related claims.
      * @return A [SessionContext] instance if actor details and validations pass; null otherwise.
      */
-    @TokenAPI
+    @TokenApi
     suspend fun from(
         headers: Headers,
         jwtCredential: JWTCredential

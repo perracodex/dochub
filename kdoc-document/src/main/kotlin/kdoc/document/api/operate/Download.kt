@@ -4,21 +4,22 @@
 
 package kdoc.document.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.managers.DownloadManager
+import kdoc.document.service.manager.DownloadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.downloadDocumentRoute() {
     /**
      * Serve a document file to download.
@@ -59,6 +60,17 @@ internal fun Route.downloadDocumentRoute() {
         call.response.header(HttpHeaders.ContentDisposition, streamHandler.contentDisposition.toString())
         call.respondOutputStream(contentType = streamHandler.contentType) {
             streamHandler.stream(this)
+        }
+    } api {
+        tags = setOf("Document")
+        summary = "Download a document."
+        description = "Download a document file using a token and signature."
+        operationId = "downloadDocument"
+        response(status = HttpStatusCode.BadRequest) {
+            description = "Missing token or signature."
+        }
+        response(status = HttpStatusCode.Forbidden) {
+            description = "Unable to initiate download."
         }
     }
 }

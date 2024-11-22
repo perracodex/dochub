@@ -12,8 +12,8 @@ import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kdoc.core.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -34,7 +34,7 @@ internal class RbacService(
     private val roleRepository: IRbacRoleRepository,
     private val scopeRuleRepository: IRbacScopeRuleRepository
 ) {
-    private val tracer = Tracer<RbacService>()
+    private val tracer: Tracer = Tracer<RbacService>()
 
     /**
      * Cache holding Actor IDs paired with their respective [Actor],

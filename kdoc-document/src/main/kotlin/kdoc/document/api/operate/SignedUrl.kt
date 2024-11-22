@@ -4,26 +4,23 @@
 
 package kdoc.document.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.core.context.getContext
-import kdoc.core.persistence.utils.toUuidOrNull
-import kdoc.core.security.utils.SecureUrl
+import kdoc.core.persistence.util.toUuidOrNull
+import kdoc.core.security.util.SecureUrl
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.NetworkUtils
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.core.util.NetworkUtils
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.service.DocumentAuditService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.getDocumentSignedUrlRoute() {
-    /**
-     * Generate the signed URL for a document download.
-     * @OpenAPITag Document - Operate
-     */
     get("v1/document/url/{document_id?}/{group_id?}") {
         val documentId: Uuid? = call.request.queryParameters["document_id"].toUuidOrNull()
         val groupId: Uuid? = call.request.queryParameters["group_id"]?.toUuidOrNull()
@@ -42,5 +39,16 @@ internal fun Route.getDocumentSignedUrlRoute() {
         )
 
         call.respond(status = HttpStatusCode.OK, message = secureUrl)
+    } api {
+        tags = setOf("Document")
+        summary = "Generate a signed URL for a document download."
+        description = "Generate a signed URL for a document download to provide temporary access to the document."
+        operationId = "getDocumentSignedUrl"
+        response(status = HttpStatusCode.OK) {
+            description = "The signed URL for the document download."
+        }
+        response(status = HttpStatusCode.BadRequest) {
+            description = "Either document_id or group_id must be provided."
+        }
     }
 }

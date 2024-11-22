@@ -4,7 +4,7 @@
 
 package kdoc.core.env.health.checks
 
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.security.snowflake.SnowflakeData
 import kdoc.core.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  * @property timestampEpoch The timestamp epoch used to generate the snowflake id.
  * @property nanoTimeStart The nano time start used to generate the snowflake id.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class SnowflakeHealth(
     val errors: MutableList<String> = mutableListOf(),

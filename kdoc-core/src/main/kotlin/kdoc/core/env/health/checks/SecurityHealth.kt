@@ -4,9 +4,9 @@
 
 package kdoc.core.env.health.checks
 
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.security.nodes.ConstraintsSettings.LimitSpec
+import kdoc.core.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
  * @property privateApi The rate limit specification for private API endpoints.
  * @property newToken The rate limit specification for the new authentication token generation endpoint.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class SecurityHealth(
     val errors: MutableList<String>,

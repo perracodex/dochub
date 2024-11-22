@@ -4,8 +4,8 @@
 
 package kdoc.document.model
 
-import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.persistence.serializers.Uuid
+import kdoc.core.database.schema.document.type.DocumentType
+import kdoc.core.persistence.serializer.Uuid
 import kotlinx.serialization.Serializable
 
 /**

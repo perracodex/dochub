@@ -9,9 +9,7 @@ dependencies {
 
     implementation(libs.database.h2)
 
-    implementation(libs.api.schema.swagger)
-    implementation(libs.api.schema.swagger.generators)
-    implementation(libs.api.schema.openapi)
+    implementation(libs.kopapi)
 
     implementation(libs.kotlinx.atomicfu)
     implementation(libs.kotlinx.datetime)
@@ -48,6 +46,8 @@ dependencies {
     implementation(libs.exposed.kotlin.datetime)
     implementation(libs.exposed.pagination)
     implementation(libs.flyway.core)
+
+    implementation(libs.google.phonenumber)
 
     implementation(libs.hikariCP)
 

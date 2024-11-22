@@ -4,10 +4,12 @@
 
 package kdoc.access.rbac.api.login
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
 
@@ -16,15 +18,19 @@ import kdoc.access.rbac.view.RbacLoginView
  * upon successful authentication, redirects the actor to the dashboard.
  * Unsuccessful attempts are handled by the authentication setup.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacLoginSubmissionRoute() {
     authenticate(RbacLoginView.RBAC_LOGIN_PATH) {
-        /**
-         * Redirects actors to the dashboard after successful authentication.
-         * @OpenAPITag RBAC
-         */
         post("rbac/login") {
             call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
+        } api {
+            tags = setOf("RBAC")
+            summary = "Submit the RBAC login form."
+            description = "Submit the RBAC login form to authenticate and login and redirect to the dashboard."
+            operationId = "rbacLoginSubmission"
+            response<String>(status = HttpStatusCode.Found) {
+                description = "Redirect to the RBAC dashboard."
+            }
         }
     }
 }

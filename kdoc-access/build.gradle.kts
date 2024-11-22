@@ -9,6 +9,8 @@ dependencies {
 
     implementation(project(":kdoc-core"))
 
+    implementation(libs.kopapi)
+
     implementation(libs.kotlinx.serialization)
 
     implementation(libs.ktor.client.cio)

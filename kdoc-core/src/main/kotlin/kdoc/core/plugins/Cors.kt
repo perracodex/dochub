@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
 import kdoc.core.env.Tracer
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.CorsSettings
+import kdoc.core.settings.catalog.section.CorsSettings
 
 /**
  * Configures [CORS] plugin by setting allowed HTTP methods and headers, permitting credentials,
@@ -21,7 +21,6 @@ import kdoc.core.settings.catalog.sections.CorsSettings
  * - [CORS Documentation](https://ktor.io/docs/server-cors.html)
  */
 public fun Application.configureCors() {
-
     val tracer = Tracer(ref = Application::configureCors)
 
     // Install and configure the CORS feature.

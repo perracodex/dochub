@@ -4,27 +4,28 @@
 
 package kdoc.access.rbac.api.dashboard
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kdoc.access.rbac.service.RbacDashboardManager
 import kdoc.access.rbac.view.RbacDashboardView
 import kdoc.access.rbac.view.RbacLoginView
 import kdoc.core.context.SessionContext
 import kdoc.core.context.clearContext
 import kdoc.core.context.getContext
-import kdoc.core.persistence.utils.toUuid
+import kdoc.core.persistence.util.toUuid
 import kotlin.uuid.Uuid
 
 /**
  * Processes updates to RBAC settings based on actor submissions from the dashboard form.
  * Validates [SessionContext] and authorizes modifications, redirecting to the login screen if unauthorized.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacDashboardUpdateRoute() {
     /**
      * Processes updates to RBAC settings based on actor submissions from the dashboard form.
@@ -66,6 +67,17 @@ internal fun Route.rbacDashboardUpdateRoute() {
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }
+        }
+    } api {
+        tags = setOf("RBAC")
+        summary = "Update RBAC settings."
+        description = "Update RBAC settings based on actor submissions from the dashboard form."
+        operationId = "rbacDashboardUpdate"
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The updated RBAC dashboard."
+        }
+        response<String>(status = HttpStatusCode.Found) {
+            description = "Redirect to the RBAC login page."
         }
     }
 }

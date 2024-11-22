@@ -6,9 +6,9 @@ package kdoc.core.env.health.checks
 
 import io.ktor.server.application.*
 import kdoc.core.env.EnvironmentType
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.DateTimeUtils.current
+import kdoc.core.util.DateTimeUtils.current
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
  * @property utc The current UTC timestamp.
  * @property local The current local timestamp.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class RuntimeHealth(
     val errors: MutableList<String>,

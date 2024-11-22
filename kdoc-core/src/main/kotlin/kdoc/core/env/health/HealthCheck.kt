@@ -6,10 +6,10 @@ package kdoc.core.env.health
 
 import io.ktor.server.application.*
 import kdoc.core.database.service.DatabaseService
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.env.health.checks.*
-import kdoc.core.utils.RouteInfo
-import kdoc.core.utils.collectRoutes
+import kdoc.core.util.RouteInfo
+import kdoc.core.util.collectRoutes
 import kotlinx.serialization.Serializable
 
 /**
@@ -24,9 +24,8 @@ import kotlinx.serialization.Serializable
  * @property database The [DatabaseHealth] check.
  * @property endpoints The list of endpoints registered by the application.
  */
-@OptIn(HealthCheckAPI::class)
+@OptIn(HealthCheckApi::class)
 @Serializable
-@ConsistentCopyVisibility
 public data class HealthCheck internal constructor(
     val health: MutableList<String>,
     val application: ApplicationHealth,

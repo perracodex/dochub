@@ -24,11 +24,12 @@ import kotlin.uuid.Uuid
  * @property actorRepository The [IActorRepository] to handle Actor persistence operations.
  * @property roleRepository The [IRbacRoleRepository] to handle RBAC role operations.
  */
+@Suppress("unused")
 internal class ActorService(
     private val actorRepository: IActorRepository,
     private val roleRepository: IRbacRoleRepository
 ) : KoinComponent {
-    private val tracer = Tracer<ActorService>()
+    private val tracer: Tracer = Tracer<ActorService>()
 
     /**
      * Finds the [Actor] for the given id.

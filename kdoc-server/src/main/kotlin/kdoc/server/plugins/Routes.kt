@@ -11,7 +11,6 @@ import kdoc.access.rbac.api.rbacRoutes
 import kdoc.access.token.api.accessTokenRoutes
 import kdoc.core.context.getContextOrNull
 import kdoc.core.env.health.healthCheckRoute
-import kdoc.core.events.sseRoute
 import kdoc.core.security.snowflake.snowflakeRoute
 import kdoc.document.api.documentRoutes
 
@@ -36,7 +35,6 @@ internal fun Application.configureRoutes() {
         healthCheckRoute()
         snowflakeRoute()
         rbacRoutes()
-        sseRoute()
 
         // Server root endpoint.
         get("/") {

@@ -5,10 +5,10 @@
 package kdoc.access.rbac.model.field
 
 import kdoc.core.database.schema.admin.rbac.RbacFieldRuleTable
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kdoc.core.persistence.model.Meta
-import kdoc.core.persistence.serializers.Uuid
+import kdoc.core.persistence.serializer.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 

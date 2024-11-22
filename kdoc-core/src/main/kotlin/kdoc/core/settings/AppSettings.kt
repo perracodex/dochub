@@ -9,10 +9,11 @@ import io.github.perracodex.ktor.config.ConfigurationParser
 import io.github.perracodex.ktor.config.IConfigCatalogSection
 import io.ktor.server.config.*
 import kdoc.core.env.Tracer
+import kdoc.core.settings.AppSettings.configuration
 import kdoc.core.settings.AppSettings.load
 import kdoc.core.settings.catalog.ConfigurationCatalog
-import kdoc.core.settings.catalog.sections.*
-import kdoc.core.settings.catalog.sections.security.SecuritySettings
+import kdoc.core.settings.catalog.section.*
+import kdoc.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -31,7 +32,7 @@ import kotlin.system.measureTimeMillis
  * The [load] method uses [runBlocking] to synchronize configuration loading, making it safe for one-time initialization.
  */
 public object AppSettings {
-    private val tracer = Tracer<AppSettings>()
+    private val tracer: Tracer = Tracer<AppSettings>()
 
     /**
      * Holds the instance of [ConfigurationCatalog] containing all configuration settings for the application.

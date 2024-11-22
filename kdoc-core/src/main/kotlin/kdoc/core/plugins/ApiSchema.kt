@@ -4,22 +4,16 @@
 
 package kdoc.core.plugins
 
+import io.github.perracodex.kopapi.plugin.Kopapi
+import io.github.perracodex.kopapi.type.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.*
-import io.ktor.server.plugins.openapi.*
-import io.ktor.server.plugins.swagger.*
-import io.ktor.server.routing.*
-import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 import kdoc.core.settings.AppSettings
 
 /**
  * Configures OpenAPI, Swagger-UI and Redoc.
  *
  * #### References
- * - [OpenAPI](https://ktor.io/docs/server-openapi.html)
- * - [OpenAPI Generation](https://www.jetbrains.com/help/idea/ktor.html#openapi)
- * - [Swagger-UI](https://ktor.io/docs/server-swagger-ui.html)
- * - [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
+ * - [Kopapi Documentation](https://github.com/perracodex/kopapi)
  */
 public fun Application.configureApiSchema() {
 
@@ -27,24 +21,56 @@ public fun Application.configureApiSchema() {
         return
     }
 
-    routing {
-        // Serve the static files: OpenAPI YAML, Redoc HTML, etc.
-        staticResources(remotePath = AppSettings.apiSchema.schemaRoot, basePackage = "openapi")
+    install(plugin = Kopapi) {
+        enabled = true
+        onDemand = false
+        logPluginRoutes = true
 
-        // OpenAPI.
-        openAPI(
-            path = AppSettings.apiSchema.openApiEndpoint,
-            swaggerFile = AppSettings.apiSchema.schemaResourceFile
-        ) {
-            codegen = StaticHtmlCodegen()
+        apiDocs {
+            openApiUrl = AppSettings.apiSchema.openApiEndpoint
+            openApiFormat = OpenApiFormat.YAML
+            redocUrl = AppSettings.apiSchema.redocEndpoint
+
+            swagger {
+                url = AppSettings.apiSchema.swaggerEndpoint
+                persistAuthorization = true
+                withCredentials = false
+                docExpansion = SwaggerDocExpansion.NONE
+                displayRequestDuration = true
+                displayOperationId = true
+                operationsSorter = SwaggerOperationsSorter.UNSORTED
+                uiTheme = SwaggerUiTheme.DARK
+                syntaxTheme = SwaggerSyntaxTheme.NORD
+                includeErrors = true
+            }
         }
 
-        // Swagger-UI.
-        swaggerUI(
-            path = AppSettings.apiSchema.swaggerEndpoint,
-            swaggerFile = AppSettings.apiSchema.schemaResourceFile
-        ) {
-            version = "5.11.8"
+        info {
+            title = "KDOC API"
+            version = "1.0.0"
+            description = "KDOC API Documentation"
+            license {
+                name = "MIT"
+                url = "https://opensource.org/licenses/MIT"
+            }
+        }
+
+        servers {
+            add(urlString = "{protocol}://{host}:{port}") {
+                description = "KDOC API Server"
+                variable(name = "protocol", defaultValue = "http") {
+                    choices = setOf("http", "https")
+                }
+                variable(name = "host", defaultValue = "localhost") {
+                    choices = setOf(AppSettings.deployment.host, "localhost")
+                }
+                variable(name = "port", defaultValue = "8080") {
+                    choices = setOf(
+                        AppSettings.deployment.port.toString(),
+                        AppSettings.deployment.sslPort.toString(),
+                    )
+                }
+            }
         }
     }
 }

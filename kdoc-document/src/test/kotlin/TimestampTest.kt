@@ -6,8 +6,8 @@ import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.utils.TestUtils
+import kdoc.core.database.schema.document.type.DocumentType
+import kdoc.core.util.TestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentRequest

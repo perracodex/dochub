@@ -7,7 +7,7 @@ package kdoc.access.actor.repository
 import kdoc.access.actor.model.Actor
 import kdoc.access.actor.model.ActorCredentials
 import kdoc.access.actor.model.ActorRequest
-import kdoc.access.errors.RbacError
+import kdoc.access.error.RbacError
 import kdoc.access.rbac.repository.role.IRbacRoleRepository
 import kdoc.core.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert

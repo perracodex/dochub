@@ -4,21 +4,22 @@
 
 package kdoc.document.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
 import kdoc.document.service.DocumentService
-import kdoc.document.service.managers.DownloadManager
+import kdoc.document.service.manager.DownloadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.backupDocumentsRoute() {
     /**
      * Downloads a backup file containing all the documents.
@@ -49,6 +50,14 @@ internal fun Route.backupDocumentsRoute() {
         call.response.header(HttpHeaders.ContentDisposition, streamHandler.contentDisposition.toString())
         call.respondOutputStream(contentType = streamHandler.contentType) {
             streamHandler.stream(this)
+        }
+    } api {
+        tags = setOf("Document")
+        summary = "Backup all documents."
+        description = "Download a backup file containing all document entries."
+        operationId = "backupDocuments"
+        response(status = HttpStatusCode.NoContent) {
+            description = "No documents found."
         }
     }
 }

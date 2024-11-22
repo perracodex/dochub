@@ -7,10 +7,10 @@ package kdoc.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import kdoc.core.context.SessionContext
-import kdoc.core.persistence.serializers.Uuid
-import kdoc.core.security.utils.EncryptionUtils.toByteKey
+import kdoc.core.persistence.serializer.Uuid
+import kdoc.core.security.util.EncryptionUtils.toByteKey
 import kdoc.core.settings.AppSettings
-import kdoc.core.settings.catalog.sections.security.nodes.EncryptionSettings
+import kdoc.core.settings.catalog.section.security.node.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

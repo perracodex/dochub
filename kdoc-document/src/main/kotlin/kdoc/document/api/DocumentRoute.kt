@@ -20,7 +20,7 @@ import kdoc.document.api.operate.*
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Document Routes API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class DocumentRouteAPI
+internal annotation class DocumentRouteApi
 
 /**
  * Document related endpoints.
@@ -29,7 +29,7 @@ internal annotation class DocumentRouteAPI
  * - [Application Structure](https://ktor.io/docs/server-application-structure.html) for examples
  * of how to organize routes in diverse ways.
  */
-@OptIn(DocumentRouteAPI::class)
+@OptIn(DocumentRouteApi::class)
 public fun Route.documentRoutes() {
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {

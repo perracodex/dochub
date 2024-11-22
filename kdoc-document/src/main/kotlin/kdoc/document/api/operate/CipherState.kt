@@ -4,24 +4,22 @@
 
 package kdoc.document.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.pathParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.service.DocumentAuditService
-import kdoc.document.service.managers.CipherStateHandler
+import kdoc.document.service.manager.CipherStateHandler
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.changeDocumentsCipherStateRoute() {
-    /**
-     * Change the cipher state of all documents.
-     * @OpenAPITag Document - Operate
-     */
     put("v1/document/cipher/{cipher}") {
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
@@ -32,5 +30,16 @@ internal fun Route.changeDocumentsCipherStateRoute() {
         val cipherStateHandler: CipherStateHandler = call.scope.get<CipherStateHandler> { parametersOf(sessionContext) }
         val count: Int = cipherStateHandler.changeState(cipher = cipher)
         call.respond(status = HttpStatusCode.OK, message = count)
+    } api {
+        tags = setOf("Document")
+        summary = "Change the cipher state of all documents."
+        description = "Change the cipher state of all document entries."
+        operationId = "changeDocumentsCipherState"
+        pathParameter<Boolean>(name = "cipher") {
+            description = "The new cipher state."
+        }
+        response(status = HttpStatusCode.OK) {
+            description = "The number of documents affected."
+        }
     }
 }

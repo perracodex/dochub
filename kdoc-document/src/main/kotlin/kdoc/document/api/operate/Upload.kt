@@ -4,6 +4,8 @@
 
 package kdoc.document.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.request.*
@@ -12,25 +14,21 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.core.database.schema.document.types.DocumentType
-import kdoc.core.persistence.utils.toUuid
-import kdoc.core.persistence.utils.toUuidOrNull
+import kdoc.core.database.schema.document.type.DocumentType
+import kdoc.core.persistence.util.toUuid
+import kdoc.core.persistence.util.toUuidOrNull
 import kdoc.core.settings.AppSettings
-import kdoc.document.api.DocumentRouteAPI
+import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
-import kdoc.document.service.managers.upload.UploadManager
+import kdoc.document.service.manager.upload.UploadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
-@DocumentRouteAPI
+@DocumentRouteApi
 internal fun Route.uploadDocumentsRoute() {
-    /**
-     * Upload a new document.
-     * @OpenAPITag Document - Operate
-     */
-    post("v1/document/{owner_id?}/{group_id?}/{type?}/{cipher?}") {
+    post("v1/document/") {
         val ownerId: Uuid = call.request.queryParameters.getOrFail(name = "owner_id").toUuid()
         val groupId: Uuid? = call.request.queryParameters["group_id"].toUuidOrNull()
         val type: DocumentType = DocumentType.parse(value = call.request.queryParameters.getOrFail(name = "type"))
@@ -67,6 +65,39 @@ internal fun Route.uploadDocumentsRoute() {
                 status = HttpStatusCode.Created,
                 message = createdDocuments
             )
+        }
+    } api {
+        tags = setOf("Document")
+        summary = "Upload a new document."
+        description = "Upload a new document to the storage."
+        operationId = "uploadDocuments"
+        queryParameter<Uuid>(name = "owner_id") {
+            description = "The owner ID of the document."
+        }
+        queryParameter<Uuid>(name = "group_id") {
+            description = "The group ID of the document."
+            required = false
+        }
+        queryParameter<String>(name = "type") {
+            description = "The type of the document."
+        }
+        queryParameter<Boolean>(name = "cipher") {
+            description = "Whether to encrypt the document."
+            required = false
+        }
+        requestBody<Unit> {
+            description = "The document file to upload."
+            multipart {
+                part<PartData.FileItem>("file") {
+                    description = "The file to upload."
+                }
+            }
+        }
+        response(status = HttpStatusCode.Created) {
+            description = "The created document details."
+        }
+        response(status = HttpStatusCode.BadRequest) {
+            description = "Invalid request."
         }
     }
 }

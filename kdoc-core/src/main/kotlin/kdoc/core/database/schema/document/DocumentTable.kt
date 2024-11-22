@@ -4,11 +4,11 @@
 
 package kdoc.core.database.schema.document
 
-import kdoc.core.database.columns.autoGenerate
-import kdoc.core.database.columns.enumerationById
-import kdoc.core.database.columns.kotlinUuid
+import kdoc.core.database.column.autoGenerate
+import kdoc.core.database.column.enumerationById
+import kdoc.core.database.column.kotlinUuid
 import kdoc.core.database.schema.base.TimestampedTable
-import kdoc.core.database.schema.document.types.DocumentType
+import kdoc.core.database.schema.document.type.DocumentType
 import org.jetbrains.exposed.sql.Column
 import kotlin.uuid.Uuid
 

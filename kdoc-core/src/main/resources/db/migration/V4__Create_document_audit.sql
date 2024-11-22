@@ -21,4 +21,4 @@ CREATE TABLE IF NOT EXISTS document_audit (
 
 CREATE TRIGGER IF NOT EXISTS tg_document_audit__updated_at
     BEFORE UPDATE ON document_audit
-    FOR EACH ROW CALL 'kdoc.core.database.utils.UpdateTimestampTrigger';
+    FOR EACH ROW CALL 'kdoc.core.database.util.UpdateTimestampTrigger';

@@ -10,6 +10,8 @@ dependencies {
     implementation(project(":kdoc-core"))
     implementation(project(":kdoc-access"))
 
+    implementation(libs.kopapi)
+
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization)
 

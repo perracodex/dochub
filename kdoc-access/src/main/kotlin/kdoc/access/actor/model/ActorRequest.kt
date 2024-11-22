@@ -4,7 +4,7 @@
 
 package kdoc.access.actor.model
 
-import kdoc.core.persistence.serializers.Uuid
+import kdoc.core.persistence.serializer.Uuid
 
 /**
  * Request to create/update an Actor.

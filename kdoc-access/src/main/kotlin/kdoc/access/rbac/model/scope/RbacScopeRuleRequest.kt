@@ -5,8 +5,8 @@
 package kdoc.access.rbac.model.scope
 
 import kdoc.access.rbac.model.field.RbacFieldRuleRequest
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.Serializable
 
 /**

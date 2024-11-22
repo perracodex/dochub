@@ -5,7 +5,7 @@
 package kdoc.access.token.api
 
 import io.ktor.server.routing.*
-import kdoc.access.token.annotation.TokenAPI
+import kdoc.access.token.annotation.TokenApi
 import kdoc.access.token.api.operate.createTokenRoute
 import kdoc.access.token.api.operate.refreshTokenRoute
 
@@ -25,7 +25,7 @@ import kdoc.access.token.api.operate.refreshTokenRoute
  * - [Ktor JWT Authentication](https://ktor.io/docs/server-jwt.html)
  * - [Basic Authentication](https://ktor.io/docs/server-basic-auth.html)
  */
-@OptIn(TokenAPI::class)
+@OptIn(TokenApi::class)
 public fun Route.accessTokenRoutes() {
     createTokenRoute()
     refreshTokenRoute()

@@ -5,7 +5,7 @@
 package kdoc.core.env.health.checks
 
 import kdoc.core.env.EnvironmentType
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.settings.AppSettings
 import kotlinx.serialization.Serializable
 
@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  * @property errors List of errors found during the health check.
  * @property apiSchemaEnabled Whether the API schema generation is enabled.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class ApplicationHealth(
     val errors: MutableList<String>,

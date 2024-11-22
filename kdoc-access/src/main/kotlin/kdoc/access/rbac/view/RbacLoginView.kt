@@ -5,7 +5,7 @@
 package kdoc.access.rbac.view
 
 import kdoc.access.credential.CredentialService
-import kdoc.access.rbac.plugin.annotation.RbacAPI
+import kdoc.access.rbac.plugin.annotation.RbacApi
 import kotlinx.html.*
 
 /**
@@ -14,7 +14,7 @@ import kotlinx.html.*
  * #### References
  * - [HTML DSL](https://ktor.io/docs/server-html-dsl.html)
  */
-@RbacAPI
+@RbacApi
 internal object RbacLoginView {
 
     /** The path for the RBAC login view. */

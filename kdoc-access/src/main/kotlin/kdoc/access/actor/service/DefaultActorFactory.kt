@@ -10,8 +10,8 @@ import kdoc.access.rbac.model.role.RbacRole
 import kdoc.access.rbac.model.role.RbacRoleRequest
 import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
 import kdoc.access.rbac.service.RbacService
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kdoc.core.env.Tracer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import org.koin.core.component.inject
  * These are created only if no Actors at all are found in the database.
  */
 internal object DefaultActorFactory : KoinComponent {
-    private val tracer = Tracer<DefaultActorFactory>()
+    private val tracer: Tracer = Tracer<DefaultActorFactory>()
 
     /**
      * The default role names.

@@ -7,9 +7,9 @@ package kdoc.core.env.health.checks
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kdoc.core.env.EnvironmentType
-import kdoc.core.env.health.annotation.HealthCheckAPI
+import kdoc.core.env.health.annotation.HealthCheckApi
 import kdoc.core.settings.AppSettings
-import kdoc.core.utils.NetworkUtils
+import kdoc.core.util.NetworkUtils
 import kotlinx.serialization.Serializable
 
 /**
@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  * @property serverSpec The [ServerSpec] configuration of the server.
  * @property connectors The connectors used by the application.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class DeploymentHealth private constructor(
     val errors: MutableList<String>,

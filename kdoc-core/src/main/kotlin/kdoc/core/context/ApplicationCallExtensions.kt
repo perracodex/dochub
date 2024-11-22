@@ -8,9 +8,9 @@ import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kdoc.core.context.SessionContext.Companion.SESSION_NAME
-import kdoc.core.errors.UnauthorizedException
-import kdoc.core.persistence.serializers.Uuid
-import kdoc.core.persistence.utils.toUuid
+import kdoc.core.error.UnauthorizedException
+import kdoc.core.persistence.serializer.Uuid
+import kdoc.core.persistence.util.toUuid
 import kdoc.core.settings.AppSettings
 
 /**

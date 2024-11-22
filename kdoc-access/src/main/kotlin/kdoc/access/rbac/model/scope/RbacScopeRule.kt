@@ -7,10 +7,10 @@ package kdoc.access.rbac.model.scope
 import kdoc.access.rbac.model.field.RbacFieldRule
 import kdoc.access.rbac.model.role.RbacRole
 import kdoc.core.database.schema.admin.rbac.RbacScopeRuleTable
-import kdoc.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.types.RbacScope
+import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.core.database.schema.admin.rbac.type.RbacScope
 import kdoc.core.persistence.model.Meta
-import kdoc.core.persistence.serializers.Uuid
+import kdoc.core.persistence.serializer.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
