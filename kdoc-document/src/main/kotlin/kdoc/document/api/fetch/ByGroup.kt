@@ -26,11 +26,7 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteApi
 internal fun Route.findDocumentsByGroupRoute() {
-    /**
-     * Find all documents by group.
-     * @OpenAPITag Document - Find
-     */
-    get("v1/document/group/{group_id}") {
+    get("/v1/document/group/{group_id}") {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 

@@ -23,7 +23,7 @@ import org.koin.ktor.plugin.scope
 
 @DocumentRouteApi
 internal fun Route.findAllDocumentsRoute() {
-    get("v1/document/") {
+    get("/v1/document/") {
         val pageable: Pageable? = call.getPageable()
 
         val sessionContext: SessionContext = call.getContext()

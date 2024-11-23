@@ -21,11 +21,7 @@ import org.koin.ktor.plugin.scope
 
 @DocumentRouteApi
 internal fun Route.backupDocumentsRoute() {
-    /**
-     * Downloads a backup file containing all the documents.
-     * @OpenAPITag Document - Operate
-     */
-    get("v1/document/backup") {
+    get("/v1/document/backup") {
         // Audit the backup action.
         val sessionContext: SessionContext = call.getContext()
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }

@@ -2,25 +2,26 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.env.health
+package kdoc.server.health
 
 import io.ktor.server.application.*
+import kdoc.core.database.service.DatabaseHealth
 import kdoc.core.database.service.DatabaseService
-import kdoc.core.env.health.annotation.HealthCheckApi
-import kdoc.core.env.health.checks.*
+import kdoc.core.env.HealthCheckApi
 import kdoc.core.util.RouteInfo
 import kdoc.core.util.collectRoutes
+import kdoc.server.health.checks.*
 import kotlinx.serialization.Serializable
 
 /**
  * Data class representing the overall health check for the system.
  *
  * @property health List of errors found during any of the health checks.
- * @property application The [ApplicationHealth] check.
- * @property deployment The [DeploymentHealth] check.
- * @property runtime The [RuntimeHealth] check.
- * @property security The [SecurityHealth] check.
- * @property snowflake The [SnowflakeHealth] check.
+ * @property application The [kdoc.server.health.checks.ApplicationHealth] check.
+ * @property deployment The [kdoc.server.health.checks.DeploymentHealth] check.
+ * @property runtime The [kdoc.server.health.checks.RuntimeHealth] check.
+ * @property security The [kdoc.server.health.checks.SecurityHealth] check.
+ * @property snowflake The [kdoc.server.health.checks.SnowflakeHealth] check.
  * @property database The [DatabaseHealth] check.
  * @property endpoints The list of endpoints registered by the application.
  */

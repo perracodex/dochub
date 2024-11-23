@@ -5,6 +5,7 @@
 package kdoc.document.api.operate
 
 import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -21,7 +22,7 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteApi
 internal fun Route.getDocumentSignedUrlRoute() {
-    get("v1/document/url/{document_id?}/{group_id?}") {
+    get("/v1/document/url") {
         val documentId: Uuid? = call.request.queryParameters["document_id"].toUuidOrNull()
         val groupId: Uuid? = call.request.queryParameters["group_id"]?.toUuidOrNull()
         (documentId ?: groupId) ?: run {
@@ -44,6 +45,14 @@ internal fun Route.getDocumentSignedUrlRoute() {
         summary = "Generate a signed URL for a document download."
         description = "Generate a signed URL for a document download to provide temporary access to the document."
         operationId = "getDocumentSignedUrl"
+        queryParameter<Uuid>(name = "document_id") {
+            description = "The document ID."
+            required = false
+        }
+        queryParameter<Uuid>(name = "group_id") {
+            description = "The group ID."
+            required = false
+        }
         response(status = HttpStatusCode.OK) {
             description = "The signed URL for the document download."
         }

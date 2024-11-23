@@ -27,10 +27,6 @@ import kotlin.uuid.Uuid
  */
 @RbacApi
 internal fun Route.rbacDashboardUpdateRoute() {
-    /**
-     * Processes updates to RBAC settings based on actor submissions from the dashboard form.
-     * @OpenAPITag RBAC
-     */
     post("rbac/dashboard") {
         // Retrieve SessionContext or redirect to the login screen if it's missing.
         val sessionContext: SessionContext = call.getContext()

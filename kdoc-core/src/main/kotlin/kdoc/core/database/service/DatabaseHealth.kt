@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.env.health.checks
+package kdoc.core.database.service
 
 import com.zaxxer.hikari.HikariDataSource
-import kdoc.core.env.health.annotation.HealthCheckApi
+import kdoc.core.env.HealthCheckApi
 import kdoc.core.settings.AppSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
@@ -24,8 +24,8 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  * @property configuration The database [Configuration].
  * @property tables The list of tables in the database.
  */
-@HealthCheckApi
 @Serializable
+@HealthCheckApi
 public data class DatabaseHealth(
     val errors: MutableList<String>,
     val isAlive: Boolean,
@@ -96,9 +96,9 @@ public data class DatabaseHealth(
     ) {
         internal companion object {
             /**
-             * Builds a [ConnectionTest] object from a [Database] object.
+             * Builds a [ConnectionTest] object from a [org.jetbrains.exposed.sql.Database] object.
              *
-             * @param database The source [Database] object to test.
+             * @param database The source [org.jetbrains.exposed.sql.Database] object to test.
              * @return A [Result] containing the [ConnectionTest] instance, or an exception if the test failed.
              */
             fun build(database: Database?): Result<ConnectionTest> {
@@ -155,9 +155,9 @@ public data class DatabaseHealth(
     ) {
         internal companion object {
             /**
-             * Builds a [Datasource] instance from a [HikariDataSource] source.
+             * Builds a [Datasource] instance from a [com.zaxxer.hikari.HikariDataSource] source.
              *
-             * @param datasource The source [HikariDataSource] to build from.
+             * @param datasource The source [com.zaxxer.hikari.HikariDataSource] to build from.
              * @return The build [Datasource] instance.
              */
             fun build(datasource: HikariDataSource?): Datasource? {

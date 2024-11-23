@@ -4,15 +4,17 @@
 
 package kdoc.server.plugins
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.access.rbac.api.rbacRoutes
 import kdoc.access.token.api.accessTokenRoutes
 import kdoc.core.context.getContextOrNull
-import kdoc.core.env.health.healthCheckRoute
 import kdoc.core.security.snowflake.snowflakeRoute
 import kdoc.document.api.documentRoutes
+import kdoc.server.health.healthCheckRoute
 
 /**
  * Initializes and sets up routing for the application.
@@ -41,6 +43,14 @@ internal fun Application.configureRoutes() {
             call.getContextOrNull()?.let {
                 call.respondText(text = "Hello World. Welcome ${it.username}!")
             } ?: call.respondText(text = "Hello World.")
+        } api {
+            tags = setOf("Root")
+            summary = "Root endpoint."
+            description = "The root endpoint of the server."
+            operationId = "root"
+            response<String>(status = HttpStatusCode.OK) {
+                description = "Root endpoint response."
+            }
         }
     }
 }

@@ -7,9 +7,8 @@ package kdoc.core.database.service
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kdoc.core.database.annotation.DatabaseApi
+import kdoc.core.env.HealthCheckApi
 import kdoc.core.env.Tracer
-import kdoc.core.env.health.annotation.HealthCheckApi
-import kdoc.core.env.health.checks.DatabaseHealth
 import kdoc.core.settings.AppSettings
 import kdoc.core.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
@@ -32,11 +31,11 @@ import java.nio.file.Paths
  * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
 @OptIn(DatabaseApi::class)
-internal object DatabaseService {
+public object DatabaseService {
     private val tracer: Tracer = Tracer<DatabaseService>()
 
     /** The database instance held by the service. */
-    lateinit var database: Database
+    internal lateinit var database: Database
         private set
 
     private var hikariDataSource: HikariDataSource? = null
@@ -51,7 +50,7 @@ internal object DatabaseService {
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
-    fun init(
+    internal fun init(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
@@ -236,34 +235,46 @@ internal object DatabaseService {
      * Closes the database connection.
      * Primarily used for testing purposes.
      */
-    fun close() {
+    internal fun close() {
         hikariDataSource?.close()
     }
 
     /**
      * Retrieves HikariCP health metrics.
      */
-    @OptIn(HealthCheckApi::class)
-    fun getHealthCheck(): DatabaseHealth {
-        val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
+    @HealthCheckApi
+    public fun getHealthCheck(): DatabaseHealth {
+        return runCatching {
+            val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
 
-        val isAlive: Boolean = ping()
-        val connectionTest: DatabaseHealth.ConnectionTest? = databaseTest.getOrNull()
-        val datasource: DatabaseHealth.Datasource? = DatabaseHealth.Datasource.build(datasource = hikariDataSource)
-        val tables: List<String> = dumpTables()
+            val isAlive: Boolean = ping()
+            val connectionTest: DatabaseHealth.ConnectionTest? = databaseTest.getOrNull()
+            val datasource: DatabaseHealth.Datasource? = DatabaseHealth.Datasource.build(datasource = hikariDataSource)
+            val tables: List<String> = dumpTables()
 
-        val databaseHealth = DatabaseHealth(
-            isAlive = isAlive,
-            connectionTest = connectionTest,
-            datasource = datasource,
-            tables = tables
-        )
+            val databaseHealth = DatabaseHealth(
+                isAlive = isAlive,
+                connectionTest = connectionTest,
+                datasource = datasource,
+                tables = tables
+            )
 
-        if (databaseTest.isFailure) {
-            databaseHealth.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
+            if (databaseTest.isFailure) {
+                databaseHealth.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
+            }
+
+            databaseHealth
+        }.getOrElse { error ->
+            tracer.error(message = "Failed to retrieve database health check.", cause = error)
+            DatabaseHealth(
+                isAlive = false,
+                connectionTest = null,
+                datasource = null,
+                tables = emptyList(),
+            ).apply {
+                errors.add("Failed to retrieve database health check. ${error.message}")
+            }
         }
-
-        return databaseHealth
     }
 
     /**
@@ -285,7 +296,7 @@ internal object DatabaseService {
      *
      * Setting up the schema is optional, as it can be created also by migrations.
      */
-    class SchemaBuilder {
+    internal class SchemaBuilder {
         private val tables: MutableList<Table> = mutableListOf()
 
         /**
@@ -297,7 +308,7 @@ internal object DatabaseService {
             tables.add(table)
         }
 
-        internal fun createTables() {
+        fun createTables() {
             if (tables.isNotEmpty()) {
                 SchemaUtils.create(tables = tables.toTypedArray())
             }

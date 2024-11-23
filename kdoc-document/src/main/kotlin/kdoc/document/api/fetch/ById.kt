@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteApi
 internal fun Route.findDocumentByIdRoute() {
-    get("v1/document/{document_id}/") {
+    get("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
         val sessionContext: SessionContext = call.getContext()

@@ -5,6 +5,7 @@
 package kdoc.document.api.operate
 
 import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,14 +19,11 @@ import kdoc.document.service.DocumentService
 import kdoc.document.service.manager.DownloadManager
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
+import java.io.OutputStream
 
 @DocumentRouteApi
 internal fun Route.downloadDocumentRoute() {
-    /**
-     * Serve a document file to download.
-     * @OpenAPITag Document - Operate
-     */
-    get("v1/document/download/{token?}/{signature?}") {
+    get("/v1/document/download") {
         val token: String = call.request.queryParameters.getOrFail(name = "token")
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 
@@ -66,11 +64,20 @@ internal fun Route.downloadDocumentRoute() {
         summary = "Download a document."
         description = "Download a document file using a token and signature."
         operationId = "downloadDocument"
+        queryParameter<String>(name = "token") {
+            description = "The download token."
+        }
+        queryParameter<String>(name = "signature") {
+            description = "The download signature."
+        }
         response(status = HttpStatusCode.BadRequest) {
             description = "Missing token or signature."
         }
         response(status = HttpStatusCode.Forbidden) {
             description = "Unable to initiate download."
+        }
+        response<OutputStream>(status = HttpStatusCode.OK) {
+            description = "The document file stream."
         }
     }
 }

@@ -22,11 +22,7 @@ import kotlin.uuid.Uuid
 
 @DocumentRouteApi
 internal fun Route.deleteDocumentByIdRoute() {
-    /**
-     * Delete a document by ID.
-     * @OpenAPITag Document - Delete
-     */
-    delete("v1/document/{document_id}/") {
+    delete("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
         val sessionContext: SessionContext = call.getContext()

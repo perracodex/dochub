@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.core.env.health.checks
+package kdoc.server.health.checks
 
 import io.ktor.server.application.*
 import kdoc.core.env.EnvironmentType
-import kdoc.core.env.health.annotation.HealthCheckApi
+import kdoc.core.env.HealthCheckApi
 import kdoc.core.settings.AppSettings
 import kdoc.core.util.DateTimeUtils.current
 import kotlinx.datetime.Instant

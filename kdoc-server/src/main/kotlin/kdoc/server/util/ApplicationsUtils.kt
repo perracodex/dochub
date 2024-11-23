@@ -24,23 +24,12 @@ internal object ApplicationsUtils {
 
             // Dumps the server's endpoints to the console for easy access and testing.
             // This does not include the actual API routes endpoints.
-            NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
-            NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
-            NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
+            NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("/admin/health"))
+            NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("admin/snowflake/${SnowflakeFactory.nextId()}"))
+            NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("admin/metrics"))
 
             if (AppSettings.security.rbac.isEnabled) {
                 NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
-            }
-
-            if (AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)) {
-                NetworkUtils.logEndpoints(
-                    reason = "Swagger, Redoc, OpenApi",
-                    endpoints = listOf(
-                        AppSettings.apiSchema.swaggerEndpoint,
-                        AppSettings.apiSchema.redocEndpoint,
-                        AppSettings.apiSchema.openApiEndpoint,
-                    )
-                )
             }
 
             // Log the server readiness.

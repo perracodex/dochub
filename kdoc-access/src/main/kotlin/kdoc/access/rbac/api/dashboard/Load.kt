@@ -25,10 +25,6 @@ import kdoc.core.persistence.util.toUuidOrNull
  */
 @RbacApi
 internal fun Route.rbacDashboardLoadRoute() {
-    /**
-     * Opens the RBAC dashboard. Redirects to the login screen if the [SessionContext] is invalid.
-     * @OpenAPITag RBAC
-     */
     get("rbac/dashboard") {
         // Attempt to retrieve the SessionContext for RBAC dashboard access. Redirect to the login screen if null.
         val sessionContext: SessionContext = call.getContext()

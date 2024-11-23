@@ -11,6 +11,11 @@ dependencies {
     implementation(project(":kdoc-access"))
     implementation(project(":kdoc-document"))
 
+    implementation(libs.kopapi)
+
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
+
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.content.negotiation)

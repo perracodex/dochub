@@ -49,7 +49,7 @@ public fun Application.configureMicroMeterMetrics() {
 
     routing {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            get("/metrics") {
+            get("/admin/metrics") {
                 call.respond(status = HttpStatusCode.OK, message = Telemetry.scrape())
             }
         }
