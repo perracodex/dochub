@@ -139,7 +139,6 @@ internal class MultipartFileHandler(
 
             // Await all the deferred operations to complete and collect responses.
             return@withContext deferredResponses.awaitAll()
-
         } catch (e: Exception) {
             tracer.error("Error uploading document: $e")
 
@@ -239,9 +238,9 @@ internal class MultipartFileHandler(
         val key: String = AppSettings.storage.cipherKey
         val encryptedFilename: String = EncryptionUtils.aesEncrypt(data = newFilename, key = key)
 
-        if (EncryptionUtils.aesDecrypt(data = encryptedFilename, key = key) != newFilename) {
-            throw IllegalArgumentException("Inconsistent document filename encryption/decryption.")
-        }
+        require(
+            EncryptionUtils.aesDecrypt(data = encryptedFilename, key = key) == newFilename
+        ) { "Inconsistent document filename encryption/decryption." }
 
         return encryptedFilename
     }

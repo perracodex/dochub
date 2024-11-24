@@ -98,6 +98,7 @@ public object SecureIO {
      * @param output The output stream to write the processed data to.
      * @param cipher The initialized [Cipher] instance for processing the data.
      */
+    @Suppress("MagicNumber")
     private fun write(input: InputStream, output: OutputStream, cipher: Cipher) {
         // Buffer size set to a multiple of the cipher block size for efficient processing.
         val bufferSize: Int = cipher.blockSize * 1024

@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) // Required for Kotlin JVM development.
     alias(libs.plugins.ktor) // Required for Ktor server development.
     alias(libs.plugins.kotlin.serialization) apply false // Required for Kotlin Serialization support.
+    alias(libs.plugins.detekt) // Required for static code analysis.
 }
 
 group = "kdoc"
@@ -35,7 +36,7 @@ application {
     // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
     // https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/topics/debugging.md
     // Defined in 'gradle.properties' file.
-    val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString()?.toBoolean() ?: false
+    val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString().toBoolean()
     if (enhanceCoroutinesDebugging) {
         applicationDefaultJvmArgs = listOf("-Dkotlinx.coroutines.debug=on")
     }
@@ -65,6 +66,7 @@ subprojects {
         plugin(rootProject.libs.plugins.dokka.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.jvm.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.serialization.get().pluginId)
+        plugin(rootProject.libs.plugins.detekt.get().pluginId)
     }
 
     // Configure the Kotlin JVM toolchain for all subprojects to use JDK version 17.
@@ -79,7 +81,7 @@ subprojects {
     }
 
     // Defined in 'gradle.properties' file.
-    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString()?.toBoolean() ?: false
+    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString()?.toString().toBoolean()
 
     // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
     tasks.withType<KotlinCompile>().configureEach {
@@ -92,6 +94,22 @@ subprojects {
 
             freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
             freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+        }
+    }
+
+    // Configure Detekt for static code analysis.
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = false
+        config.setFrom("$rootDir/config/detekt/detekt.yml")
+    }
+
+    // Configure Detekt task reports.
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            html.required.set(true)
+            xml.required.set(false)
+            sarif.required.set(true)
         }
     }
 }
@@ -121,5 +139,8 @@ tasks.named("buildFatJar") {
 
 // Part of the fat JAR workflow: Ensures the keystore copying task is completed before running the fat JAR.
 tasks.named("startShadowScripts") {
+    dependsOn(copyKeystoreTask)
+}
+tasks.named("startScripts") {
     dependsOn(copyKeystoreTask)
 }

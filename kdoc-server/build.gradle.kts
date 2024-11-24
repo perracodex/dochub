@@ -6,10 +6,11 @@ group = "kdoc.server"
 version = "1.0.0"
 
 dependencies {
-
     implementation(project(":kdoc-core"))
     implementation(project(":kdoc-access"))
     implementation(project(":kdoc-document"))
+
+    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.kopapi)
 

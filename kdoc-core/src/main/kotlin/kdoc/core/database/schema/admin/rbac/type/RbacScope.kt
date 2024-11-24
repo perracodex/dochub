@@ -27,5 +27,5 @@ public enum class RbacScope(override val id: Int) : IEnumWithId {
     SYSTEM_ADMIN(id = 101),
 
     /** Allows access to documents. */
-    DOCUMENT(id = 102);
+    DOCUMENT(id = 102)
 }

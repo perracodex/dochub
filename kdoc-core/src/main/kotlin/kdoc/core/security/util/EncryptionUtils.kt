@@ -18,6 +18,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 /**
  * Utility class for database field encryption.
  */
+@Suppress("MagicNumber")
 @OptIn(ExperimentalEncodingApi::class)
 public object EncryptionUtils {
     private enum class AlgorithmName {
@@ -97,8 +98,9 @@ public object EncryptionUtils {
     public fun hexStringToByteArray(value: String): ByteArray {
         return ByteArray(size = value.length / 2).apply {
             for (index in indices) {
-                this[index] = ((Character.digit(value[index * 2], 16) shl 4) +
-                        Character.digit(value[index * 2 + 1], 16)).toByte()
+                val byteValue: Int = (Character.digit(value[index * 2], 16) shl 4) +
+                        Character.digit(value[index * 2 + 1], 16)
+                this[index] = byteValue.toByte()
             }
         }
     }

@@ -116,8 +116,9 @@ internal class DocumentRepository(
             DocumentTable.insert { statement ->
                 statement.toStatement(request = request)
             }[DocumentTable.id].let { documentId ->
-                findById(documentId = documentId)
-                    ?: throw IllegalStateException("Failed to create document.")
+                val document: Document? = findById(documentId = documentId)
+                checkNotNull(document) { "Failed to create document." }
+                document
             }
         }
     }

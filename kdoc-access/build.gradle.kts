@@ -6,8 +6,9 @@ group = "kdoc.access"
 version = "1.0.0"
 
 dependencies {
-
     implementation(project(":kdoc-core"))
+
+    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.kopapi)
 

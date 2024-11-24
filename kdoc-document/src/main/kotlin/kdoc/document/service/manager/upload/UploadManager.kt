@@ -87,7 +87,6 @@ internal class UploadManager(
             }
 
             return output
-
         } catch (e: Exception) {
             tracer.error("Error uploading document: $e")
             // If any file persistence fails, delete all saved files.

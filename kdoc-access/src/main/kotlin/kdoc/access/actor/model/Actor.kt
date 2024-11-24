@@ -51,4 +51,3 @@ internal data class Actor(
         }
     }
 }
-

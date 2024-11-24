@@ -92,8 +92,9 @@ internal class RbacRoleRepository(
                 )
             }
 
-            findById(roleId = roleId)
-                ?: throw IllegalStateException("New record not found.")
+            val rbacRole: RbacRole? = findById(roleId = roleId)
+            checkNotNull(rbacRole) { "New record not found." }
+            rbacRole
         }
     }
 

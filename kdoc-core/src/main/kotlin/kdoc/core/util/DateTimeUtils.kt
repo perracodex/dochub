@@ -14,7 +14,6 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import java.time.Instant as JavaInstant
 
-
 /**
  * Singleton providing time-related utility functions.
  */

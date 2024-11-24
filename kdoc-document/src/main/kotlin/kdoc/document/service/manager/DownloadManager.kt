@@ -166,6 +166,7 @@ internal object DownloadManager {
      * @param decipher If true, the documents will be deciphered before being packed.
      * @param outputStream The output stream where the ZIP archive will be written.
      */
+    @Suppress("NestedBlockDepth")
     private fun pack(
         documents: List<Document>,
         decipher: Boolean,

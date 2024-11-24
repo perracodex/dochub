@@ -16,13 +16,6 @@ import kdoc.document.api.fetch.*
 import kdoc.document.api.operate.*
 
 /**
- * Annotation for controlled access to the Document Routes API.
- */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Document Routes API.")
-@Retention(AnnotationRetention.BINARY)
-internal annotation class DocumentRouteApi
-
-/**
  * Document related endpoints.
  *
  * #### References
@@ -59,3 +52,10 @@ public fun Route.documentRoutes() {
         }
     }
 }
+
+/**
+ * Annotation for controlled access to the Document Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Document Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class DocumentRouteApi
