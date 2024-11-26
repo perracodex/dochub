@@ -14,10 +14,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import junit.framework.TestCase.assertTrue
-import kdoc.access.actor.di.ActorDomainInjection
-import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.core.database.schema.document.type.DocumentType
+import kdoc.access.domain.actor.di.ActorDomainInjection
+import kdoc.access.domain.rbac.di.RbacDomainInjection
 import kdoc.core.util.TestUtils
+import kdoc.database.schema.document.type.DocumentType
+import kdoc.database.test.DatabaseTestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.service.manager.upload.MultipartFileHandler
 import kdoc.document.service.manager.upload.annotation.UploadApi
@@ -31,7 +32,7 @@ class MultipartFileHandlerTest {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
         TestUtils.setupKoin(
             modules = listOf(
                 RbacDomainInjection.get(),
@@ -43,6 +44,7 @@ class MultipartFileHandlerTest {
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

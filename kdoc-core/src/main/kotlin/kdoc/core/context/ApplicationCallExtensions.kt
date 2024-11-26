@@ -9,9 +9,9 @@ import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kdoc.core.context.SessionContext.Companion.SESSION_NAME
 import kdoc.core.error.UnauthorizedException
-import kdoc.core.persistence.serializer.Uuid
-import kdoc.core.persistence.util.toUuid
+import kdoc.core.serializer.Uuid
 import kdoc.core.settings.AppSettings
+import kdoc.core.util.toUuid
 
 /**
  * Extension function to add the given [sessionContext] into the [ApplicationCall] attributes,

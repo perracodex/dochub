@@ -14,6 +14,7 @@ plugins {
 rootProject.name = "KDoc"
 
 include("kdoc-core")
+include("kdoc-database")
 include("kdoc-access")
 include("kdoc-document")
 include("kdoc-server")

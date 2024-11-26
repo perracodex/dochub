@@ -12,6 +12,7 @@ import kdoc.access.plugins.configureRbac
 import kdoc.access.plugins.configureSessions
 import kdoc.core.plugins.*
 import kdoc.core.settings.AppSettings
+import kdoc.database.plugins.configureDatabase
 import kdoc.server.plugins.configureKoin
 import kdoc.server.plugins.configureRoutes
 import kdoc.server.util.ApplicationsUtils

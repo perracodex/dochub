@@ -8,10 +8,10 @@ import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
-import kdoc.core.persistence.util.toUuidOrNull
 import kdoc.core.security.util.SecureUrl
 import kdoc.core.settings.AppSettings
 import kdoc.core.util.NetworkUtils
+import kdoc.core.util.toUuidOrNull
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentFilterSet
 import kdoc.document.model.DocumentRequest

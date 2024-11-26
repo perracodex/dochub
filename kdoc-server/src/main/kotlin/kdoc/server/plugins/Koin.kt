@@ -5,8 +5,8 @@
 package kdoc.server.plugins
 
 import io.ktor.server.application.*
-import kdoc.access.actor.di.ActorDomainInjection
-import kdoc.access.rbac.di.RbacDomainInjection
+import kdoc.access.domain.actor.di.ActorDomainInjection
+import kdoc.access.domain.rbac.di.RbacDomainInjection
 import kdoc.document.di.DocumentDomainInjection
 import org.koin.ktor.plugin.Koin
 

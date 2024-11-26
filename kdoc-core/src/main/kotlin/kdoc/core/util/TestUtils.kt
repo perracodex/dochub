@@ -5,8 +5,6 @@
 package kdoc.core.util
 
 import io.ktor.server.config.*
-import kdoc.core.database.schema.document.DocumentTable
-import kdoc.core.database.service.DatabaseService
 import kdoc.core.settings.AppSettings
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.stopKoin
@@ -28,15 +26,6 @@ public object TestUtils {
     }
 
     /**
-     * Sets up the database for testing.
-     */
-    public fun setupDatabase() {
-        DatabaseService.init(settings = AppSettings.database) {
-            addTable(table = DocumentTable)
-        }
-    }
-
-    /**
      * Sets up Koin for testing.
      *
      * @param modules The modules to load.
@@ -52,8 +41,6 @@ public object TestUtils {
      */
     public fun tearDown() {
         stopKoin()
-
-        DatabaseService.close()
 
         val tempRuntime = File(AppSettings.runtime.workingDir)
         if (tempRuntime.exists()) {

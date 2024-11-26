@@ -3,19 +3,20 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kdoc.access.actor.di.ActorDomainInjection
-import kdoc.access.actor.model.Actor
-import kdoc.access.actor.model.ActorCredentials
-import kdoc.access.actor.model.ActorRequest
-import kdoc.access.actor.service.ActorService
-import kdoc.access.rbac.di.RbacDomainInjection
-import kdoc.access.rbac.model.role.RbacRole
-import kdoc.access.rbac.model.role.RbacRoleRequest
-import kdoc.access.rbac.model.scope.RbacScopeRuleRequest
-import kdoc.access.rbac.service.RbacService
-import kdoc.core.database.schema.admin.rbac.type.RbacAccessLevel
-import kdoc.core.database.schema.admin.rbac.type.RbacScope
+import kdoc.access.domain.actor.di.ActorDomainInjection
+import kdoc.access.domain.actor.model.Actor
+import kdoc.access.domain.actor.model.ActorCredentials
+import kdoc.access.domain.actor.model.ActorRequest
+import kdoc.access.domain.actor.service.ActorService
+import kdoc.access.domain.rbac.di.RbacDomainInjection
+import kdoc.access.domain.rbac.model.role.RbacRole
+import kdoc.access.domain.rbac.model.role.RbacRoleRequest
+import kdoc.access.domain.rbac.model.scope.RbacScopeRuleRequest
+import kdoc.access.domain.rbac.service.RbacService
 import kdoc.core.util.TestUtils
+import kdoc.database.schema.admin.rbac.type.RbacAccessLevel
+import kdoc.database.schema.admin.rbac.type.RbacScope
+import kdoc.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -32,12 +33,13 @@ class RbacActorTest : KoinComponent {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
         TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get()))
     }
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

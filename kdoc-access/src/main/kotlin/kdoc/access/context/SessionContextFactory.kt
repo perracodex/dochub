@@ -12,18 +12,18 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.sessions.*
-import kdoc.access.actor.model.Actor
 import kdoc.access.credential.CredentialService
+import kdoc.access.domain.actor.model.Actor
+import kdoc.access.domain.rbac.service.RbacService
+import kdoc.access.domain.token.annotation.TokenApi
+import kdoc.access.domain.token.service.TokenService
 import kdoc.access.plugins.configureBasicAuthentication
 import kdoc.access.plugins.configureJwtAuthentication
-import kdoc.access.rbac.service.RbacService
-import kdoc.access.token.annotation.TokenApi
-import kdoc.access.token.service.TokenService
 import kdoc.core.context.SessionContext
 import kdoc.core.env.Tracer
-import kdoc.core.persistence.serializer.Uuid
-import kdoc.core.persistence.util.toUuid
+import kdoc.core.serializer.Uuid
 import kdoc.core.settings.AppSettings
+import kdoc.core.util.toUuid
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

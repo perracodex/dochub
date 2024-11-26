@@ -6,8 +6,8 @@ package kdoc.document.service.manager.upload
 
 import io.ktor.http.content.*
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.document.type.DocumentType
 import kdoc.core.env.Tracer
+import kdoc.database.schema.document.type.DocumentType
 import kdoc.document.error.DocumentError
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentRequest

@@ -5,8 +5,8 @@
 package kdoc.document.repository
 
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.document.DocumentAuditTable
-import kdoc.core.database.util.transaction
+import kdoc.database.schema.document.DocumentAuditTable
+import kdoc.database.util.transaction
 import kdoc.document.model.DocumentAuditLogRequest
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

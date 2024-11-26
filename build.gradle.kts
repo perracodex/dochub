@@ -116,6 +116,7 @@ subprojects {
 
 dependencies {
     implementation(project(":kdoc-core"))
+    implementation(project(":kdoc-database"))
     implementation(project(":kdoc-document"))
     implementation(project(":kdoc-server"))
 }

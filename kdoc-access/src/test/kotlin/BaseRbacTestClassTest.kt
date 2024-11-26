@@ -2,8 +2,8 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kdoc.access.rbac.model.base.BaseRbac
-import kdoc.access.rbac.service.RbacFieldAnonymization
+import kdoc.access.domain.rbac.model.base.BaseRbac
+import kdoc.access.domain.rbac.service.RbacFieldAnonymization
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime

@@ -12,7 +12,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.access.token.annotation.TokenApi
+import kdoc.access.domain.token.annotation.TokenApi
 import kdoc.core.context.clearContext
 import kdoc.core.context.setContext
 import kdoc.core.env.Tracer

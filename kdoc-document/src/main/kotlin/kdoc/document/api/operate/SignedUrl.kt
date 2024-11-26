@@ -10,10 +10,10 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdoc.core.context.getContext
-import kdoc.core.persistence.util.toUuidOrNull
 import kdoc.core.security.util.SecureUrl
 import kdoc.core.settings.AppSettings
 import kdoc.core.util.NetworkUtils
+import kdoc.core.util.toUuidOrNull
 import kdoc.document.api.DocumentRouteApi
 import kdoc.document.service.DocumentAuditService
 import org.koin.core.parameter.parametersOf

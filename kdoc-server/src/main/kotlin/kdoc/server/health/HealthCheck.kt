@@ -5,11 +5,11 @@
 package kdoc.server.health
 
 import io.ktor.server.application.*
-import kdoc.core.database.service.DatabaseHealth
-import kdoc.core.database.service.DatabaseService
 import kdoc.core.env.HealthCheckApi
 import kdoc.core.util.RouteInfo
 import kdoc.core.util.collectRoutes
+import kdoc.database.service.DatabaseHealth
+import kdoc.database.service.DatabaseService
 import kdoc.server.health.checks.*
 import kotlinx.serialization.Serializable
 

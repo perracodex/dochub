@@ -6,8 +6,9 @@ import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
 import kdoc.core.context.SessionContext
-import kdoc.core.database.schema.document.type.DocumentType
 import kdoc.core.util.TestUtils
+import kdoc.database.schema.document.type.DocumentType
+import kdoc.database.test.DatabaseTestUtils
 import kdoc.document.di.DocumentDomainInjection
 import kdoc.document.model.Document
 import kdoc.document.model.DocumentRequest
@@ -24,12 +25,13 @@ class TimestampTest : KoinComponent {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
         TestUtils.setupKoin(modules = listOf(DocumentDomainInjection.get()))
     }
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

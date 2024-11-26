@@ -4,7 +4,7 @@
 
 package kdoc.core.context
 
-import kdoc.core.persistence.serializer.Uuid
+import kdoc.core.serializer.Uuid
 import org.jetbrains.exposed.sql.Database
 
 /**

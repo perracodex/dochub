@@ -9,8 +9,8 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdoc.access.rbac.api.rbacRoutes
-import kdoc.access.token.api.accessTokenRoutes
+import kdoc.access.domain.rbac.api.rbacRoutes
+import kdoc.access.domain.token.api.accessTokenRoutes
 import kdoc.core.context.getContextOrNull
 import kdoc.core.security.snowflake.snowflakeRoute
 import kdoc.document.api.documentRoutes

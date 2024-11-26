@@ -15,7 +15,7 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.getPageable
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.core.persistence.util.toUuid
+import kdoc.core.util.toUuid
 import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService

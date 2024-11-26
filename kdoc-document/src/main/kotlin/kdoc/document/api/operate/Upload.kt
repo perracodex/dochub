@@ -14,10 +14,10 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContext
-import kdoc.core.database.schema.document.type.DocumentType
-import kdoc.core.persistence.util.toUuid
-import kdoc.core.persistence.util.toUuidOrNull
 import kdoc.core.settings.AppSettings
+import kdoc.core.util.toUuid
+import kdoc.core.util.toUuidOrNull
+import kdoc.database.schema.document.type.DocumentType
 import kdoc.document.api.DocumentRouteApi
 import kdoc.document.model.Document
 import kdoc.document.service.DocumentAuditService
