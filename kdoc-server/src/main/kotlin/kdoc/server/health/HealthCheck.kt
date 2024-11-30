@@ -9,7 +9,6 @@ import kdoc.core.env.HealthCheckApi
 import kdoc.core.util.RouteInfo
 import kdoc.core.util.collectRoutes
 import kdoc.database.service.DatabaseHealth
-import kdoc.database.service.DatabaseService
 import kdoc.server.health.checks.*
 import kotlinx.serialization.Serializable
 
@@ -65,7 +64,7 @@ public data class HealthCheck internal constructor(
                 runtime = RuntimeHealth(call = call),
                 security = SecurityHealth(),
                 snowflake = SnowflakeHealth(),
-                database = DatabaseService.getHealthCheck(),
+                database = DatabaseHealth.create(),
                 endpoints = call.application.collectRoutes(),
             )
         }
