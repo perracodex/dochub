@@ -7,7 +7,6 @@ package kdoc.core.context
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
-import kdoc.core.context.SessionContext.Companion.SESSION_NAME
 import kdoc.core.error.UnauthorizedException
 import kdoc.core.serializer.Uuid
 import kdoc.core.settings.AppSettings
@@ -25,7 +24,7 @@ import kdoc.core.util.toUuid
  */
 public fun ApplicationCall.setContext(sessionContext: SessionContext): SessionContext {
     this.attributes.put(key = SessionContextUtils.sessionContextKey, value = sessionContext)
-    this.sessions.set(name = SESSION_NAME, value = sessionContext.actorId)
+    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext.actorId)
     return sessionContext
 }
 
@@ -74,7 +73,7 @@ public fun ApplicationCall.getContextOrNull(): SessionContext? {
  */
 public fun ApplicationCall.clearContext() {
     this.attributes.remove(key = SessionContextUtils.sessionContextKey)
-    this.sessions.clear(name = SESSION_NAME)
+    this.sessions.clear(name = SessionContext.SESSION_NAME)
 }
 
 /**
