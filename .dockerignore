@@ -7,8 +7,7 @@
 !gradlew
 !gradlew.bat
 !keystore.p12
-!kdoc-access/**
-!kdoc-core/**
 !kdoc-document/**
 !kdoc-server/**
+!kdoc-system/**
 !build/libs/**
