@@ -114,13 +114,6 @@ subprojects {
     }
 }
 
-dependencies {
-    implementation(project(":kdoc-core"))
-    implementation(project(":kdoc-database"))
-    implementation(project(":kdoc-document"))
-    implementation(project(":kdoc-server"))
-}
-
 /** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */
 val copyKeystoreTask: TaskProvider<Copy> by tasks.registering(Copy::class) {
     from("keystore.p12")

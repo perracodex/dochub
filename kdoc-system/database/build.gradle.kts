@@ -6,7 +6,7 @@ group = "kdoc.database"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":kdoc-core"))
+    implementation(project(":kdoc-system:core"))
 
     detektPlugins(libs.detekt.formatting)
 
