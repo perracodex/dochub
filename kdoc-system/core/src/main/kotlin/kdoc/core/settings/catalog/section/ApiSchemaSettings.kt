@@ -4,7 +4,6 @@
 
 package kdoc.core.settings.catalog.section
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.env.EnvironmentType
 import kotlinx.serialization.Serializable
 
@@ -24,4 +23,4 @@ public data class ApiSchemaSettings(
     val openApiEndpoint: String,
     val swaggerEndpoint: String,
     val redocEndpoint: String
-) : IConfigCatalogSection
+)

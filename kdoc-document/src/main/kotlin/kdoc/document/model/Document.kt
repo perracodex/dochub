@@ -4,7 +4,7 @@
 
 package kdoc.document.model
 
-import io.perracodex.exposed.pagination.IModelTransform
+import io.perracodex.exposed.pagination.MapModel
 import kdoc.core.serializer.Uuid
 import kdoc.database.model.Meta
 import kdoc.database.schema.document.DocumentTable
@@ -56,7 +56,7 @@ public data class Document(
         val size: Long = 0L
     )
 
-    internal companion object : IModelTransform<Document> {
+    internal companion object : MapModel<Document> {
         override fun from(row: ResultRow): Document {
             return Document(
                 id = row[DocumentTable.id],

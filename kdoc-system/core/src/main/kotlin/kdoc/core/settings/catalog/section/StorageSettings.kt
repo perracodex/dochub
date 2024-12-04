@@ -4,7 +4,6 @@
 
 package kdoc.core.settings.catalog.section
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,7 +24,7 @@ public data class StorageSettings(
     val cipherAlgorithm: String,
     val cipherTransformation: String,
     val cipherKey: String
-) : IConfigCatalogSection {
+) {
     init {
         require(uploadsRootPath.isNotBlank()) { "Uploads root path must not be blank." }
         require(downloadsBasePath.isNotBlank()) { "Downloads base URL must not be blank." }

@@ -60,13 +60,13 @@ internal class DocumentRepository(
         return transaction(sessionContext = sessionContext) {
             DocumentTable.selectAll()
                 .andWhere(condition)
-                .paginate(pageable = pageable, transform = Document)
+                .paginate(pageable = pageable, map = Document)
         }
     }
 
     override fun findAll(pageable: Pageable?): Page<Document> {
         return transaction(sessionContext = sessionContext) {
-            DocumentTable.selectAll().paginate(pageable = pageable, transform = Document)
+            DocumentTable.selectAll().paginate(pageable = pageable, map = Document)
         }
     }
 
@@ -107,7 +107,7 @@ internal class DocumentRepository(
                         DocumentTable.type inList filterSet.type
                     }
                 }
-            }.paginate(pageable = pageable, transform = Document)
+            }.paginate(pageable = pageable, map = Document)
         }
     }
 

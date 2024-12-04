@@ -4,7 +4,6 @@
 
 package kdoc.core.settings.catalog.section.security.node
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
@@ -22,7 +21,7 @@ public data class EncryptionSettings(
     val atTransit: Spec,
     val atTransitExpiration: Long,
     val hmac: Hmac
-) : IConfigCatalogSection {
+) {
 
     /**
      * Configuration settings for a specific encryption.
@@ -38,7 +37,7 @@ public data class EncryptionSettings(
         val salt: String,
         val key: String,
         val sign: String
-    ) : IConfigCatalogSection {
+    ) {
         init {
             require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
             require(salt.isNotBlank()) { "Missing encryption salt." }
@@ -61,7 +60,7 @@ public data class EncryptionSettings(
     public data class Hmac(
         val algorithm: String,
         val key: String
-    ) : IConfigCatalogSection {
+    ) {
         init {
             require(algorithm.isNotBlank()) { "Missing HMAC algorithm." }
             require(key.isNotBlank() && (key.length >= SecuritySettings.MIN_KEY_LENGTH)) {

@@ -4,7 +4,6 @@
 
 package kdoc.core.settings.catalog.section.security
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kdoc.core.settings.catalog.section.security.node.ConstraintsSettings
 import kdoc.core.settings.catalog.section.security.node.EncryptionSettings
 import kdoc.core.settings.catalog.section.security.node.RbacSettings
@@ -32,7 +31,7 @@ public data class SecuritySettings(
     val basicAuth: BasicAuthSettings,
     val jwtAuth: JwtAuthSettings,
     val rbac: RbacSettings
-) : IConfigCatalogSection {
+) {
     public companion object {
         /** The minimum length for a security key, such as encryption and secret keys. */
         public const val MIN_KEY_LENGTH: Int = 12
