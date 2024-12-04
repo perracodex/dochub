@@ -6,7 +6,6 @@ package kdoc.core.settings.catalog
 
 import kdoc.core.settings.catalog.section.*
 import kdoc.core.settings.catalog.section.security.SecuritySettings
-import kotlinx.serialization.Serializable
 
 /**
  * Represents the top-level configuration settings for the application.
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
  * @property security The security settings for the application.
  * @property storage The storage settings for the application.
  */
-@Serializable
 internal data class ConfigurationCatalog(
     val apiSchema: ApiSchemaSettings,
     val cors: CorsSettings,

@@ -4,8 +4,6 @@
 
 package kdoc.core.settings.catalog.section
 
-import kotlinx.serialization.Serializable
-
 /**
  * Database related settings.
  *
@@ -16,7 +14,6 @@ import kotlinx.serialization.Serializable
  * @property cipherTransformation The transformation used to cipher and de-cipher storage files.
  * @property cipherKey The key used to cipher and de-cipher storage files.
  */
-@Serializable
 public data class StorageSettings(
     val uploadsRootPath: String,
     val downloadsBasePath: String,

@@ -9,7 +9,6 @@ import kdoc.core.settings.catalog.section.security.node.EncryptionSettings
 import kdoc.core.settings.catalog.section.security.node.RbacSettings
 import kdoc.core.settings.catalog.section.security.node.auth.BasicAuthSettings
 import kdoc.core.settings.catalog.section.security.node.auth.JwtAuthSettings
-import kotlinx.serialization.Serializable
 
 /**
  * Top level section for the Security related settings.
@@ -22,7 +21,6 @@ import kotlinx.serialization.Serializable
  * @property jwtAuth Settings related to JWT authentication, such as the JWT secrets.
  * @property rbac Settings related to RBAC authentication.
  */
-@Serializable
 public data class SecuritySettings(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,

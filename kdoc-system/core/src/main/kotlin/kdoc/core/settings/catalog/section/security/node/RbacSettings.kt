@@ -4,14 +4,11 @@
 
 package kdoc.core.settings.catalog.section.security.node
 
-import kotlinx.serialization.Serializable
-
 /**
  * RBAC settings.
  *
  * @property isEnabled Flag to enable/disable RBAC authentication.
  */
-@Serializable
 public data class RbacSettings(
     val isEnabled: Boolean
 )
