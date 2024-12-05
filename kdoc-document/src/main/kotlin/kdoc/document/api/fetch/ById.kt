@@ -48,8 +48,8 @@ internal fun Route.findDocumentByIdRoute() {
         response<Document>(status = HttpStatusCode.OK) {
             description = "The document."
         }
-        response<AppException.Response>(status = HttpStatusCode.NotFound) {
-            description = "The document was not found."
+        response<AppException.Response>(status = DocumentError.DocumentNotFound.STATUS_CODE) {
+            description = "The document was not found. Code ${DocumentError.DocumentNotFound.ERROR_CODE}"
         }
     }
 }
