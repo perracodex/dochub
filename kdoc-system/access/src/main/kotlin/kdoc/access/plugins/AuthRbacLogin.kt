@@ -28,7 +28,9 @@ import kdoc.core.context.setContext
 public fun Application.configureRbac() {
 
     // Refresh the default actors.
-    DefaultActorFactory.refresh()
+    this.monitor.subscribe(definition = ApplicationStarted) {
+        DefaultActorFactory.refresh()
+    }
 
     // Configure the RBAC form login authentication.
     authentication {
