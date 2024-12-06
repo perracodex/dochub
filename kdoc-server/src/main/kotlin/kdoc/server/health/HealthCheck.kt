@@ -26,7 +26,7 @@ import kotlinx.serialization.Serializable
  */
 @OptIn(HealthCheckApi::class)
 @Serializable
-public data class HealthCheck internal constructor(
+public data class HealthCheck private constructor(
     val health: MutableList<String>,
     val application: ApplicationHealth,
     val deployment: DeploymentHealth,
