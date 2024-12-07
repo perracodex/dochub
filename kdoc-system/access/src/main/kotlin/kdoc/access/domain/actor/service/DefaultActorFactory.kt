@@ -40,8 +40,7 @@ public object DefaultActorFactory : KoinComponent {
     }
 
     /**
-     * Refresh the Credentials and RBAC services on application start,
-     * so the caches are up-to-date and ready to handle requests.
+     * Refresh the Credentials and RBAC services, so the caches are up-to-date.
      */
     public suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing actors.")
