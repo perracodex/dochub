@@ -5,6 +5,7 @@
 package kdoc.database.test
 
 import kdoc.core.settings.AppSettings
+import kdoc.database.schema.document.DocumentAuditTable
 import kdoc.database.schema.document.DocumentTable
 import kdoc.database.service.DatabaseService
 
@@ -17,7 +18,11 @@ public object DatabaseTestUtils {
      * Sets up the database for testing.
      */
     public fun setupDatabase() {
-        DatabaseService.init(settings = AppSettings.database) {
+        DatabaseService.init(
+            settings = AppSettings.database,
+            environment = AppSettings.runtime.environment
+        ) {
+            addTable(table = DocumentAuditTable)
             addTable(table = DocumentTable)
         }
     }

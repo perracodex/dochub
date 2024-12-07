@@ -6,8 +6,8 @@ package kdoc.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import kdoc.core.env.EnvironmentType
 import kdoc.core.env.Tracer
-import kdoc.core.settings.AppSettings
 import kdoc.core.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
@@ -45,12 +45,14 @@ internal object DatabaseService {
      * @receiver [SchemaBuilder] Optional lambda to setup the database schema.
      *
      * @param settings The [DatabaseSettings] to be used to configure the database.
+     * @param environment The runtime application environment.
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
     fun init(
         settings: DatabaseSettings,
+        environment: EnvironmentType,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
         schemaSetup: SchemaBuilder.() -> Unit = {}
@@ -80,9 +82,10 @@ internal object DatabaseService {
             val schemaBuilder = SchemaBuilder()
             schemaSetup.invoke(schemaBuilder)
             setupDatabaseSchema(
+                settings = settings,
+                environment = environment,
                 database = databaseInstance,
-                schemaBuilder = schemaBuilder,
-                settings = settings
+                schemaBuilder = schemaBuilder
             )
         }
 
@@ -131,25 +134,27 @@ internal object DatabaseService {
     /**
      * Creates the database schema if such does not exist.
      *
+     * @param settings The target [DatabaseSettings] to be used for the migration.
+     * @param environment The runtime environment.
      * @param database The database instance to use.
      * @param schemaBuilder The schema builder to generate the database schema.
-     * @param settings The target [DatabaseSettings] to be used for the migration.
      */
     private fun setupDatabaseSchema(
+        settings: DatabaseSettings,
+        environment: EnvironmentType,
         database: Database,
-        schemaBuilder: SchemaBuilder,
-        settings: DatabaseSettings
+        schemaBuilder: SchemaBuilder
     ) {
-        if (AppSettings.database.updateSchemaEnvironments.contains(AppSettings.runtime.environment)) {
+        if (settings.updateSchemaEnvironments.contains(environment)) {
             transaction(db = database) {
-                if (AppSettings.database.useMigrations) {
+                if (settings.useMigrations) {
                     runMigrations(settings = settings)
                 } else {
                     schemaBuilder.createTables()
                 }
             }
         } else {
-            tracer.info("Database schema update skipped for environment: ${AppSettings.runtime.environment}.")
+            tracer.info("Database schema update skipped for environment: $environment.")
         }
     }
 
