@@ -7,7 +7,7 @@ package kdoc.server.health.checks
 import io.ktor.server.application.*
 import kdoc.core.env.EnvironmentType
 import kdoc.core.env.HealthCheckApi
-import kdoc.core.settings.AppSettings
+import kdoc.core.settings.catalog.section.RuntimeSettings
 import kdoc.core.util.DateTimeUtils.current
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckApi
 @Serializable
-public data class RuntimeHealth(
+public data class RuntimeHealth private constructor(
     val errors: MutableList<String>,
     val machineId: Int,
     val environment: EnvironmentType,
@@ -33,10 +33,10 @@ public data class RuntimeHealth(
     val utc: Instant,
     val local: LocalDateTime,
 ) {
-    internal constructor(call: ApplicationCall) : this(
+    internal constructor(call: ApplicationCall, settings: RuntimeSettings) : this(
         errors = mutableListOf(),
-        machineId = AppSettings.runtime.machineId,
-        environment = AppSettings.runtime.environment,
+        machineId = settings.machineId,
+        environment = settings.environment,
         developmentModeEnabled = call.application.developmentMode,
         utc = Instant.current(),
         local = LocalDateTime.current()
