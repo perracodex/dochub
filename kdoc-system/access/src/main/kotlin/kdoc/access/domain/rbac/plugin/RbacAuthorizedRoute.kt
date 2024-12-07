@@ -5,7 +5,7 @@
 package kdoc.access.domain.rbac.plugin
 
 import io.ktor.server.routing.*
-import kdoc.access.domain.rbac.plugin.annotation.RbacApi
+import kdoc.access.domain.rbac.annotation.RbacApi
 import kdoc.database.schema.admin.rbac.type.RbacAccessLevel
 import kdoc.database.schema.admin.rbac.type.RbacScope
 

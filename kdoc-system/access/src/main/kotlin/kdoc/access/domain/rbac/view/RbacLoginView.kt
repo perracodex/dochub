@@ -5,7 +5,7 @@
 package kdoc.access.domain.rbac.view
 
 import kdoc.access.credential.CredentialService
-import kdoc.access.domain.rbac.plugin.annotation.RbacApi
+import kdoc.access.domain.rbac.annotation.RbacApi
 import kotlinx.html.*
 
 /**

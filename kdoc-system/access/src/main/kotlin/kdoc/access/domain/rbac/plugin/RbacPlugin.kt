@@ -10,7 +10,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kdoc.access.context.SessionContextFactory
-import kdoc.access.domain.rbac.plugin.annotation.RbacApi
+import kdoc.access.domain.rbac.annotation.RbacApi
 import kdoc.access.domain.rbac.service.RbacService
 import kdoc.core.context.SessionContext
 import kdoc.core.context.getContextOrNull

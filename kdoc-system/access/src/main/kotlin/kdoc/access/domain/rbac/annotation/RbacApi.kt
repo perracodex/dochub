@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kdoc.access.domain.rbac.plugin.annotation
+package kdoc.access.domain.rbac.annotation
 
 /**
  * Annotation for controlled access to the RBAC API.

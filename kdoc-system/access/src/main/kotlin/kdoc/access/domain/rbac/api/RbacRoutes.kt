@@ -7,12 +7,12 @@ package kdoc.access.domain.rbac.api
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
+import kdoc.access.domain.rbac.annotation.RbacApi
 import kdoc.access.domain.rbac.api.dashboard.rbacDashboardLoadRoute
 import kdoc.access.domain.rbac.api.dashboard.rbacDashboardUpdateRoute
 import kdoc.access.domain.rbac.api.login.rbacLoginAccessRoute
 import kdoc.access.domain.rbac.api.login.rbacLoginSubmissionRoute
 import kdoc.access.domain.rbac.api.login.rbacLogoutRoute
-import kdoc.access.domain.rbac.plugin.annotation.RbacApi
 import kdoc.access.domain.rbac.plugin.withRbac
 import kdoc.core.plugins.RateLimitScope
 import kdoc.database.schema.admin.rbac.type.RbacAccessLevel

@@ -4,9 +4,9 @@
 
 package kdoc.access.domain.rbac.service
 
+import kdoc.access.domain.rbac.annotation.RbacApi
 import kdoc.access.domain.rbac.model.role.RbacRole
 import kdoc.access.domain.rbac.model.scope.RbacScopeRuleRequest
-import kdoc.access.domain.rbac.plugin.annotation.RbacApi
 import kdoc.access.domain.rbac.view.RbacDashboardView
 import kdoc.core.context.SessionContext
 import kdoc.database.schema.admin.rbac.type.RbacAccessLevel
