@@ -14,7 +14,7 @@ package kdoc.core.settings.catalog.section
  * @property cipherTransformation The transformation used to cipher and de-cipher storage files.
  * @property cipherKey The key used to cipher and de-cipher storage files.
  */
-public data class StorageSettings(
+public data class StorageSettings internal constructor(
     val uploadsRootPath: String,
     val downloadsBasePath: String,
     val cipher: Boolean,

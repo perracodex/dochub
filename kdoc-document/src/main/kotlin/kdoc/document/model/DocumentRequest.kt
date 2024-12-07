@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @property size The size of the document in bytes. Without encryption.
  */
 @Serializable
-public data class DocumentRequest(
+public data class DocumentRequest internal constructor(
     val ownerId: Uuid,
     val groupId: Uuid,
     val type: DocumentType,

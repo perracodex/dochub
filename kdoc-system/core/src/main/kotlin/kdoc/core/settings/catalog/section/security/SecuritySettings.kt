@@ -21,7 +21,7 @@ import kdoc.core.settings.catalog.section.security.node.auth.JwtAuthSettings
  * @property jwtAuth Settings related to JWT authentication, such as the JWT secrets.
  * @property rbac Settings related to RBAC authentication.
  */
-public data class SecuritySettings(
+public data class SecuritySettings internal constructor(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,
     val encryption: EncryptionSettings,

@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  * @property description The description of the document.
  */
 @Serializable
-public data class DocumentFilterSet(
+public data class DocumentFilterSet internal constructor(
     val id: Uuid? = null,
     val ownerId: Uuid? = null,
     val groupId: Uuid? = null,

@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property atTransitExpiration Expiration time for encryption in transit, in seconds.
  * @property hmac Settings related to HMAC encryption.
  */
-public data class EncryptionSettings(
+public data class EncryptionSettings internal constructor(
     val atRest: Spec,
     val atTransit: Spec,
     val atTransitExpiration: Long,
@@ -30,7 +30,7 @@ public data class EncryptionSettings(
      * @property key Secret key for encrypting/decrypting data.
      * @property sign Signature key to sign the encrypted data.
      */
-    public data class Spec(
+    public data class Spec internal constructor(
         val algorithm: String,
         val salt: String,
         val key: String,
@@ -55,7 +55,7 @@ public data class EncryptionSettings(
      * @property key Secret key for encrypting/decrypting data.
      */
     @Serializable
-    public data class Hmac(
+    public data class Hmac internal constructor(
         val algorithm: String,
         val key: String
     ) {

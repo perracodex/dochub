@@ -26,7 +26,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The document's metadata.
  */
 @Serializable
-public data class Document(
+public data class Document private constructor(
     val id: Uuid,
     val ownerId: Uuid,
     val groupId: Uuid,
@@ -45,7 +45,7 @@ public data class Document(
      * @property isCiphered Whether the document is ciphered.
      * @property size The size of the document in bytes. Without encryption.
      */
-    public data class Detail(
+    public data class Detail internal constructor(
         val type: DocumentType = DocumentType.GENERAL,
         val description: String? = null,
         val originalName: String = "",

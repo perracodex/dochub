@@ -9,6 +9,6 @@ package kdoc.core.settings.catalog.section.security.node
  *
  * @property isEnabled Flag to enable/disable RBAC authentication.
  */
-public data class RbacSettings(
+public data class RbacSettings internal constructor(
     val isEnabled: Boolean
 )
