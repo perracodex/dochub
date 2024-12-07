@@ -5,7 +5,7 @@
 package kdoc.server.util
 
 import io.ktor.server.application.*
-import kdoc.access.domain.actor.service.DefaultActorFactory
+import kdoc.access.domain.actor.service.ActorSyncService
 import kdoc.core.env.Tracer
 import kdoc.core.security.snowflake.SnowflakeFactory
 import kdoc.core.settings.AppSettings
@@ -27,7 +27,7 @@ internal object ApplicationsUtils {
         // Add a hook to refresh the Credentials and RBAC services when the application starts.
         application.monitor.subscribe(definition = ApplicationStarted) {
             application.launch {
-                DefaultActorFactory.refresh()
+                ActorSyncService.refresh()
             }
         }
 
