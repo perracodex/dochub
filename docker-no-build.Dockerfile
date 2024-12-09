@@ -8,8 +8,8 @@
 # Final image stage.
 FROM amazoncorretto:17
 LABEL authors="perracodex"
-LABEL image.tag="kdoc"
-LABEL name="kdoc-final-image"
+LABEL image.tag="kdochub"
+LABEL name="kdochub-final-image"
 
 # Expose the ports the container listens on during runtime.
 EXPOSE 8080
@@ -19,7 +19,7 @@ EXPOSE 8443
 RUN mkdir -p /app
 
 # Copy the pre-built jar file from the source directory to the image.
-COPY build/libs/kdoc-1.0.0-all.jar /app/kdoc-1.0.0-all.jar
+COPY build/libs/kdochub-1.0.0-all.jar /app/kdochub-1.0.0-all.jar
 # Copy the keystore file from the source directory to the image.
 COPY keystore.p12 /app/keystore.p12
 
@@ -27,10 +27,10 @@ COPY keystore.p12 /app/keystore.p12
 # Environment variables.
 
 # Set host to 0.0.0.0 to listens on all interfaces.
-ENV KDOC_KTOR_DEPLOYMENT_HOST="0.0.0.0"
+ENV KDOCHUB_KTOR_DEPLOYMENT_HOST="0.0.0.0"
 
 # Set the SSL key location.
-ENV KDOC_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
+ENV KDOCHUB_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
 
 # To override more configuration settings at image level add them here.
 # For more settings see the existing 'conf' files in the Core module, under the resources folder.
@@ -38,4 +38,4 @@ ENV KDOC_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
 #-------------------------------------------------------------------------------------------------
 # Execution entrypoint.
 ENV JAVA_OPTS=""
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/kdoc-1.0.0-all.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/kdochub-1.0.0-all.jar"]

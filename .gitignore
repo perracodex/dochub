@@ -43,10 +43,10 @@ bin/
 
 ### Swagger ###
 /docs/*
-/kdoc-server/docs/*
+/kdochub-server/docs/*
 
 ### Custom ###
-/kdoc-server/.runtime/database/*
+/kdochub-server/.runtime/database/*
 .runtime/*
 /.database/*
 .idea/
