@@ -107,7 +107,7 @@ internal class RbacService(
     suspend fun refreshActors(): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing RBAC cache for all actors.")
 
-        var totalActors: Int
+        val totalActors: Int
 
         // Retrieve all actors from the database, filtering out those without any scope rules.
         val newCache: ConcurrentHashMap<Uuid, Actor> = actorRepository.findAll().also { actors ->
