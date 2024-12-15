@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdochub.core.settings.AppSettings
+import kdochub.base.settings.AppSettings
 
 /**
  * Defines the health check endpoints.

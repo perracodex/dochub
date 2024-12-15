@@ -4,7 +4,7 @@
 
 package kdochub.document.model
 
-import kdochub.core.serializer.Uuid
+import kdochub.base.serializer.Uuid
 import kdochub.database.schema.document.type.DocumentType
 import kotlinx.serialization.Serializable
 

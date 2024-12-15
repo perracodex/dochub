@@ -19,11 +19,11 @@ import kdochub.access.domain.token.annotation.TokenApi
 import kdochub.access.domain.token.service.TokenService
 import kdochub.access.plugins.configureBasicAuthentication
 import kdochub.access.plugins.configureJwtAuthentication
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
-import kdochub.core.serializer.Uuid
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.toUuid
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
+import kdochub.base.serializer.Uuid
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.toUuid
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

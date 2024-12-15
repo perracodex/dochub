@@ -4,9 +4,9 @@
 
 package kdochub.server.health.checks
 
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.security.snowflake.SnowflakeData
-import kdochub.core.security.snowflake.SnowflakeFactory
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.security.snowflake.SnowflakeData
+import kdochub.base.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
 
 /**

@@ -13,10 +13,10 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kdochub.access.context.SessionContextFactory
 import kdochub.access.domain.token.annotation.TokenApi
-import kdochub.core.context.clearContext
-import kdochub.core.context.setContext
-import kdochub.core.env.Tracer
-import kdochub.core.settings.AppSettings
+import kdochub.base.context.clearContext
+import kdochub.base.context.setContext
+import kdochub.base.env.Tracer
+import kdochub.base.settings.AppSettings
 
 /**
  * Configures JWT-based authentication.

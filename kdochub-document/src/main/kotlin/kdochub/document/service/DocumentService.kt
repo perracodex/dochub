@@ -6,12 +6,12 @@ package kdochub.document.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
-import kdochub.core.security.util.SecureUrl
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.NetworkUtils
-import kdochub.core.util.toUuidOrNull
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
+import kdochub.base.security.util.SecureUrl
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.NetworkUtils
+import kdochub.base.util.toUuidOrNull
 import kdochub.document.model.Document
 import kdochub.document.model.DocumentFilterSet
 import kdochub.document.model.DocumentRequest

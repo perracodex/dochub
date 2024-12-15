@@ -7,8 +7,8 @@ package kdochub.document.api
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
-import kdochub.core.plugins.RateLimitScope
-import kdochub.core.settings.AppSettings
+import kdochub.base.plugins.RateLimitScope
+import kdochub.base.settings.AppSettings
 import kdochub.document.api.delete.deleteAllDocumentsRoute
 import kdochub.document.api.delete.deleteDocumentByIdRoute
 import kdochub.document.api.delete.deleteDocumentsByGroupRoute

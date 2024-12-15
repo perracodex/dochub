@@ -8,8 +8,8 @@ import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdochub.core.context.SessionContext
-import kdochub.core.context.getContext
+import kdochub.base.context.SessionContext
+import kdochub.base.context.getContext
 import kdochub.document.api.DocumentRouteApi
 import kdochub.document.service.DocumentAuditService
 import kdochub.document.service.DocumentService

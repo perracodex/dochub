@@ -7,7 +7,7 @@ package kdochub.document.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import kdochub.database.schema.document.DocumentTable
 import kdochub.database.util.transaction
 import kdochub.document.model.Document

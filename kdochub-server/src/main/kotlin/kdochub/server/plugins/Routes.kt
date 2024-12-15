@@ -11,8 +11,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdochub.access.domain.rbac.api.rbacRoutes
 import kdochub.access.domain.token.api.accessTokenRoutes
-import kdochub.core.context.getContextOrNull
-import kdochub.core.security.snowflake.snowflakeRoute
+import kdochub.base.context.getContextOrNull
+import kdochub.base.security.snowflake.snowflakeRoute
 import kdochub.document.api.documentRoutes
 import kdochub.server.health.healthCheckRoute
 

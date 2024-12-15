@@ -5,11 +5,11 @@
 package kdochub.document.service.manager
 
 import io.perracodex.exposed.pagination.Page
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
-import kdochub.core.security.util.EncryptionUtils
-import kdochub.core.security.util.SecureIO
-import kdochub.core.settings.AppSettings
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
+import kdochub.base.security.util.EncryptionUtils
+import kdochub.base.security.util.SecureIO
+import kdochub.base.settings.AppSettings
 import kdochub.document.model.Document
 import kdochub.document.repository.IDocumentRepository
 import kdochub.document.service.DocumentService.Companion.PATH_SEPARATOR

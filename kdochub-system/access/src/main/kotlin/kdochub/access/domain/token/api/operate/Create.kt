@@ -12,10 +12,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdochub.access.domain.token.annotation.TokenApi
 import kdochub.access.domain.token.service.TokenService
-import kdochub.core.context.SessionContext
-import kdochub.core.context.getContext
-import kdochub.core.plugins.RateLimitScope
-import kdochub.core.settings.AppSettings
+import kdochub.base.context.SessionContext
+import kdochub.base.context.getContext
+import kdochub.base.plugins.RateLimitScope
+import kdochub.base.settings.AppSettings
 
 /**
  * Generates a new JWT token using Basic Authentication.

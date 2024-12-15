@@ -10,8 +10,8 @@ import kdochub.access.plugins.configureBasicAuthentication
 import kdochub.access.plugins.configureJwtAuthentication
 import kdochub.access.plugins.configureRbac
 import kdochub.access.plugins.configureSessions
-import kdochub.core.plugins.*
-import kdochub.core.settings.AppSettings
+import kdochub.base.plugins.*
+import kdochub.base.settings.AppSettings
 import kdochub.database.plugins.configureDatabase
 import kdochub.server.plugins.configureKoin
 import kdochub.server.plugins.configureRoutes

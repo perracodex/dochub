@@ -11,7 +11,7 @@ import kdochub.access.domain.actor.model.ActorRequest
 import kdochub.access.domain.actor.repository.IActorRepository
 import kdochub.access.domain.rbac.repository.role.IRbacRoleRepository
 import kdochub.access.domain.rbac.service.RbacService
-import kdochub.core.env.Tracer
+import kdochub.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent

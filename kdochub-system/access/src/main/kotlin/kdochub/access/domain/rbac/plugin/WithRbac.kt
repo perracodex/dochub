@@ -6,7 +6,7 @@ package kdochub.access.domain.rbac.plugin
 
 import io.ktor.server.routing.*
 import kdochub.access.domain.rbac.annotation.RbacApi
-import kdochub.core.settings.AppSettings
+import kdochub.base.settings.AppSettings
 import kdochub.database.schema.admin.rbac.type.RbacAccessLevel
 import kdochub.database.schema.admin.rbac.type.RbacScope
 

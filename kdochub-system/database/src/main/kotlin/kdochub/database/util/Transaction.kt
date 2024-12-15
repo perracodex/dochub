@@ -4,7 +4,7 @@
 
 package kdochub.database.util
 
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils

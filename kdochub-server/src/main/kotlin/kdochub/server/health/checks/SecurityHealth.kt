@@ -4,9 +4,9 @@
 
 package kdochub.server.health.checks
 
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.settings.AppSettings
-import kdochub.core.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.settings.AppSettings
+import kdochub.base.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
 import kotlinx.serialization.Serializable
 
 /**

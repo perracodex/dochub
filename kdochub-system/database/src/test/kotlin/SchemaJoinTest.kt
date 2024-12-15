@@ -4,7 +4,7 @@
 
 @file:Suppress("ExposedReference")
 
-import kdochub.core.util.TestUtils
+import kdochub.base.util.TestUtils
 import kdochub.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction

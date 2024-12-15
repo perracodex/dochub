@@ -6,7 +6,7 @@ package kdochub.access.domain.rbac.model.role
 
 import kdochub.access.domain.rbac.model.field.RbacFieldRule
 import kdochub.access.domain.rbac.model.scope.RbacScopeRule
-import kdochub.core.serializer.Uuid
+import kdochub.base.serializer.Uuid
 import kdochub.database.model.Meta
 import kdochub.database.schema.admin.rbac.RbacFieldRuleTable
 import kdochub.database.schema.admin.rbac.RbacRoleTable

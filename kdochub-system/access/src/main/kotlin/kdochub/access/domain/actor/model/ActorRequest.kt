@@ -4,7 +4,7 @@
 
 package kdochub.access.domain.actor.model
 
-import kdochub.core.serializer.Uuid
+import kdochub.base.serializer.Uuid
 
 /**
  * Request to create/update an Actor.

@@ -4,8 +4,8 @@
 
 package kdochub.document.service.manager.upload
 
-import kdochub.core.security.util.SecureIO
-import kdochub.core.util.CountingInputStream
+import kdochub.base.security.util.SecureIO
+import kdochub.base.util.CountingInputStream
 import kdochub.document.service.DocumentService.Companion.PATH_SEPARATOR
 import kdochub.document.service.manager.upload.annotation.UploadApi
 import java.io.File

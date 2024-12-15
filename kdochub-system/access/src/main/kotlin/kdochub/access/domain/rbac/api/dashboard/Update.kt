@@ -15,10 +15,10 @@ import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.service.RbacDashboardManager
 import kdochub.access.domain.rbac.view.RbacDashboardView
 import kdochub.access.domain.rbac.view.RbacLoginView
-import kdochub.core.context.SessionContext
-import kdochub.core.context.clearContext
-import kdochub.core.context.getContext
-import kdochub.core.util.toUuid
+import kdochub.base.context.SessionContext
+import kdochub.base.context.clearContext
+import kdochub.base.context.getContext
+import kdochub.base.util.toUuid
 import kotlin.uuid.Uuid
 
 /**

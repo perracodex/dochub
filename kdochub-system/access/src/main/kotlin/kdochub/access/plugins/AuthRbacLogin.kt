@@ -10,8 +10,8 @@ import io.ktor.server.response.*
 import kdochub.access.context.SessionContextFactory
 import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.view.RbacLoginView
-import kdochub.core.context.clearContext
-import kdochub.core.context.setContext
+import kdochub.base.context.clearContext
+import kdochub.base.context.setContext
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.

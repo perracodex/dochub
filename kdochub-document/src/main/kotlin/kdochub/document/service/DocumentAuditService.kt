@@ -4,7 +4,7 @@
 
 package kdochub.document.service
 
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import kdochub.document.model.DocumentAuditLogRequest
 import kdochub.document.repository.IDocumentAuditRepository
 import kotlinx.coroutines.Dispatchers

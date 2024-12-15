@@ -13,10 +13,10 @@ import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.service.RbacDashboardManager
 import kdochub.access.domain.rbac.view.RbacDashboardView
 import kdochub.access.domain.rbac.view.RbacLoginView
-import kdochub.core.context.SessionContext
-import kdochub.core.context.clearContext
-import kdochub.core.context.getContext
-import kdochub.core.util.toUuidOrNull
+import kdochub.base.context.SessionContext
+import kdochub.base.context.clearContext
+import kdochub.base.context.getContext
+import kdochub.base.util.toUuidOrNull
 
 /**
  * Retrieves the current [SessionContext] and renders the RBAC dashboard based

@@ -12,9 +12,9 @@ import io.ktor.server.sessions.*
 import kdochub.access.context.SessionContextFactory
 import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.service.RbacService
-import kdochub.core.context.SessionContext
-import kdochub.core.context.getContextOrNull
-import kdochub.core.context.setContext
+import kdochub.base.context.SessionContext
+import kdochub.base.context.getContextOrNull
+import kdochub.base.context.setContext
 import kdochub.database.schema.admin.rbac.type.RbacAccessLevel
 import kdochub.database.schema.admin.rbac.type.RbacScope
 import org.koin.ktor.ext.inject

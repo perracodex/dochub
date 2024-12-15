@@ -5,7 +5,7 @@
 package kdochub.document.error
 
 import io.ktor.http.*
-import kdochub.core.error.AppException
+import kdochub.base.error.AppException
 import kotlin.uuid.Uuid
 
 /**

@@ -4,7 +4,7 @@
 
 package kdochub.database.util
 
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.StatementInterceptor

@@ -4,7 +4,7 @@
 
 package kdochub.database.schema.admin.actor
 
-import kdochub.core.security.util.EncryptionUtils
+import kdochub.base.security.util.EncryptionUtils
 import kdochub.database.column.autoGenerate
 import kdochub.database.column.kotlinUuid
 import kdochub.database.schema.admin.rbac.RbacRoleTable

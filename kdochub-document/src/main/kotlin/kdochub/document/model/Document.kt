@@ -5,7 +5,7 @@
 package kdochub.document.model
 
 import io.perracodex.exposed.pagination.MapModel
-import kdochub.core.serializer.Uuid
+import kdochub.base.serializer.Uuid
 import kdochub.database.model.Meta
 import kdochub.database.schema.document.DocumentTable
 import kdochub.database.schema.document.type.DocumentType

@@ -4,7 +4,7 @@
 
 package kdochub.document.repository
 
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import kdochub.database.schema.document.DocumentAuditTable
 import kdochub.database.util.transaction
 import kdochub.document.model.DocumentAuditLogRequest

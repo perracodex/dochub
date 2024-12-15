@@ -4,7 +4,7 @@
 
 package kdochub.database.test
 
-import kdochub.core.settings.AppSettings
+import kdochub.base.settings.AppSettings
 import kdochub.database.schema.document.DocumentAuditTable
 import kdochub.database.schema.document.DocumentTable
 import kdochub.database.service.DatabaseService

@@ -11,8 +11,8 @@ import kdochub.access.domain.rbac.model.role.RbacRoleRequest
 import kdochub.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import kdochub.access.domain.rbac.repository.role.IRbacRoleRepository
 import kdochub.access.domain.rbac.repository.scope.IRbacScopeRuleRepository
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
 import kdochub.database.schema.admin.rbac.type.RbacAccessLevel
 import kdochub.database.schema.admin.rbac.type.RbacScope
 import kotlinx.coroutines.Dispatchers

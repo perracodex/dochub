@@ -4,8 +4,8 @@
 
 import io.ktor.test.dispatcher.*
 import io.mockk.mockk
-import kdochub.core.context.SessionContext
-import kdochub.core.util.TestUtils
+import kdochub.base.context.SessionContext
+import kdochub.base.util.TestUtils
 import kdochub.database.schema.document.type.DocumentType
 import kdochub.database.test.DatabaseTestUtils
 import kdochub.document.di.DocumentDomainInjection

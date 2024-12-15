@@ -8,7 +8,7 @@ import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.model.role.RbacRole
 import kdochub.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import kdochub.access.domain.rbac.view.RbacDashboardView
-import kdochub.core.context.SessionContext
+import kdochub.base.context.SessionContext
 import kdochub.database.schema.admin.rbac.type.RbacAccessLevel
 import kdochub.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.json.Json

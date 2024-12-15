@@ -5,7 +5,7 @@
 package kdochub.database.plugins
 
 import io.ktor.server.application.*
-import kdochub.core.env.Telemetry
+import kdochub.base.env.Telemetry
 import kdochub.database.schema.admin.actor.ActorTable
 import kdochub.database.schema.admin.rbac.RbacFieldRuleTable
 import kdochub.database.schema.admin.rbac.RbacRoleTable

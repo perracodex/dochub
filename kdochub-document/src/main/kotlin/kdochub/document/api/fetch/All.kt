@@ -12,8 +12,8 @@ import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.getPageable
-import kdochub.core.context.SessionContext
-import kdochub.core.context.getContext
+import kdochub.base.context.SessionContext
+import kdochub.base.context.getContext
 import kdochub.document.api.DocumentRouteApi
 import kdochub.document.model.Document
 import kdochub.document.service.DocumentAuditService

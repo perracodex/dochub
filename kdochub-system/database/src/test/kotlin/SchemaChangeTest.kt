@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kdochub.core.util.TestUtils
+import kdochub.base.util.TestUtils
 import kdochub.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils

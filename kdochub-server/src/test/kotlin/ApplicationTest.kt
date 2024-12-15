@@ -6,7 +6,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kdochub.core.util.TestUtils
+import kdochub.base.util.TestUtils
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

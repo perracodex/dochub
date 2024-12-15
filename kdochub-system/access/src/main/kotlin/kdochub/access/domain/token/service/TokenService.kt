@@ -13,10 +13,10 @@ import io.ktor.http.*
 import io.ktor.http.auth.*
 import kdochub.access.context.SessionContextFactory
 import kdochub.access.domain.token.annotation.TokenApi
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
-import kdochub.core.settings.AppSettings
-import kdochub.core.settings.catalog.section.security.node.auth.JwtAuthSettings
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
+import kdochub.base.settings.AppSettings
+import kdochub.base.settings.catalog.section.security.node.auth.JwtAuthSettings
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 

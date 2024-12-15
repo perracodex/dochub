@@ -14,7 +14,7 @@ import kdochub.access.domain.rbac.api.login.rbacLoginAccessRoute
 import kdochub.access.domain.rbac.api.login.rbacLoginSubmissionRoute
 import kdochub.access.domain.rbac.api.login.rbacLogoutRoute
 import kdochub.access.domain.rbac.plugin.withRbac
-import kdochub.core.plugins.RateLimitScope
+import kdochub.base.plugins.RateLimitScope
 import kdochub.database.schema.admin.rbac.type.RbacAccessLevel
 import kdochub.database.schema.admin.rbac.type.RbacScope
 

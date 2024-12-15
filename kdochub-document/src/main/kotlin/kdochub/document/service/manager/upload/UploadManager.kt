@@ -5,8 +5,8 @@
 package kdochub.document.service.manager.upload
 
 import io.ktor.http.content.*
-import kdochub.core.context.SessionContext
-import kdochub.core.env.Tracer
+import kdochub.base.context.SessionContext
+import kdochub.base.env.Tracer
 import kdochub.database.schema.document.type.DocumentType
 import kdochub.document.error.DocumentError
 import kdochub.document.model.Document

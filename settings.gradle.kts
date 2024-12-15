@@ -13,7 +13,7 @@ plugins {
 
 rootProject.name = "KDocHub"
 
-include("kdochub-system:core")
+include("kdochub-system:base")
 include("kdochub-system:database")
 include("kdochub-system:access")
 include("kdochub-document")

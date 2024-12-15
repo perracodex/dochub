@@ -16,7 +16,7 @@ import io.ktor.server.testing.*
 import junit.framework.TestCase.assertTrue
 import kdochub.access.domain.actor.di.ActorDomainInjection
 import kdochub.access.domain.rbac.di.RbacDomainInjection
-import kdochub.core.util.TestUtils
+import kdochub.base.util.TestUtils
 import kdochub.database.schema.document.type.DocumentType
 import kdochub.database.test.DatabaseTestUtils
 import kdochub.document.di.DocumentDomainInjection

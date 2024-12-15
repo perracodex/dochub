@@ -5,9 +5,9 @@
 package kdochub.database.service
 
 import com.zaxxer.hikari.HikariDataSource
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.env.Tracer
-import kdochub.core.settings.catalog.section.DatabaseSettings
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.env.Tracer
+import kdochub.base.settings.catalog.section.DatabaseSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name

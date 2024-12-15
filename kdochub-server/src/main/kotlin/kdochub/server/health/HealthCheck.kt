@@ -5,10 +5,10 @@
 package kdochub.server.health
 
 import io.ktor.server.application.*
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.RouteInfo
-import kdochub.core.util.collectRoutes
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.RouteInfo
+import kdochub.base.util.collectRoutes
 import kdochub.database.service.DatabaseHealth
 import kdochub.server.health.checks.*
 import kotlinx.serialization.Serializable

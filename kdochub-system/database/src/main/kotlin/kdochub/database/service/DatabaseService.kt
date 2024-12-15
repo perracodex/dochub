@@ -6,9 +6,9 @@ package kdochub.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kdochub.core.env.EnvironmentType
-import kdochub.core.env.Tracer
-import kdochub.core.settings.catalog.section.DatabaseSettings
+import kdochub.base.env.EnvironmentType
+import kdochub.base.env.Tracer
+import kdochub.base.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig

@@ -6,8 +6,8 @@ package kdochub.access.credential
 
 import io.ktor.server.auth.*
 import io.ktor.util.*
-import kdochub.core.security.hash.SecureHash
-import kdochub.core.security.hash.SecureSalt
+import kdochub.base.security.hash.SecureHash
+import kdochub.base.security.hash.SecureSalt
 
 /**
  * Provides authentication functionality by storing and validating hashed passwords with salts.

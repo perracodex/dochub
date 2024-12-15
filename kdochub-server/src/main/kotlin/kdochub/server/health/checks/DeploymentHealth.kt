@@ -6,10 +6,10 @@ package kdochub.server.health.checks
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import kdochub.core.env.EnvironmentType
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.NetworkUtils
+import kdochub.base.env.EnvironmentType
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.NetworkUtils
 import kotlinx.serialization.Serializable
 
 /**

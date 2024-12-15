@@ -7,9 +7,9 @@ package kdochub.access.credential
 import io.ktor.server.auth.*
 import kdochub.access.domain.actor.model.ActorCredentials
 import kdochub.access.domain.actor.service.ActorService
-import kdochub.core.env.Tracer
-import kdochub.core.security.hash.SecureHash
-import kdochub.core.security.hash.SecureSalt
+import kdochub.base.env.Tracer
+import kdochub.base.security.hash.SecureHash
+import kdochub.base.security.hash.SecureSalt
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.koin.core.component.KoinComponent

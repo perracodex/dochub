@@ -5,10 +5,10 @@
 package kdochub.server.health.checks
 
 import io.ktor.server.application.*
-import kdochub.core.env.EnvironmentType
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.settings.catalog.section.RuntimeSettings
-import kdochub.core.util.DateTimeUtils.current
+import kdochub.base.env.EnvironmentType
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.settings.catalog.section.RuntimeSettings
+import kdochub.base.util.DateTimeUtils.current
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable

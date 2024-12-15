@@ -4,9 +4,9 @@
 
 package kdochub.server.health.checks
 
-import kdochub.core.env.EnvironmentType
-import kdochub.core.env.HealthCheckApi
-import kdochub.core.settings.AppSettings
+import kdochub.base.env.EnvironmentType
+import kdochub.base.env.HealthCheckApi
+import kdochub.base.settings.AppSettings
 import kotlinx.serialization.Serializable
 
 /**

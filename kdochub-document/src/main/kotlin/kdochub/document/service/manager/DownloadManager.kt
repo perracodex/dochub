@@ -6,12 +6,12 @@ package kdochub.document.service.manager
 
 import io.ktor.http.*
 import io.micrometer.core.instrument.Counter
-import kdochub.core.env.Telemetry
-import kdochub.core.env.Tracer
-import kdochub.core.security.util.SecureIO
-import kdochub.core.util.DateTimeUtils
-import kdochub.core.util.DateTimeUtils.current
-import kdochub.core.util.DateTimeUtils.format
+import kdochub.base.env.Telemetry
+import kdochub.base.env.Tracer
+import kdochub.base.security.util.SecureIO
+import kdochub.base.util.DateTimeUtils
+import kdochub.base.util.DateTimeUtils.current
+import kdochub.base.util.DateTimeUtils.format
 import kdochub.document.error.DocumentError
 import kdochub.document.model.Document
 import kotlinx.coroutines.CompletableDeferred

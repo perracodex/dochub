@@ -9,11 +9,11 @@ import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kdochub.core.context.getContext
-import kdochub.core.security.util.SecureUrl
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.NetworkUtils
-import kdochub.core.util.toUuidOrNull
+import kdochub.base.context.getContext
+import kdochub.base.security.util.SecureUrl
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.NetworkUtils
+import kdochub.base.util.toUuidOrNull
 import kdochub.document.api.DocumentRouteApi
 import kdochub.document.service.DocumentAuditService
 import org.koin.core.parameter.parametersOf

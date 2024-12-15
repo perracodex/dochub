@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kdochub.access.domain.rbac.annotation.RbacApi
 import kdochub.access.domain.rbac.view.RbacLoginView
-import kdochub.core.context.clearContext
+import kdochub.base.context.clearContext
 
 /**
  * Manages the session termination and redirection to the login page.

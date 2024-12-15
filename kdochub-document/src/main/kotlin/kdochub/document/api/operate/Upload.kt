@@ -12,11 +12,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kdochub.core.context.SessionContext
-import kdochub.core.context.getContext
-import kdochub.core.settings.AppSettings
-import kdochub.core.util.toUuid
-import kdochub.core.util.toUuidOrNull
+import kdochub.base.context.SessionContext
+import kdochub.base.context.getContext
+import kdochub.base.settings.AppSettings
+import kdochub.base.util.toUuid
+import kdochub.base.util.toUuidOrNull
 import kdochub.database.schema.document.type.DocumentType
 import kdochub.document.api.DocumentRouteApi
 import kdochub.document.model.Document

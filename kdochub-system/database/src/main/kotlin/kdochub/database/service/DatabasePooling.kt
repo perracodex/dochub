@@ -7,7 +7,7 @@ package kdochub.database.service
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kdochub.core.settings.catalog.section.DatabaseSettings
+import kdochub.base.settings.catalog.section.DatabaseSettings
 
 internal object DatabasePooling {
     /**

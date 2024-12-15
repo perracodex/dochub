@@ -6,7 +6,7 @@ package kdochub.database.plugins
 
 import io.ktor.server.application.*
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kdochub.core.settings.AppSettings
+import kdochub.base.settings.AppSettings
 import kdochub.database.service.DatabaseService
 import org.jetbrains.exposed.sql.Table
 

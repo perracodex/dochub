@@ -6,11 +6,11 @@ package kdochub.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kdochub.core.context.SessionContext
-import kdochub.core.security.util.EncryptionUtils.toByteKey
-import kdochub.core.serializer.Uuid
-import kdochub.core.settings.AppSettings
-import kdochub.core.settings.catalog.section.security.node.EncryptionSettings
+import kdochub.base.context.SessionContext
+import kdochub.base.security.util.EncryptionUtils.toByteKey
+import kdochub.base.serializer.Uuid
+import kdochub.base.settings.AppSettings
+import kdochub.base.settings.catalog.section.security.node.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.
