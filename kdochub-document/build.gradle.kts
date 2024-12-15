@@ -6,9 +6,7 @@ group = "kdochub.document"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":kdochub-system:base"))
-    implementation(project(":kdochub-system:database"))
-    implementation(project(":kdochub-system:access"))
+    implementation(project(":kdochub-core"))
 
     detektPlugins(libs.detekt.formatting)
 
