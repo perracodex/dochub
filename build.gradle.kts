@@ -108,24 +108,24 @@ subprojects {
             sarif.required.set(true)
         }
     }
+
+    // Run tests in a single thread to avoid concurrency issues.
+    tasks.test {
+        useJUnitPlatform()
+        maxParallelForks = 1
+
+        systemProperty("junit.jupiter.execution.parallel.enabled", "false")
+        systemProperty("junit.jupiter.execution.parallel.mode.default", "same_thread")
+
+        testLogging {
+            events("started", "passed", "skipped", "failed")
+            showStandardStreams = true // Useful for debugging.
+        }
+    }
 }
 
 dependencies {
     implementation(project(":dochub-server"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-    maxParallelForks = 1
-
-    // Configure JUnit 5 to disable parallel test execution.
-    systemProperty("junit.jupiter.execution.parallel.enabled", "false")
-    systemProperty("junit.jupiter.execution.parallel.mode.default", "same_thread")
-
-    testLogging {
-        events("started", "passed", "skipped", "failed")
-        showStandardStreams = true // Useful for debugging.
-    }
 }
 
 /** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */

@@ -4,12 +4,15 @@
 
 package dochub.base.util
 
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import dochub.base.settings.AppSettings
 import io.ktor.server.config.*
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import java.io.File
+import kotlin.uuid.Uuid
 
 /**
  * Common utilities for unit testing.
@@ -20,9 +23,27 @@ public object TestUtils {
      * Loads the application settings for testing.
      */
     public fun loadSettings() {
-        val testConfig = ApplicationConfig(configPath = "application.conf")
+        // Load the default configuration.
+        val defaultConfig: Config = ConfigFactory.parseResources("application.conf")
 
-        AppSettings.load(applicationConfig = testConfig)
+        // Extract the current workingDir value and append the unique suffix
+        val originalWorkingDir: String = defaultConfig.getString("runtime.workingDir")
+        val updatedWorkingDir = "$originalWorkingDir-${Uuid.random()}"
+
+        // Create an override configuration.
+        val overrideConfig: Config = ConfigFactory.parseString(
+            """
+                runtime.workingDir = "$updatedWorkingDir"
+            """
+        )
+
+        // Merge the override with the default.
+        val mergedConfig: Config = overrideConfig.withFallback(defaultConfig).resolve()
+
+        // Create a new ApplicationConfig.
+        val applicationConfig = HoconApplicationConfig(config = mergedConfig)
+
+        AppSettings.load(applicationConfig = applicationConfig)
     }
 
     /**
