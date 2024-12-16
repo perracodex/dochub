@@ -11,11 +11,11 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-rootProject.name = "KDocHub"
+rootProject.name = "DocHub"
 
-include("kdochub-core:base")
-include("kdochub-core:database")
-include("kdochub-core:access")
-include("kdochub-core")
-include("kdochub-document")
-include("kdochub-server")
+include("dochub-core:base")
+include("dochub-core:database")
+include("dochub-core:access")
+include("dochub-core")
+include("dochub-document")
+include("dochub-server")

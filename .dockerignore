@@ -7,7 +7,7 @@
 !gradlew
 !gradlew.bat
 !keystore.p12
-!kdochub-core/**
-!kdochub-document/**
-!kdochub-server/**
+!dochub-core/**
+!dochub-document/**
+!dochub-server/**
 !build/libs/**

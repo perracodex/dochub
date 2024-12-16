@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.detekt) // Required for static code analysis.
 }
 
-group = "kdochub"
+group = "dochub"
 version = "1.0.0"
 
 // Ktor plugin configuration for creating a fat JAR.
@@ -28,7 +28,7 @@ application {
     // Specify the fully qualified name of the main class for the application.
     // This setting is used to define the entry point for the executable JAR generated
     // by Gradle, which is essential for running the application with 'java -jar' command.
-    mainClass.set("kdochub.server.ApplicationKt")
+    mainClass.set("dochub.server.ApplicationKt")
 
     // Configure detailed coroutine debug logging.
     // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
@@ -111,7 +111,21 @@ subprojects {
 }
 
 dependencies {
-    implementation(project(":kdochub-server"))
+    implementation(project(":dochub-server"))
+}
+
+tasks.test {
+    useJUnitPlatform()
+    maxParallelForks = 1
+
+    // Configure JUnit 5 to disable parallel test execution.
+    systemProperty("junit.jupiter.execution.parallel.enabled", "false")
+    systemProperty("junit.jupiter.execution.parallel.mode.default", "same_thread")
+
+    testLogging {
+        events("started", "passed", "skipped", "failed")
+        showStandardStreams = true // Useful for debugging.
+    }
 }
 
 /** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */

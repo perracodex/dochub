@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kdochub-deployment
-  namespace: kdochub-project
+  name: dochub-deployment
+  namespace: dochub-project
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: kdochub
+      app: dochub
   template:
     metadata:
       labels:
-        app: kdochub
+        app: dochub
     spec:
       containers:
-        - name: kdochub
-          image: kdochub-image:latest
+        - name: dochub
+          image: dochub-image:latest
           ports:
             - containerPort: 8080
             - containerPort: 8443
@@ -24,5 +24,5 @@ spec:
           env:
             - name: JAVA_OPTS
               value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
-            - name: KDOCHUB_KTOR_SECURITY_SSL_KEY_STORE
+            - name: DOCHUB_KTOR_SECURITY_SSL_KEY_STORE
               value: "/app/keystore.p12"

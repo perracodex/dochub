@@ -41,12 +41,8 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### Swagger ###
-/docs/*
-/kdochub-server/docs/*
-
 ### Custom ###
-/kdochub-server/.runtime/database/*
+/dochub-server/.runtime/database/*
 .runtime/*
 /.database/*
 .idea/

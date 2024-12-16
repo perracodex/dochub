@@ -1,8 +1,8 @@
-# [KDocHub](https://github.com/perracodex/KDocHub)
+# [DocHub](https://github.com/perracodex/DocHub)
 
 A secure document storage manager using the [Ktor](https://ktor.io/) framework.
 
-[KDocHub](https://github.com/perracodex/KDocHub) serves as a comprehensive example of a document storage manager,
+[DocHub](https://github.com/perracodex/DocHub) serves as a comprehensive example of a document storage manager,
 allowing to securely upload, download, and manage documents.
 
 ### Characteristics:
@@ -44,4 +44,4 @@ allowing to securely upload, download, and manage documents.
 * ### [Endpoints](./.wiki/06.endpoints.md)
 
 ---
-For convenience, it is included a *[Postman Collection](./.postman/kdochub.postman_collection.json)* with all the available REST endpoints.
+For convenience, it is included a *[Postman Collection](./.postman/dochub.postman_collection.json)* with all the available REST endpoints.
