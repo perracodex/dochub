@@ -45,3 +45,9 @@ allowing to securely upload, download, and manage documents.
 
 ---
 For convenience, it is included a *[Postman Collection](./.postman/dochub.postman_collection.json)* with all the available REST endpoints.
+
+---
+
+### License
+
+This project is licensed under an MIT License - see the [LICENSE](LICENSE) file for details.
