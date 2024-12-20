@@ -11,6 +11,8 @@ dependencies {
 
     detektPlugins(libs.detekt.formatting)
 
+    implementation(libs.kotlinx.coroutines)
+
     implementation(libs.kopapi)
 
     implementation(libs.kotlinx.serialization)

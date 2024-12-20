@@ -8,7 +8,7 @@ version = "1.0.0"
 dependencies {
     detektPlugins(libs.detekt.formatting)
 
-    implementation(libs.database.h2)
+    implementation(libs.kotlinx.coroutines)
 
     implementation(libs.kopapi)
 
