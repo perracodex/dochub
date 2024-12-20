@@ -29,8 +29,6 @@ dependencies {
     implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.tests)
 
-    implementation(libs.ktor.config)
-
     implementation(libs.shared.commons.codec)
 
     testImplementation(libs.test.kotlin.junit)
