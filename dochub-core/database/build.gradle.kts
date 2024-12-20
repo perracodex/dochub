@@ -12,10 +12,6 @@ dependencies {
 
     implementation(libs.database.h2)
 
-    implementation(libs.kotlinx.coroutines)
-
-    implementation(libs.ktor.config)
-
     implementation(libs.exposed.core)
     implementation(libs.exposed.crypt)
     implementation(libs.exposed.jdbc)
@@ -23,8 +19,11 @@ dependencies {
     implementation(libs.exposed.kotlin.datetime)
     implementation(libs.exposed.pagination)
     implementation(libs.flyway.core)
-
     implementation(libs.hikariCP)
+
+    implementation(libs.kotlinx.coroutines)
+
+    implementation(libs.ktor.config)
 
     implementation(libs.micrometer.metrics)
     implementation(libs.micrometer.metrics.prometheus)
