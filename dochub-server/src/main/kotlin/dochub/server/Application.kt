@@ -21,6 +21,10 @@ import io.ktor.server.netty.*
  * Application main entry point.
  * Launches the Ktor server using Netty as the application engine.
  *
+ * #### Continuous Compilation
+ * - Command: `./gradlew -t build -x test -i`
+ * - [Auto-Reload](https://ktor.io/docs/server-auto-reload.html)
+ *
  * #### References
  * - [Choosing an engine](https://ktor.io/docs/server-engines.html)
  * - [Configure an engine](https://ktor.io/docs/server-engines.html#configure-engine)
