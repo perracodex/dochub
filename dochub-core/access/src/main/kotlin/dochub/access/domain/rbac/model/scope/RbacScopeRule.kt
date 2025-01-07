@@ -6,13 +6,13 @@ package dochub.access.domain.rbac.model.scope
 
 import dochub.access.domain.rbac.model.field.RbacFieldRule
 import dochub.access.domain.rbac.model.role.RbacRole
-import dochub.base.serializer.Uuid
 import dochub.database.model.Meta
 import dochub.database.schema.admin.rbac.RbacScopeRuleTable
 import dochub.database.schema.admin.rbac.type.RbacAccessLevel
 import dochub.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete RBAC scope rule for a concrete [RbacRole].

@@ -4,8 +4,8 @@
 
 package dochub.base.context
 
-import dochub.base.serializer.Uuid
 import org.jetbrains.exposed.sql.Database
+import kotlin.uuid.Uuid
 
 /**
  * Data class holding concrete [SessionContext] information passed around in the application

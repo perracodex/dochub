@@ -4,13 +4,13 @@
 
 package dochub.access.domain.rbac.model.field
 
-import dochub.base.serializer.Uuid
 import dochub.database.model.Meta
 import dochub.database.schema.admin.rbac.RbacFieldRuleTable
 import dochub.database.schema.admin.rbac.type.RbacAccessLevel
 import dochub.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.Uuid
 
 /**
  * Represents a single RBAC field level rule.

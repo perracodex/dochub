@@ -5,12 +5,12 @@
 package dochub.base.context
 
 import dochub.base.error.UnauthorizedException
-import dochub.base.serializer.Uuid
 import dochub.base.settings.AppSettings
 import dochub.base.util.toUuid
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Extension function to add the given [sessionContext] into the [ApplicationCall] attributes,

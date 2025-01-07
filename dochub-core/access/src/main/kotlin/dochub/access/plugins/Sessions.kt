@@ -6,11 +6,11 @@ package dochub.access.plugins
 
 import dochub.base.context.SessionContext
 import dochub.base.security.util.EncryptionUtils.toByteKey
-import dochub.base.serializer.Uuid
 import dochub.base.settings.AppSettings
 import dochub.base.settings.catalog.section.security.node.EncryptionSettings
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
+import kotlin.uuid.Uuid
 
 /**
  * Configure the [Sessions] plugin.

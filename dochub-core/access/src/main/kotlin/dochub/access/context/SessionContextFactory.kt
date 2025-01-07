@@ -16,7 +16,6 @@ import dochub.access.plugins.configureBasicAuthentication
 import dochub.access.plugins.configureJwtAuthentication
 import dochub.base.context.SessionContext
 import dochub.base.env.Tracer
-import dochub.base.serializer.Uuid
 import dochub.base.settings.AppSettings
 import dochub.base.util.toUuid
 import io.ktor.http.*
@@ -26,6 +25,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.sessions.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.uuid.Uuid
 
 /**
  * Provides factory methods for constructing [SessionContext] instances from various authentication credential flows.

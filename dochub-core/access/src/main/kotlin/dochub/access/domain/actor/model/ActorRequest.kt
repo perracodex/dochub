@@ -4,7 +4,7 @@
 
 package dochub.access.domain.actor.model
 
-import dochub.base.serializer.Uuid
+import kotlin.uuid.Uuid
 
 /**
  * Request to create/update an Actor.

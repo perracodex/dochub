@@ -4,9 +4,9 @@
 
 package dochub.document.model
 
-import dochub.base.serializer.Uuid
 import dochub.database.schema.document.type.DocumentType
 import kotlinx.serialization.Serializable
+import kotlin.uuid.Uuid
 
 /**
  * A set of filters that can be applied to a document query.

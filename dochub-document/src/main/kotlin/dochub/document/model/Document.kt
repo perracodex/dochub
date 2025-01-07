@@ -4,7 +4,6 @@
 
 package dochub.document.model
 
-import dochub.base.serializer.Uuid
 import dochub.database.model.Meta
 import dochub.database.schema.document.DocumentTable
 import dochub.database.schema.document.type.DocumentType
@@ -13,6 +12,7 @@ import io.perracodex.exposed.pagination.MapModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete document.

@@ -4,9 +4,9 @@
 
 package dochub.document.model
 
-import dochub.base.serializer.Uuid
 import dochub.database.schema.document.type.DocumentType
 import kotlinx.serialization.Serializable
+import kotlin.uuid.Uuid
 
 /**
  * Represents the request to create/update a document.
