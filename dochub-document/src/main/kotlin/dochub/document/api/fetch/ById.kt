@@ -5,7 +5,7 @@
 package dochub.document.api.fetch
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.error.AppException
 import dochub.base.util.toUuid
 import dochub.document.api.DocumentRouteApi
@@ -28,7 +28,7 @@ internal fun Route.findDocumentByIdRoute() {
     get("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by document id", documentId = documentId)
 

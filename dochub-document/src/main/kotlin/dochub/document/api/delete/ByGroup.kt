@@ -5,7 +5,7 @@
 package dochub.document.api.delete
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.util.toUuid
 import dochub.document.api.DocumentRouteApi
 import dochub.document.service.DocumentAuditService
@@ -25,7 +25,7 @@ internal fun Route.deleteDocumentsByGroupRoute() {
     delete("/v1/document/group/{group_id}") {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete by group", groupId = groupId)
 

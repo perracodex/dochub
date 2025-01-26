@@ -5,7 +5,7 @@
 package dochub.document.api.operate
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.document.api.DocumentRouteApi
 import dochub.document.model.Document
 import dochub.document.service.DocumentAuditService
@@ -23,7 +23,7 @@ import org.koin.ktor.plugin.scope
 internal fun Route.backupDocumentsRoute() {
     get("/v1/document/backup") {
         // Audit the backup action.
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "backup")
 

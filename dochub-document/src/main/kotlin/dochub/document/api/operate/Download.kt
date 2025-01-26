@@ -5,7 +5,7 @@
 package dochub.document.api.operate
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.document.api.DocumentRouteApi
 import dochub.document.model.Document
 import dochub.document.service.DocumentAuditService
@@ -28,7 +28,7 @@ internal fun Route.downloadDocumentRoute() {
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 
         // Audit the download attempt.
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         val auditService: DocumentAuditService = call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
         auditService.audit(operation = "download", log = "token=$token | signature=$signature")
 

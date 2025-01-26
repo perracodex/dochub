@@ -5,7 +5,7 @@
 package dochub.document.api.fetch
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.document.api.DocumentRouteApi
 import dochub.document.model.Document
 import dochub.document.service.DocumentAuditService
@@ -26,7 +26,7 @@ internal fun Route.findAllDocumentsRoute() {
     get("/v1/document/") {
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find all", log = pageable?.toString())
 

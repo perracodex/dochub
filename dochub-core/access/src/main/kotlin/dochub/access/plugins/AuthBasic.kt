@@ -5,8 +5,8 @@
 package dochub.access.plugins
 
 import dochub.access.context.SessionContextFactory
-import dochub.base.context.clearContext
-import dochub.base.context.setContext
+import dochub.base.context.clearSessionContext
+import dochub.base.context.sessionContext
 import dochub.base.settings.AppSettings
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -28,10 +28,11 @@ public fun Application.configureBasicAuthentication() {
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    return@validate this.setContext(sessionContext = sessionContext)
+                    this.sessionContext = sessionContext
+                    return@validate sessionContext
                 }
 
-                this.clearContext()
+                this.clearSessionContext()
                 return@validate null
             }
         }

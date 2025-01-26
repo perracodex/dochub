@@ -6,8 +6,7 @@ package dochub.access.domain.token.api.operate
 
 import dochub.access.domain.token.annotation.TokenApi
 import dochub.access.domain.token.service.TokenService
-import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.plugins.RateLimitScope
 import dochub.base.settings.AppSettings
 import io.github.perracodex.kopapi.dsl.operation.api
@@ -30,9 +29,7 @@ internal fun Route.createTokenRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
             post("/auth/token/create") {
-                val sessionContext: SessionContext = call.getContext()
-
-                TokenService.createToken(sessionContext = sessionContext).let { response ->
+                TokenService.createToken(sessionContext = call.sessionContext).let { response ->
                     call.respondText(
                         text = response.message,
                         status = response.statusCode,

@@ -7,8 +7,8 @@ package dochub.access.plugins
 import dochub.access.context.SessionContextFactory
 import dochub.access.domain.rbac.annotation.RbacApi
 import dochub.access.domain.rbac.view.RbacLoginView
-import dochub.base.context.clearContext
-import dochub.base.context.setContext
+import dochub.base.context.clearSessionContext
+import dochub.base.context.sessionContext
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -33,16 +33,17 @@ public fun Application.configureRbac() {
             passwordParamName = RbacLoginView.KEY_PASSWORD
 
             challenge {
-                call.clearContext()
+                call.clearSessionContext()
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    return@validate this.setContext(sessionContext = sessionContext)
+                    this.sessionContext = sessionContext
+                    return@validate sessionContext
                 }
 
-                this.clearContext()
+                this.clearSessionContext()
                 return@validate null
             }
         }

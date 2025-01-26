@@ -8,8 +8,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dochub.access.context.SessionContextFactory
 import dochub.access.domain.token.annotation.TokenApi
-import dochub.base.context.clearContext
-import dochub.base.context.setContext
+import dochub.base.context.clearSessionContext
+import dochub.base.context.sessionContext
 import dochub.base.env.Tracer
 import dochub.base.settings.AppSettings
 import io.ktor.http.*
@@ -57,10 +57,11 @@ public fun Application.configureJwtAuthentication() {
                     headers = this.request.headers,
                     jwtCredential = credential
                 )?.let { sessionContext ->
-                    return@validate this.setContext(sessionContext = sessionContext)
+                    this.sessionContext = sessionContext
+                    return@validate sessionContext
                 }
 
-                this.clearContext()
+                this.clearSessionContext()
                 return@validate null
             }
 
@@ -68,7 +69,7 @@ public fun Application.configureJwtAuthentication() {
                 Tracer(ref = Application::configureJwtAuthentication).error(
                     "JWT authentication failed. Default scheme: $defaultScheme, realm: $realm"
                 )
-                call.clearContext()
+                call.clearSessionContext()
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
         }

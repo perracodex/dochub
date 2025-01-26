@@ -5,7 +5,7 @@
 package dochub.document.api.fetch
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.document.api.DocumentRouteApi
 import dochub.document.model.Document
 import dochub.document.model.DocumentFilterSet
@@ -26,7 +26,7 @@ internal fun Route.searchDocumentsRoute() {
     post<DocumentFilterSet>("/v1/document/search") { request ->
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "search", log = "$request | ${pageable?.toString()}")
 

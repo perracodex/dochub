@@ -4,8 +4,7 @@
 
 package dochub.base.plugins
 
-import dochub.base.context.SessionContext
-import dochub.base.context.getContextOrNull
+import dochub.base.context.sessionContextOrNull
 import dochub.base.security.snowflake.SnowflakeFactory
 import dochub.base.settings.AppSettings
 import io.ktor.http.*
@@ -44,12 +43,11 @@ public fun Application.configureCallLogging() {
 
         // Format the log message to include the call ID, SessionContext details, and processing time.
         format { call ->
-            val sessionContext: SessionContext? = call.getContextOrNull()
             val callDurationMs: Long = call.processingTimeMillis()
 
             "Call Metric: [${call.request.origin.remoteHost}] " +
                     "${call.request.httpMethod.value} - ${call.request.path()} " +
-                    "- by '$sessionContext' - ${callDurationMs}ms"
+                    "- by '${call.sessionContextOrNull}' - ${callDurationMs}ms"
         }
     }
 

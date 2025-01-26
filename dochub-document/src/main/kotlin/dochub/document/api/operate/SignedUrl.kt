@@ -4,7 +4,7 @@
 
 package dochub.document.api.operate
 
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.security.util.SecureUrl
 import dochub.base.settings.AppSettings
 import dochub.base.util.NetworkUtils
@@ -30,7 +30,7 @@ internal fun Route.getDocumentSignedUrlRoute() {
             return@get
         }
 
-        call.scope.get<DocumentAuditService> { parametersOf(call.getContext()) }
+        call.scope.get<DocumentAuditService> { parametersOf(call.sessionContext) }
             .audit(operation = "generate signed URL", documentId = documentId)
 
         val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"

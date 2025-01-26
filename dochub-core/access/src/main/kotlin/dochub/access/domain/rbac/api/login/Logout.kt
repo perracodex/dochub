@@ -6,7 +6,7 @@ package dochub.access.domain.rbac.api.login
 
 import dochub.access.domain.rbac.annotation.RbacApi
 import dochub.access.domain.rbac.view.RbacLoginView
-import dochub.base.context.clearContext
+import dochub.base.context.clearSessionContext
 import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
@@ -19,7 +19,7 @@ import io.ktor.server.routing.*
 @RbacApi
 internal fun Route.rbacLogoutRoute() {
     post("rbac/logout") {
-        call.clearContext()
+        call.clearSessionContext()
         call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
     } api {
         tags = setOf("RBAC")

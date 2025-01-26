@@ -8,8 +8,8 @@ import dochub.access.context.SessionContextFactory
 import dochub.access.domain.rbac.annotation.RbacApi
 import dochub.access.domain.rbac.service.RbacService
 import dochub.base.context.SessionContext
-import dochub.base.context.getContextOrNull
-import dochub.base.context.setContext
+import dochub.base.context.sessionContext
+import dochub.base.context.sessionContextOrNull
 import dochub.database.schema.admin.rbac.type.RbacAccessLevel
 import dochub.database.schema.admin.rbac.type.RbacScope
 import io.ktor.http.*
@@ -36,9 +36,10 @@ internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScoped
         // the SessionContext is typically derived directly from the token, populating the call pipeline automatically.
         // In contrast, form-based authentication does not inherently carry the SessionContext across requests,
         // so it must be manually set in the call pipeline from the persistence provided by the Sessions plugin.
-        val sessionContext: SessionContext? = call.getContextOrNull()
+        val sessionContext: SessionContext? = call.sessionContextOrNull
             ?: SessionContextFactory.from(sessions = call.sessions)?.let { sessionContext ->
-                call.setContext(sessionContext = sessionContext)
+                call.sessionContext = sessionContext
+                sessionContext
             }
 
         sessionContext?.let {

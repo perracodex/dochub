@@ -5,7 +5,7 @@
 package dochub.document.api.operate
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.document.api.DocumentRouteApi
 import dochub.document.service.DocumentAuditService
 import dochub.document.service.manager.CipherStateHandler
@@ -23,7 +23,7 @@ internal fun Route.changeDocumentsCipherStateRoute() {
     put("/v1/document/cipher/{cipher}") {
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())
 

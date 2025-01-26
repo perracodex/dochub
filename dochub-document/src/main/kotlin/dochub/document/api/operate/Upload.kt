@@ -5,7 +5,7 @@
 package dochub.document.api.operate
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.settings.AppSettings
 import dochub.base.util.toUuid
 import dochub.base.util.toUuidOrNull
@@ -39,7 +39,7 @@ internal fun Route.uploadDocumentsRoute() {
         val multipart: MultiPartData = call.receiveMultipart()
 
         // Audit the document upload operation.
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "upload", ownerId = ownerId, groupId = groupId, log = "type=$type | cipher=$cipher")
 

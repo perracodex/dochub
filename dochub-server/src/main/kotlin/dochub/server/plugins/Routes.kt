@@ -6,7 +6,7 @@ package dochub.server.plugins
 
 import dochub.access.domain.rbac.api.rbacRoutes
 import dochub.access.domain.token.api.accessTokenRoutes
-import dochub.base.context.getContextOrNull
+import dochub.base.context.sessionContextOrNull
 import dochub.base.security.snowflake.snowflakeRoute
 import dochub.document.api.documentRoutes
 import dochub.server.health.healthCheckRoute
@@ -40,7 +40,7 @@ internal fun Application.configureRoutes() {
 
         // Server root endpoint.
         get("/") {
-            val greeting: String = call.getContextOrNull()?.let { sessionContext ->
+            val greeting: String = call.sessionContextOrNull?.let { sessionContext ->
                 "Hello World. Welcome ${sessionContext.username}!"
             } ?: "Hello World."
             call.respondText(text = greeting)

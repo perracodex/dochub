@@ -5,7 +5,7 @@
 package dochub.document.api.fetch
 
 import dochub.base.context.SessionContext
-import dochub.base.context.getContext
+import dochub.base.context.sessionContext
 import dochub.base.util.toUuid
 import dochub.document.api.DocumentRouteApi
 import dochub.document.model.Document
@@ -30,7 +30,7 @@ internal fun Route.findDocumentsByGroupRoute() {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by group", groupId = groupId, log = pageable?.toString())
 

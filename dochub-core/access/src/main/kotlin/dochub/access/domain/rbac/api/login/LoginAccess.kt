@@ -6,7 +6,7 @@ package dochub.access.domain.rbac.api.login
 
 import dochub.access.domain.rbac.annotation.RbacApi
 import dochub.access.domain.rbac.view.RbacLoginView
-import dochub.base.context.clearContext
+import dochub.base.context.clearSessionContext
 import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
@@ -20,7 +20,7 @@ import io.ktor.server.routing.*
 @RbacApi
 internal fun Route.rbacLoginAccessRoute() {
     get("rbac/login") {
-        call.clearContext()
+        call.clearSessionContext()
         call.respondHtml(status = HttpStatusCode.OK) {
             RbacLoginView.build(html = this)
         }

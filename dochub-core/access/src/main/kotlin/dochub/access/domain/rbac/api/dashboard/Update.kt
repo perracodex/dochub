@@ -9,8 +9,8 @@ import dochub.access.domain.rbac.service.RbacDashboardManager
 import dochub.access.domain.rbac.view.RbacDashboardView
 import dochub.access.domain.rbac.view.RbacLoginView
 import dochub.base.context.SessionContext
-import dochub.base.context.clearContext
-import dochub.base.context.getContext
+import dochub.base.context.clearSessionContext
+import dochub.base.context.sessionContext
 import dochub.base.util.toUuid
 import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
@@ -29,9 +29,9 @@ import kotlin.uuid.Uuid
 internal fun Route.rbacDashboardUpdateRoute() {
     post("rbac/dashboard") {
         // Retrieve SessionContext or redirect to the login screen if it's missing.
-        val sessionContext: SessionContext = call.getContext()
+        val sessionContext: SessionContext = call.sessionContext
         if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
-            call.clearContext()
+            call.clearSessionContext()
             call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             return@post
         }
@@ -59,7 +59,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
 
                 // If the update was unauthorized, clear the session and redirect to the login screen.
                 is RbacDashboardManager.UpdateResult.Unauthorized -> call.run {
-                    call.clearContext()
+                    call.clearSessionContext()
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }
