@@ -28,10 +28,12 @@ internal fun Route.findDocumentByIdRoute() {
     get("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
+        // Audit the find by document ID operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by document id", documentId = documentId)
 
+        // Find the document by ID.
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val document: Document = service.findById(documentId = documentId)
             ?: throw DocumentError.DocumentNotFound(documentId = documentId)

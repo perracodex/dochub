@@ -25,10 +25,12 @@ internal fun Route.deleteDocumentByIdRoute() {
     delete("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
+        // Audit the delete by ID operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete by id", documentId = documentId)
 
+        // Delete the document by ID.
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val deletedCount: Int = service.delete(documentId = documentId)
         call.respond(status = HttpStatusCode.OK, message = deletedCount)

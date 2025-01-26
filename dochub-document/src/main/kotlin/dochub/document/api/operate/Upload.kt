@@ -29,6 +29,7 @@ import kotlin.uuid.Uuid
 @DocumentRouteApi
 internal fun Route.uploadDocumentsRoute() {
     post("/v1/document/") {
+        // Get the owner ID, group ID, document type, and cipher flag from the query parameters.
         val ownerId: Uuid = call.request.queryParameters.getOrFail(name = "owner_id").toUuid()
         val groupId: Uuid? = call.request.queryParameters["group_id"].toUuidOrNull()
         val type: DocumentType = DocumentType.parse(value = call.request.queryParameters.getOrFail(name = "type"))

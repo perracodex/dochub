@@ -21,14 +21,19 @@ import org.koin.ktor.plugin.scope
 @DocumentRouteApi
 internal fun Route.changeDocumentsCipherStateRoute() {
     put("/v1/document/cipher/{cipher}") {
+        // Get the cipher state from the path parameters.
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
+        // Audit the cipher state change operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())
 
+        // Change the cipher state of all documents.
         val cipherStateHandler: CipherStateHandler = call.scope.get<CipherStateHandler> { parametersOf(sessionContext) }
         val count: Int = cipherStateHandler.changeState(cipher = cipher)
+
+        // Respond with the number of documents affected.
         call.respond(status = HttpStatusCode.OK, message = count)
     } api {
         tags = setOf("Document")

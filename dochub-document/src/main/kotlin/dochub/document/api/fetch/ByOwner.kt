@@ -30,10 +30,12 @@ internal fun Route.findDocumentsByOwnerRoute() {
         val ownerId: Uuid = call.parameters.getOrFail(name = "owner_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
+        // Audit the find by owner operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by owner", ownerId = ownerId, log = pageable?.toString())
 
+        // Find documents by owner.
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findByOwnerId(ownerId = ownerId, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)

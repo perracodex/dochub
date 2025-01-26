@@ -26,10 +26,12 @@ internal fun Route.findAllDocumentsRoute() {
     get("/v1/document/") {
         val pageable: Pageable? = call.getPageable()
 
+        // Audit the find all documents operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find all", log = pageable?.toString())
 
+        // Find all documents.
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.findAll(pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)

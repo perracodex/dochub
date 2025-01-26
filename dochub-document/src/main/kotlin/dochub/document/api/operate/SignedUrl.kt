@@ -23,6 +23,7 @@ import kotlin.uuid.Uuid
 @DocumentRouteApi
 internal fun Route.getDocumentSignedUrlRoute() {
     get("/v1/document/url") {
+        // Get the document ID or group ID from the query parameters.
         val documentId: Uuid? = call.request.queryParameters["document_id"].toUuidOrNull()
         val groupId: Uuid? = call.request.queryParameters["group_id"]?.toUuidOrNull()
         (documentId ?: groupId) ?: run {
@@ -30,15 +31,18 @@ internal fun Route.getDocumentSignedUrlRoute() {
             return@get
         }
 
+        // Audit the signed URL generation.
         call.scope.get<DocumentAuditService> { parametersOf(call.sessionContext) }
             .audit(operation = "generate signed URL", documentId = documentId)
 
+        // Generate the signed URL for the document download.
         val basePath = "${NetworkUtils.getServerUrl()}/${AppSettings.storage.downloadsBasePath}"
         val secureUrl: String = SecureUrl.generate(
             basePath = basePath,
             data = "document_id=${documentId ?: ""}&group_id=${groupId ?: ""}",
         )
 
+        // Respond with the signed URL.
         call.respond(status = HttpStatusCode.OK, message = secureUrl)
     } api {
         tags = setOf("Document")

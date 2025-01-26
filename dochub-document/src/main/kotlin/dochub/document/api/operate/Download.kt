@@ -24,6 +24,7 @@ import java.io.OutputStream
 @DocumentRouteApi
 internal fun Route.downloadDocumentRoute() {
     get("/v1/document/download") {
+        // Get the token and signature from the query parameters.
         val token: String = call.request.queryParameters.getOrFail(name = "token")
         val signature: String = call.request.queryParameters.getOrFail(name = "signature")
 

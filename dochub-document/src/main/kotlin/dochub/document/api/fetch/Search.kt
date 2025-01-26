@@ -26,10 +26,12 @@ internal fun Route.searchDocumentsRoute() {
     post<DocumentFilterSet>("/v1/document/search") { request ->
         val pageable: Pageable? = call.getPageable()
 
+        // Audit the search operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "search", log = "$request | ${pageable?.toString()}")
 
+        // Search for documents.
         val service: DocumentService = call.scope.get<DocumentService> { parametersOf(sessionContext) }
         val documents: Page<Document> = service.search(filterSet = request, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = documents)
