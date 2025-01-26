@@ -36,13 +36,13 @@ internal fun Route.uploadDocumentsRoute() {
         val cipher: Boolean = call.request.queryParameters["cipher"]?.toBoolean()
             ?: AppSettings.storage.cipher
 
-        // Get the multipart data from the request.
-        val multipart: MultiPartData = call.receiveMultipart()
-
         // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "upload", ownerId = ownerId, groupId = groupId, log = "type=$type | cipher=$cipher")
+
+        // Get the multipart data from the request.
+        val multipart: MultiPartData = call.receiveMultipart()
 
         // Upload the document to the storage.
         val uploadManager: UploadManager = call.scope.get<UploadManager> { parametersOf(sessionContext) }
