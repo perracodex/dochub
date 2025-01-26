@@ -24,7 +24,7 @@ internal fun Route.changeDocumentsCipherStateRoute() {
         // Get the cipher state from the path parameters.
         val cipher: Boolean = call.parameters.getOrFail<Boolean>(name = "cipher")
 
-        // Audit the cipher state change operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "change cipher state", log = cipher.toString())

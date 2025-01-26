@@ -26,7 +26,7 @@ internal fun Route.searchDocumentsRoute() {
     post<DocumentFilterSet>("/v1/document/search") { request ->
         val pageable: Pageable? = call.getPageable()
 
-        // Audit the search operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "search", log = "$request | ${pageable?.toString()}")

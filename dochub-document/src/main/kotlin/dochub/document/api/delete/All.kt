@@ -19,7 +19,7 @@ import org.koin.ktor.plugin.scope
 @DocumentRouteApi
 internal fun Route.deleteAllDocumentsRoute() {
     delete("/v1/document/") {
-        // Audit the delete all documents operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete all")

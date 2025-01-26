@@ -28,7 +28,7 @@ internal fun Route.findDocumentByIdRoute() {
     get("/v1/document/{document_id}/") {
         val documentId: Uuid = call.parameters.getOrFail(name = "document_id").toUuid()
 
-        // Audit the find by document ID operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by document id", documentId = documentId)

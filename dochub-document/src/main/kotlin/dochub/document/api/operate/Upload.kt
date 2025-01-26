@@ -39,7 +39,7 @@ internal fun Route.uploadDocumentsRoute() {
         // Get the multipart data from the request.
         val multipart: MultiPartData = call.receiveMultipart()
 
-        // Audit the document upload operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "upload", ownerId = ownerId, groupId = groupId, log = "type=$type | cipher=$cipher")

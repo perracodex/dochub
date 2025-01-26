@@ -25,7 +25,7 @@ internal fun Route.deleteDocumentsByGroupRoute() {
     delete("/v1/document/group/{group_id}") {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
 
-        // Audit the delete by group operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "delete by group", groupId = groupId)

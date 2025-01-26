@@ -26,7 +26,7 @@ internal fun Route.findAllDocumentsRoute() {
     get("/v1/document/") {
         val pageable: Pageable? = call.getPageable()
 
-        // Audit the find all documents operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find all", log = pageable?.toString())

@@ -30,7 +30,7 @@ internal fun Route.findDocumentsByGroupRoute() {
         val groupId: Uuid = call.parameters.getOrFail(name = "group_id").toUuid()
         val pageable: Pageable? = call.getPageable()
 
-        // Audit the find by group operation.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "find by group", groupId = groupId, log = pageable?.toString())

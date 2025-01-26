@@ -22,7 +22,7 @@ import org.koin.ktor.plugin.scope
 @DocumentRouteApi
 internal fun Route.backupDocumentsRoute() {
     get("/v1/document/backup") {
-        // Audit the backup action.
+        // Audit the attempt operation.
         val sessionContext: SessionContext = call.sessionContext
         call.scope.get<DocumentAuditService> { parametersOf(sessionContext) }
             .audit(operation = "backup")

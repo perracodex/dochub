@@ -31,7 +31,7 @@ internal fun Route.getDocumentSignedUrlRoute() {
             return@get
         }
 
-        // Audit the signed URL generation.
+        // Audit the attempt operation.
         call.scope.get<DocumentAuditService> { parametersOf(call.sessionContext) }
             .audit(operation = "generate signed URL", documentId = documentId)
 
